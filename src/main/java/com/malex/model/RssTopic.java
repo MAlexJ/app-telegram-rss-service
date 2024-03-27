@@ -41,6 +41,8 @@ public record RssTopic(
   private static String removeZeroWidthSpace(String str) {
     return Optional.ofNullable(str) //
         .map(desc -> desc.replaceAll("[\\p{Cf}]", ""))
+        .map(desc -> desc.replaceAll("&quot;", "\""))
+        .map(desc -> desc.replaceAll("&#39;", "`"))
         .orElse(null);
   }
 }
