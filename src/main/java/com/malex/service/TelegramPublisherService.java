@@ -22,21 +22,17 @@ public class TelegramPublisherService {
 
   public Optional<RssTopicEntity> publishRssTopic(RssTopicEntity topic) {
     try {
-      var topicId = topic.getId();
       var chatId = topic.getChatId();
+      var text = generateTextFromTemplate(topic);
       var message =
           sender.execute(
               SendMessage.builder()
                   .protectContent(true)
                   .chatId(chatId)
                   .parseMode(ParseMode.MARKDOWN)
-                  .text(generateTextFromTemplate(topic))
+                  .text(text)
                   .build());
-      log.trace(
-          "Publish RSS topic to telegram, topicId - {}, chatId - {}, short message - {}",
-          topicId,
-          chatId,
-          message);
+      log.info("Publish RSS topic to telegram - {}", message);
     } catch (Exception ex) {
       log.error("Telegram Api error - {}", ex.getMessage());
     }
