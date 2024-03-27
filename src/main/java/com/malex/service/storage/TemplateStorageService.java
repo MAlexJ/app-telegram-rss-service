@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TemplateStorageService {
 
-  private static final String DEFAULT_TEMPLATE = "{{title}} \n {{link}}";
-
   private final TemplateRepository repository;
   private final ObjectMapper mapper;
 
@@ -36,8 +34,10 @@ public class TemplateStorageService {
   }
 
   @Cacheable(key = "#id")
-  public String findTemplateById(String id) {
-    return repository.findById(id).map(TemplateEntity::getTemplate).orElse(DEFAULT_TEMPLATE);
+  public Optional<String> findMessageTemplateById(String id) {
+    return repository
+        .findById(id) //
+        .map(TemplateEntity::getTemplate);
   }
 
   @CacheEvict(allEntries = true)

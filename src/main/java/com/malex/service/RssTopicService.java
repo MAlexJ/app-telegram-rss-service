@@ -1,6 +1,6 @@
 package com.malex.service;
 
-import com.malex.model.RssTopic;
+import com.malex.model.dto.RssTopicDto;
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.webservice.RssReaderWebService;
 import java.util.List;
@@ -17,13 +17,13 @@ public class RssTopicService {
   private final RssReaderWebService rssWebService;
 
   /** Convert Rss items from subscription to rss topics */
-  public List<RssTopic> processingRssTopics(SubscriptionEntity subscription) {
+  public List<RssTopicDto> processingRssTopics(SubscriptionEntity subscription) {
     var url = subscription.getRss();
     var rssItemList = rssWebService.readRssNews(url);
     return rssItemList.stream()
         .map(
             rssItem ->
-                new RssTopic(
+                new RssTopicDto(
                     subscription, rssItem, md5HashService.md5HashCalculation(rssItem.link())))
         .toList();
   }

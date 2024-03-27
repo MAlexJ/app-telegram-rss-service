@@ -1,6 +1,6 @@
 package com.malex.controller;
 
-import com.malex.model.RssItem;
+import com.malex.model.dto.RssItemDto;
 import com.malex.model.request.RssRequest;
 import com.malex.webservice.RssReaderWebService;
 import java.util.List;
@@ -18,7 +18,7 @@ public class RssRestController {
   private final RssReaderWebService service;
 
   @PostMapping
-  public ResponseEntity<List<RssItem>> findRssItemByCriteria(@RequestBody RssRequest request) {
+  public ResponseEntity<List<RssItemDto>> findRssItemByCriteria(@RequestBody RssRequest request) {
     log.info("HTTP request, read rss nes by url - {}", request);
     return ResponseEntity.ok(service.readRssNews(request.url()));
   }

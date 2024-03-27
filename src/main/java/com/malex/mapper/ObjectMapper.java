@@ -1,6 +1,6 @@
 package com.malex.mapper;
 
-import com.malex.model.RssTopic;
+import com.malex.model.dto.RssTopicDto;
 import com.malex.model.dto.UserDto;
 import com.malex.model.dto.ChatDto;
 import com.malex.model.entity.*;
@@ -25,7 +25,7 @@ public interface ObjectMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)
   @Mapping(source = "isActive", target = "active")
-  RssTopicEntity dtoToEntity(RssTopic dto);
+  RssTopicEntity dtoToEntity(RssTopicDto dto);
 
   @Mapping(source = "active", target = "isActive")
   RssSubscriptionResponse entityToDto(SubscriptionEntity entity);

@@ -1,10 +1,10 @@
-package com.malex.model;
+package com.malex.model.dto;
 
 import com.apptasticsoftware.rssreader.Item;
 import java.util.List;
 import java.util.Optional;
 
-public record RssItem(
+public record RssItemDto(
     String title,
     String description,
     String link,
@@ -15,7 +15,7 @@ public record RssItem(
     String pubDate,
     String comments) {
 
-  public RssItem(Item item) {
+  public RssItemDto(Item item) {
     this(
         readStingValue(item.getTitle()),
         readStingValue(item.getDescription()),

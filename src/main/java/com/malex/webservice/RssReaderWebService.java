@@ -3,7 +3,7 @@ package com.malex.webservice;
 import com.apptasticsoftware.rssreader.Item;
 import com.apptasticsoftware.rssreader.RssReader;
 import com.malex.exception.RssReaderException;
-import com.malex.model.RssItem;
+import com.malex.model.dto.RssItemDto;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class RssReaderWebService {
 
   /** Read the latest news on Rss url */
-  public List<RssItem> readRssNews(String url) {
+  public List<RssItemDto> readRssNews(String url) {
     try {
       var rawItems = new RssReader().read(url).toList();
       return mapRssToItems(rawItems);
@@ -26,9 +26,9 @@ public class RssReaderWebService {
     }
   }
 
-  private List<RssItem> mapRssToItems(List<Item> rawItems) {
+  private List<RssItemDto> mapRssToItems(List<Item> rawItems) {
     return rawItems.stream() //
-        .map(RssItem::new)
+        .map(RssItemDto::new)
         .toList();
   }
 }

@@ -38,7 +38,7 @@ public class RssTopicStorageService {
   }
 
   /** Find first active rss topic order by created asc */
-  public Optional<RssTopicEntity> findFirstActiveRssTopic() {
+  public Optional<RssTopicEntity> findFirstActiveRssTopicOrderByCreatedDate() {
     return topicRepository.findFirstByIsActiveOrderByCreatedAsc(true);
   }
 
@@ -47,7 +47,7 @@ public class RssTopicStorageService {
    *
    * @param id - topic GUID id
    */
-  public void setTopicInactivity(String id) {
+  public void setRssTopicInactivity(String id) {
     topicRepository.updateRssTopicEntity(id);
   }
 }

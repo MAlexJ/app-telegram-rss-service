@@ -1,9 +1,9 @@
-package com.malex.model;
+package com.malex.model.dto;
 
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.model.filter.RssFilter;
 
-public record RssTopic(
+public record RssTopicDto(
     String subscriptionId,
     Long chatId,
     String templateId,
@@ -15,7 +15,7 @@ public record RssTopic(
     String md5Hash,
     boolean isActive) {
 
-  public RssTopic(SubscriptionEntity entity, RssItem item, String md5Hash) {
+  public RssTopicDto(SubscriptionEntity entity, RssItemDto item, String md5Hash) {
     this(
         entity.getId(),
         entity.getChatId(),

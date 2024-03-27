@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +17,15 @@ import org.springframework.stereotype.Service;
 public class TemplateResolverService {
 
   private static final String DEFAULT_FORMAT = "%s %n %s";
+
   private final MustacheFactory mustacheFactory;
 
-  public String applyMessageTemplate(String template, RssTopicEntity topic) {
+  public String applyTemplateToRssTopic(String template, RssTopicEntity topic) {
     try (var writer = new StringWriter();
         var reader = new StringReader(template)) {
       var mustache = mustacheFactory.compile(reader, null);
-      Writer execute = mustache.execute(writer, topic);
-      return applyUtfEncoding(execute);
+      var raw = mustache.execute(writer, topic);
+      return applySpecialCharacterSubstitution(raw);
     } catch (IOException ex) {
       log.error(ex.getMessage());
       return buildDefaultMessageFormat(topic);
@@ -36,16 +36,19 @@ public class TemplateResolverService {
     return String.format(DEFAULT_FORMAT, topic.getTitle(), topic.getLink());
   }
 
-  /** Remove 'Zero Width Space' */
-  @SneakyThrows
-  private String applyUtfEncoding(Writer writer) {
+  /**
+   * Apply special character substitution function: <br>
+   * 1. Remove 'Zero Width Space'<br>
+   * 2. quotes
+   */
+  private String applySpecialCharacterSubstitution(Writer writer) throws IOException {
     try (writer) {
       var text = writer.toString();
       return Optional.ofNullable(text) //
           .map(desc -> desc.replaceAll("[\\p{Cf}]", ""))
-          .map(desc -> desc.replaceAll("&quot;", "\""))
-          .map(desc -> desc.replaceAll("&#39;", "'"))
-          .orElse(null);
+          .map(desc -> desc.replace("&quot;", "\""))
+          .map(desc -> desc.replace("&#39;", "'"))
+          .orElse(text);
     }
   }
 }
