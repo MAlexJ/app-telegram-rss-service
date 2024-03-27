@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id "com.github.ben-manes.versions" version "${githubBenManesVersion}"
+}
+
+group = 'com.malex'
+version = '1.0.5'
+
+java {
+    sourceCompatibility = "${javaVersion}"
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation "com.github.spullara.mustache.java:compiler:${mustacheVersion}"
+    implementation "org.telegram:telegrambots-spring-boot-starter:${telegramBotsVersion}"
+    implementation "com.apptasticsoftware:rssreader:${rssreaderVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiWeb}"
+    implementation "com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}"
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:${embedMongoVersion}"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

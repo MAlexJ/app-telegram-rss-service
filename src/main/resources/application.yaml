@@ -1,0 +1,42 @@
+server:
+  port: ${APP_SERVICE_PORT:8080}
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: ${APP_SERVICE_NAME:app-service}
+
+  data:
+    mongodb:
+      uri: ${APP_SERVICE_MONGODB_URI:uri}
+      database: ${APP_SERVICE_MONGODB_DATABASE:app-telegram-rss-service-db}
+      auto-index-creation: true
+
+telegram:
+  bot:
+    username: ${APP_SERVICE_TELEGRAM_BOT_USERNAME:bot_name}
+    token: ${APP_SERVICE_TELEGRAM_BOT_TOKEN:app_token}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+
+springdoc:
+  swagger-ui:
+    path: /api/documentation
+
+scheduled:
+  processing:
+    publisher:
+      cron: ${APP_SERVICE_SCHEDULER_PROCESSING_PUBLISHER_CRONE:0 */1 * * * *}
+    rss:
+      cron: ${APP_SERVICE_SCHEDULER_PROCESSING_RSS_CRONE:0 */15 * * * *}
+
+jwt:
+  app:
+    enable_security: ${APP_SERVICE_ENABLE_JWT_SECURITY:true}
+    secret: ${APP_RSS_PROCESSOR_SERVICE_JWT_SECRET_KEY:jwt_key}

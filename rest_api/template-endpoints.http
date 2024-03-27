@@ -1,0 +1,27 @@
+###
+GET http://localhost:8080/v1/templates
+
+###
+GET http://localhost:8080/v1/templates/6603de40e625104809eea0e5
+
+###
+POST http://localhost:8080/v1/templates
+Content-Type: application/json
+
+{
+  "description": "Base template",
+  "template": "{{link}} \n {{title}}",
+  "isActive": true
+}
+
+###
+DELETE http://localhost:8080/v1/templates/65ea33b285285608d7faffec
+
+###
+PUT http://localhost:8080/v1/templates
+Content-Type: application/json
+
+{
+  "id": "65eb75375a860f2e8c9f45bd",
+  "template": "Txxx"
+}

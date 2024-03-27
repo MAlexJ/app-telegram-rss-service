@@ -1,0 +1,9 @@
+###
+POST http://localhost:8080/v1/messages
+Content-Type: application/json
+
+{
+  "chatId": -1001600823930,
+  "topicId": "65de57e27f88642cb246ea35",
+  "templateId": "not_exist_id"
+}

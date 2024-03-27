@@ -1,0 +1,36 @@
+###
+GET http://localhost:8080/v1/subscriptions
+
+###
+POST http://localhost:8080/v1/subscriptions
+Content-Type: application/json
+
+{
+  "chatId": -1001600823930,
+  "templateId": "6603de40e625104809eea0e5",
+  "rss": "https://www.pravda.com.ua/rss",
+  "filter": {
+  },
+  "isActive": true
+}
+
+###
+POST http://localhost:8080/v1/subscriptions
+Content-Type: application/json
+
+{
+  "chatId": -1001600823930,
+  "templateId": "6603de40e625104809eea0e5",
+  "rss": "https://www.pravda.com.ua/rss",
+  "filter": {
+    "condition": {
+      "valueType": "PHRASE",
+      "value": "word"
+    }
+  },
+  "isActive": true
+}
+
+
+###
+PATCH http://localhost:8080/v1/subscriptions/6603de51e625104809eea0e6
