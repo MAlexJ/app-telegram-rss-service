@@ -1,6 +1,5 @@
 package com.malex.scheduler;
 
-import com.malex.mapper.ObjectMapper;
 import com.malex.service.RssFilterService;
 import com.malex.service.RssTopicService;
 import com.malex.service.storage.RssTopicStorageService;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProcessingRssScheduler {
 
-  private final ObjectMapper mapper;
   private final RssTopicService topicService;
   private final RssFilterService filterService;
   private final RssTopicStorageService topicStorageService;
@@ -37,13 +35,11 @@ public class ProcessingRssScheduler {
   @Scheduled(cron = "${scheduled.processing.rss.cron}")
   public void processingRssSubscriptions() {
     log.info("Start processing RSS subscriptions - {}", schedulerProcessNumber.incrementAndGet());
-    var md5HashSet = topicStorageService.findAllMd5Hash();
     subscriptionService.findAllActiveSubscriptions().stream()
         .map(topicService::processingRssTopics)
         .flatMap(Collection::stream)
-        .filter(filterService.applyTopicsFilteringByMd5Hash(md5HashSet))
-        .filter(filterService::applyTopicsFilteringByCriteria)
-        .map(mapper::dtoToEntity)
+        .filter(filterService::applyFilterByCriteria)
+        .filter(topic -> topicStorageService.isNotExistTopicByMd5Hash(topic.md5Hash()))
         .forEach(topicStorageService::saveNewRssTopic);
   }
 }

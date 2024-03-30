@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 @Service
@@ -24,8 +25,12 @@ public class TelegramPublisherService {
                   .parseMode(ParseMode.MARKDOWN)
                   .text(text)
                   .build());
-      log.info("Publish RSS topic to telegram - {}", message);
-    } catch (Exception ex) {
+      log.info(
+          "Publish RSS topic to telegram: message_id - {}, chat_id - {}, text - {}",
+          message.getMessageId(),
+          chatId,
+          text);
+    } catch (TelegramApiException ex) {
       log.error("Telegram Api error - {}", ex.getMessage());
     }
   }

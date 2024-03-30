@@ -1,13 +1,12 @@
 package com.malex.service.storage;
 
 import com.malex.mapper.ObjectMapper;
+import com.malex.model.dto.RssTopicDto;
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.model.response.RssTopicResponse;
 import com.malex.repository.RssTopicRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,18 +20,14 @@ public class RssTopicStorageService {
   private final ObjectMapper mapper;
 
   public List<RssTopicResponse> findAllTopics() {
-    return topicRepository.findAll().stream().map(mapper::entityToDto).toList();
-  }
-
-  /** Find all md5 topic hashes */
-  public Set<String> findAllMd5Hash() {
     return topicRepository.findAll().stream() //
-        .map(RssTopicEntity::getMd5Hash)
-        .collect(Collectors.toSet());
+        .map(mapper::entityToDto)
+        .toList();
   }
 
   /** Save new rss topic */
-  public void saveNewRssTopic(RssTopicEntity entity) {
+  public void saveNewRssTopic(RssTopicDto dto) {
+    var entity = mapper.dtoToEntity(dto);
     var persistEntity = topicRepository.save(entity);
     log.info("Saved item id - {}", persistEntity.getId());
   }
@@ -50,5 +45,9 @@ public class RssTopicStorageService {
   public void setRssTopicInactivity(String id) {
     log.info("Inactive Rss topic by id - {}", id);
     topicRepository.updateRssTopicEntity(id);
+  }
+
+  public boolean isNotExistTopicByMd5Hash(String md5Hash) {
+    return topicRepository.findRssTopicEntitiesByMd5Hash(md5Hash).isEmpty();
   }
 }

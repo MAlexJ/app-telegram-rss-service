@@ -1,12 +1,8 @@
 package com.malex.service;
 
 import com.malex.model.dto.RssTopicDto;
-import com.malex.model.filter.RssFilterValueType;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,28 +10,29 @@ public class RssFilterService {
 
   private static final String EMPTY_STRING = " ";
 
-  /** Apply filtering of rss topics by md5 hash */
-  public Predicate<RssTopicDto> applyTopicsFilteringByMd5Hash(Set<String> md5HashSet) {
-    return topic -> !md5HashSet.contains(topic.md5Hash());
-  }
-
   /** Apply filtering of rss topics by criteria */
-  public boolean applyTopicsFilteringByCriteria(RssTopicDto topic) {
-    var filter = topic.filter();
-    if (Objects.isNull(filter)) {
-      return true;
-    }
-    return Optional.ofNullable(filter.condition())
-        .map(
-            condition -> {
-              var topicTitle = topic.title();
-              if (RssFilterValueType.PHRASE == condition.valueType()) {
-                var phrase = condition.value();
-                return findOccurrencePhrase(topicTitle, phrase);
-              }
-              var word = condition.value();
-              return findOccurrenceWord(topicTitle, word);
-            })
+  public boolean applyFilterByCriteria(RssTopicDto topic) {
+    return Optional.ofNullable(topic.filter())
+        .flatMap(
+            filter ->
+                Optional.ofNullable(filter.condition())
+                    .map(
+                        condition -> {
+                          var title = topic.title();
+                          var phraseOrWord = condition.value();
+                          var type = condition.valueType();
+                          switch (type) {
+                            case PHRASE -> {
+                              return findOccurrencePhrase(title, phraseOrWord);
+                            }
+                            case WORD -> {
+                              return findOccurrenceWord(title, phraseOrWord);
+                            }
+                            default -> {
+                              return false;
+                            }
+                          }
+                        }))
         .orElse(true);
   }
 
