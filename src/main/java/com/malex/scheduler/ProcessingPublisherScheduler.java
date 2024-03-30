@@ -4,7 +4,9 @@ import com.malex.service.TelegramPublisherService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.TemplateStorageService;
+
 import java.util.concurrent.atomic.AtomicInteger;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -39,9 +41,7 @@ public class ProcessingPublisherScheduler {
               var chatId = topic.getChatId();
               var templateId = topic.getTemplateId();
               var template =
-                  templateStorageService
-                      .findMessageTemplateById(templateId)
-                      .orElse(DEFAULT_TEMPLATE);
+                  templateStorageService.findTemplateById(templateId).orElse(DEFAULT_TEMPLATE);
               var message = templateResolverService.applyTemplateToRssTopic(template, topic);
               publisherService.postMessageToTelegram(chatId, message);
               rssTopicService.setRssTopicInactivity(topicId);

@@ -34,7 +34,7 @@ public class TemplateStorageService {
   }
 
   @Cacheable(key = "#id")
-  public Optional<String> findMessageTemplateById(String id) {
+  public Optional<String> findTemplateById(String id) {
     return repository
         .findById(id) //
         .map(TemplateEntity::getTemplate);

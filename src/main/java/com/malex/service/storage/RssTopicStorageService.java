@@ -48,6 +48,7 @@ public class RssTopicStorageService {
    * @param id - topic GUID id
    */
   public void setRssTopicInactivity(String id) {
+    log.info("Inactive Rss topic by id - {}", id);
     topicRepository.updateRssTopicEntity(id);
   }
 }

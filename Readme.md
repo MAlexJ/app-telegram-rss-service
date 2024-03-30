@@ -8,6 +8,7 @@
 
 * Java 21
 * Springboot 3.2.4
+* Gradle 8.7
 * Mongo atlas database
 * render.com webservice
 * UptimeRobot webservice monitoring
@@ -36,8 +37,7 @@ APP_SERVICE_SCHEDULER_PROCESSING_PUBLISHER_CRONE=0 */1 * * * *
 
 ### API documentation
 
-Project uses OpenAPI (link: https://springdoc.org/) that will describe the API
-of REST endpoints.
+Project uses OpenAPI (link: https://springdoc.org/)
 
 Configuration api documentation endpoint in *.yaml file
 
