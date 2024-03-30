@@ -31,7 +31,8 @@ public class TelegramPublisherService {
           chatId,
           text);
     } catch (TelegramApiException ex) {
-      log.error("Telegram Api error - {}", ex.getMessage());
+      log.error(
+          "Telegram Api error: chat_id - {}, text - {}, error - {}", chatId, text, ex.getMessage());
     }
   }
 }

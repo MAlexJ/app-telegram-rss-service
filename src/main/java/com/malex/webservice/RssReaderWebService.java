@@ -2,9 +2,9 @@ package com.malex.webservice;
 
 import com.apptasticsoftware.rssreader.Item;
 import com.apptasticsoftware.rssreader.RssReader;
-import com.malex.exception.RssReaderException;
 import com.malex.model.dto.RssItemDto;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +21,8 @@ public class RssReaderWebService {
       var rawItems = new RssReader().read(url).toList();
       return mapRssToItems(rawItems);
     } catch (IOException e) {
-      String errorMessage = String.format("Error reading RSS by url - %s", url);
-      throw new RssReaderException(errorMessage, e);
+      log.error("Error reading RSS by url - {}, error - {}", url, e.getMessage());
+      return Collections.emptyList();
     }
   }
 
