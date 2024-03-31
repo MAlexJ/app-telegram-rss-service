@@ -1,6 +1,6 @@
 package com.malex.controller;
 
-import com.malex.model.request.MessageTemplateRequest;
+import com.malex.model.request.TemplateRequest;
 import com.malex.model.request.UpdateMessageTemplateRequest;
 import com.malex.model.response.TemplateResponse;
 import com.malex.service.storage.TemplateStorageService;
@@ -35,8 +35,7 @@ public class TemplateRestController {
   }
 
   @PostMapping
-  public ResponseEntity<TemplateResponse> createTemplate(
-      @RequestBody MessageTemplateRequest request) {
+  public ResponseEntity<TemplateResponse> createTemplate(@RequestBody TemplateRequest request) {
     log.info("HTTP request, create template - {}", request);
     return service
         .save(request)

@@ -14,8 +14,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CacheConfiguration {
 
+  public static final String TEMPLATES_CACHE_NAME = "templates";
+  public static final String TEMPLATES_CACHE_KEY_ID = "#id";
+
   @Bean
   public CacheManager cacheManager() {
-    return new ConcurrentMapCacheManager("templates");
+    return new ConcurrentMapCacheManager(TEMPLATES_CACHE_NAME);
   }
 }

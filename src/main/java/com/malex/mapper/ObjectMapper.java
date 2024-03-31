@@ -4,7 +4,7 @@ import com.malex.model.dto.RssTopicDto;
 import com.malex.model.dto.UserDto;
 import com.malex.model.dto.ChatDto;
 import com.malex.model.entity.*;
-import com.malex.model.request.MessageTemplateRequest;
+import com.malex.model.request.TemplateRequest;
 import com.malex.model.request.RssSubscriptionRequest;
 import com.malex.model.response.TemplateResponse;
 import com.malex.model.response.RssSubscriptionResponse;
@@ -47,7 +47,7 @@ public interface ObjectMapper {
 
 
   @Mapping(source = "isActive", target = "active")
-  TemplateEntity dtoToEntity(MessageTemplateRequest dto);
+  TemplateEntity dtoToEntity(TemplateRequest dto);
 
   @Mapping(source = "active", target = "isActive")
   TemplateResponse entityToDto(TemplateEntity entity);
