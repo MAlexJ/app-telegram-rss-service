@@ -1,0 +1,8 @@
+###
+POST http://localhost:${APP_SERVICE_PORT:8080}/v1/messages
+Content-Type: application/json
+
+{
+  "chatId": 12312312,
+  "text": "Test text"
+}

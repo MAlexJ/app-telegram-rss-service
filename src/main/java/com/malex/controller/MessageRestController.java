@@ -1,7 +1,8 @@
 package com.malex.controller;
 
+import com.malex.model.request.MessageRequest;
+import com.malex.model.response.MessageResponse;
 import com.malex.service.TelegramPublisherService;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 @RestController
@@ -18,13 +21,17 @@ public class MessageRestController {
 
   private final TelegramPublisherService service;
 
-  public record MessageRequest(Long chatId, String topicId, String templateId) {}
-
-  public record MessageResponse(Long messageId, LocalDateTime dateTime) {}
-
   @PostMapping
-  public ResponseEntity<MessageResponse> send(@RequestBody MessageRequest request) {
+  public ResponseEntity<MessageResponse> send(@RequestBody MessageRequest request)
+      throws TelegramApiException {
     log.info("HTTP request - {}", request);
-    return ResponseEntity.ok().build();
+    var chatId = request.chatId();
+    var text = request.text();
+    return buildResponse(service.postMessage(chatId, text));
+  }
+
+  private ResponseEntity<MessageResponse> buildResponse(Message message) {
+    var response = new MessageResponse(message);
+    return ResponseEntity.ok(response);
   }
 }

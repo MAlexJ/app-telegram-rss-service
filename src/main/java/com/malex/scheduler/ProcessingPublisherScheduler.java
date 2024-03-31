@@ -43,7 +43,7 @@ public class ProcessingPublisherScheduler {
               var template =
                   templateStorageService.findTemplateById(templateId).orElse(DEFAULT_TEMPLATE);
               var message = templateResolverService.applyTemplateToRssTopic(template, topic);
-              publisherService.postMessageToTelegram(chatId, message);
+              publisherService.postTelegramMessage(chatId, message);
               rssTopicService.setRssTopicInactivity(topicId);
             });
   }
