@@ -70,28 +70,6 @@ consistency and readability.
 project: google-java-format,
 link: https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config
 
-### Hosting Springboot app
-
-Render is a cloud platform that offers a variety of services for developers, including hosting for web applications,
-databases, and static sites. Render aims to simplify the process of deploying and scaling applications by providing a
-user-friendly interface and seamless integration with popular development tools.
-
-Deploy for Free - https://render.com/ <br>
-You can deploy instances of some Render services <br>
-link: https://docs.render.com/free
-
-Deploying a Spring Boot Application with Docker Image on Render <br>
-tutorial: https://medium.com/@nithinsudarsan/deploying-a-spring-boot-application-with-docker-image-on-render-com-9a87f5ce5f72
-
-### UptimeRobot: Monitor anything
-
-UptimeRobot is a website monitoring service that checks the status of your websites, servers, and other online services
-at regular intervals. It notifies you if any of your monitored services go down, helping you to quickly address any
-issues and minimize downtime.
-
-link: https://uptimerobot.com/ <br>
-tutorial: https://www.youtube.com/watch?v=wP-tFyZhoio <br>
-
 ### Telegram API
 
 1. Register new app in https://my.telegram.org/auth
@@ -140,52 +118,24 @@ Actuator endpoints:
 * Cloud db: https://cloud.mongodb.com/
 * [Working with Spring Data Repositories](https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#repositories)
 
-##### Transactional support in Reactive style of Mongo DB & Spring Boot:
+### Hosting Springboot app
 
-* [Transactional Mongo DB & Spring Boot](https://stackoverflow.com/questions/56360094/calling-methods-in-two-different-reactivemongorepositorys-in-a-transaction-usin/61676211#61676211)
+Render is a cloud platform that offers a variety of services for developers, including hosting for web applications,
+databases, and static sites. Render aims to simplify the process of deploying and scaling applications by providing a
+user-friendly interface and seamless integration with popular development tools.
 
-##### How to set up database:
+Deploy for Free - https://render.com/ <br>
+You can deploy instances of some Render services <br>
+link: https://docs.render.com/free
 
-1. Login to Mongo cluster
-    * https://account.mongodb.com/account/login
+Deploying a Spring Boot Application with Docker Image on Render <br>
+tutorial: https://medium.com/@nithinsudarsan/deploying-a-spring-boot-application-with-docker-image-on-render-com-9a87f5ce5f72
 
+### UptimeRobot: Monitor anything
 
-2. Get or set new admin credentials:<br>
-    * login
-    * password
-    * and set permission - Atlas admin
+UptimeRobot is a website monitoring service that checks the status of your websites, servers, and other online services
+at regular intervals. It notifies you if any of your monitored services go down, helping you to quickly address any
+issues and minimize downtime.
 
-
-3. Create a Shared Cluster
-    * FREE >> Sandbox (Shared RAM, 512 MB Storage)
-
-
-4. Go to Quick Start Security
-
-    * Set up a username and a new password
-
-
-5. Set up network access for database:
-
-    * Network Access tab >> Edit IP Access List Entry >>  Allow Access from Anywhere
-
-
-6. Database Deployments Options <br>
-   Go to: Database >> Database Deployments >> Connect button <br>
-    * Select your driver and version: Java and latest version of driver <br>
-    * Add your connection string into your application code <br>
-
-   example: <br>
-   <code>
-   mongodb+srv://<username>:<password>@cluster0.8seexos.mongodb.net/?retryWrites=true&w=majority
-   </code>
-
-
-7. Create new DATABASES
-    * Go to: DATABASE >> Cluster >> Collections >> Add My Own Data
-    * Set up Database name (example: sampleDB ) and collection name (example: collectionDB)
-
-
-8. Set up required ENV Variables for application:
-    * MONGODB_DATABASE - Database name from DATABASE >> Cluster >> Collections  (example: sampleDB )
-    * MONGODB_URI - mongodb+srv://<username>:<password>@cluster0.8seexos.mongodb.net/?retryWrites=true&w=majority
+link: https://uptimerobot.com/ <br>
+tutorial: https://www.youtube.com/watch?v=wP-tFyZhoio <br>
