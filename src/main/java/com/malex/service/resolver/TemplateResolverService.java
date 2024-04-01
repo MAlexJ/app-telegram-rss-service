@@ -48,6 +48,7 @@ public class TemplateResolverService {
           .map(desc -> desc.replaceAll("[\\p{Cf}]", ""))
           .map(desc -> desc.replace("&quot;", "\""))
           .map(desc -> desc.replace("&#39;", "'"))
+          .map(desc -> desc.replace("&amp;#8722", "-"))
           .orElse(text);
     }
   }
