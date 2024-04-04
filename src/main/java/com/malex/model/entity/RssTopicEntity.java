@@ -40,6 +40,7 @@ public class RssTopicEntity implements Persistable<String> {
   private String md5Hash;
 
   private boolean isActive;
+  private Integer messageId;
   @CreatedDate private LocalDateTime created;
 
   @Override

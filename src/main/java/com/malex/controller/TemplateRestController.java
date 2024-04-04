@@ -53,7 +53,7 @@ public class TemplateRestController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteTemplateById(@PathVariable String id) {
     log.info("HTTP request, delete template by id - {}", id);
-    service.deleteBuId(id);
+    service.deleteById(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

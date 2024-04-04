@@ -1,5 +1,6 @@
 package com.malex.service;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,21 +17,26 @@ public class TelegramPublisherService {
 
   private final DefaultAbsSender sender;
 
-  public void postTelegramMessage(Long chatId, String text) {
+  public Optional<Message> postMessage(Long chatId, String text) {
     try {
-      var message = postMessage(chatId, text);
-      log.info(
-          "Publish RSS topic to telegram: message_id - {}, chat_id - {}, text - {}",
-          message.getMessageId(),
-          chatId,
-          text);
+      return Optional.of(post(chatId, text))
+          .map(
+              message -> {
+                log.info(
+                    "Publish RSS topic to telegram: message_id - {}, chat_id - {}, text - {}",
+                    message.getMessageId(),
+                    chatId,
+                    text);
+                return message;
+              });
     } catch (TelegramApiException ex) {
       log.error(
           "Telegram Api error: chat_id - {}, text - {}, error - {}", chatId, text, ex.getMessage());
+      return Optional.empty();
     }
   }
 
-  public Message postMessage(Long chatId, String text) throws TelegramApiException {
+  private Message post(Long chatId, String text) throws TelegramApiException {
     return sender.execute(
         SendMessage.builder()
             .protectContent(true)

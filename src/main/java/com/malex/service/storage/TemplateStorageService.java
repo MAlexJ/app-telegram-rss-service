@@ -24,34 +24,28 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TemplateStorageService {
 
+  private static final String DEFAULT_TEMPLATE = "{{title}} \n {{link}}";
+
   private final TemplateRepository repository;
   private final ObjectMapper mapper;
 
   @Cacheable
   public List<TemplateResponse> findAll() {
-    return repository.findAll().stream() //
-        .map(mapper::entityToDto)
-        .toList();
+    return repository.findAll().stream().map(mapper::entityToDto).toList();
   }
 
   public Optional<TemplateResponse> findById(String id) {
-    return repository
-        .findById(id) //
-        .map(mapper::entityToDto);
+    return repository.findById(id).map(mapper::entityToDto);
   }
 
   @Cacheable(key = TEMPLATES_CACHE_KEY_ID)
-  public Optional<String> findTemplateById(String id) {
-    return repository
-        .findById(id) //
-        .map(TemplateEntity::getTemplate);
+  public String findTemplateById(String id) {
+    return repository.findById(id).map(TemplateEntity::getTemplate).orElse(DEFAULT_TEMPLATE);
   }
 
   @CacheEvict(allEntries = true)
   public Optional<TemplateResponse> save(TemplateRequest request) {
-    return Optional.of(mapper.dtoToEntity(request)) //
-        .map(repository::save)
-        .map(mapper::entityToDto);
+    return Optional.of(mapper.dtoToEntity(request)).map(repository::save).map(mapper::entityToDto);
   }
 
   @CacheEvict(allEntries = true)
@@ -61,13 +55,11 @@ public class TemplateStorageService {
     Optional.ofNullable(repository.updateMessageTemplateEntityBy(templateId, template))
         .filter(numberOfRecordsUpdated -> numberOfRecordsUpdated > 1)
         .ifPresent(
-            numberOfRecordsUpdated -> {
-              log.warn("Updated records: {}", numberOfRecordsUpdated);
-            });
+            numberOfRecordsUpdated -> log.warn("Updated records: {}", numberOfRecordsUpdated));
   }
 
   @CacheEvict(allEntries = true)
-  public void deleteBuId(String id) {
+  public void deleteById(String id) {
     repository.deleteById(id);
   }
 }

@@ -13,6 +13,7 @@ public record RssTopicDto(
     String description,
     String link,
     String md5Hash,
+    Integer messageId,
     boolean isActive) {
 
   public RssTopicDto(SubscriptionEntity entity, RssItemDto item, String md5Hash) {
@@ -26,6 +27,7 @@ public record RssTopicDto(
         item.description(),
         item.link(),
         md5Hash,
+        null,
         true);
   }
 }

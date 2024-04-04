@@ -41,10 +41,11 @@ public class RssTopicStorageService {
    * Update RSS topic and set topic inactivity
    *
    * @param id - topic GUID id
+   * @param messageId - telegram offset message id
    */
-  public void setRssTopicInactivity(String id) {
-    log.info("Inactive Rss topic by id - {}", id);
-    topicRepository.updateRssTopicEntity(id);
+  public void setRssTopicInactivity(String id, Integer messageId) {
+    log.info("Inactive Rss topic by id - {}, message id - {}", id, messageId);
+    topicRepository.updateRssTopicEntity(id, messageId);
   }
 
   public boolean isNotExistTopicByMd5Hash(String md5Hash) {
