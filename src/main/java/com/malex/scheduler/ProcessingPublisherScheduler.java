@@ -59,6 +59,7 @@ public class ProcessingPublisherScheduler {
       action.run();
     } catch (TemplateResolverException | TelegramPublisherException ex) {
       log.error("Processing publish topics error - {}", ex.getMessage());
+      // todo : save error to topic!
       rssTopicService.setRssTopicInactivity(topicId);
     }
   }
