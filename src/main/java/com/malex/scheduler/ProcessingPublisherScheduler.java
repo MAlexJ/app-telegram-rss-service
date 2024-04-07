@@ -42,10 +42,10 @@ public class ProcessingPublisherScheduler {
               handleException(
                   topicId,
                   () -> {
-                    var templatePlaceholder =
+                    var placeholder =
                         templateStorageService.findExistOrDefaultTemplateById(templateId);
                     templateResolverService
-                        .applyTemplateToRssTopic(templatePlaceholder, topic)
+                        .applyTemplateToRssTopic(placeholder, topic)
                         .flatMap(message -> publisherService.postMessage(chatId, message))
                         .map(Message::getMessageId)
                         .ifPresent(
