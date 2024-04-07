@@ -18,5 +18,10 @@ public interface RssTopicRepository extends MongoRepository<RssTopicEntity, Stri
   @Update(update = "{ $set: { isActive : false, messageId : ?1}}")
   void updateRssTopicEntity(String id, Integer messageId);
 
+  /** Update RSS topic and set topic inactivity */
+  @Query("{'id': ?0}")
+  @Update(update = "{ $set: { isActive : false}}")
+  void updateRssTopicEntity(String id);
+
   Optional<RssTopicEntity> findRssTopicEntitiesByMd5Hash(String md5Hash);
 }

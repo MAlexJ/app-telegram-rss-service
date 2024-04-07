@@ -20,7 +20,7 @@ public class TemplateResolverService {
 
   private final MustacheFactory mustacheFactory;
 
-  public Optional<String> applyTemplateToRssTopic(String template, RssTopicEntity topic) {
+  public String applyTemplateToRssTopic(String template, RssTopicEntity topic) {
     try (var writer = new StringWriter();
         var reader = new StringReader(template)) {
       var mustache = mustacheFactory.compile(reader, null);
@@ -32,8 +32,8 @@ public class TemplateResolverService {
     }
   }
 
-  private Optional<String> buildDefaultMessageFormat(RssTopicEntity topic) {
-    return Optional.of(String.format(DEFAULT_FORMAT, topic.getTitle(), topic.getLink()));
+  private String buildDefaultMessageFormat(RssTopicEntity topic) {
+    return String.format(DEFAULT_FORMAT, topic.getTitle(), topic.getLink());
   }
 
   /**
@@ -41,7 +41,7 @@ public class TemplateResolverService {
    * 1. Remove 'Zero Width Space'<br>
    * 2. quotes
    */
-  private Optional<String> applySpecialCharacterSubstitution(Writer writer) throws IOException {
+  private String applySpecialCharacterSubstitution(Writer writer) throws IOException {
     try (writer) {
       var text = writer.toString();
       return Optional.ofNullable(text) //
@@ -49,7 +49,8 @@ public class TemplateResolverService {
           .map(desc -> desc.replace("&quot;", "\""))
           .map(desc -> desc.replace("&#39;", "'"))
           .map(desc -> desc.replace("&amp;#8722;", "-"))
-          .map(desc -> desc.replace("&#8722;", "-"));
+          .map(desc -> desc.replace("&#8722;", "-"))
+          .orElse(text);
     }
   }
 }

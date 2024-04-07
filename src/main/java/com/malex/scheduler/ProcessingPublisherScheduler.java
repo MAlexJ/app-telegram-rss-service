@@ -4,6 +4,7 @@ import com.malex.service.TelegramPublisherService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.TemplateStorageService;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +39,16 @@ public class ProcessingPublisherScheduler {
               var chatId = topic.getChatId();
               var templateId = topic.getTemplateId();
               var templatePlaceholder = templateStorageService.findTemplateById(templateId);
-              templateResolverService
-                  .applyTemplateToRssTopic(templatePlaceholder, topic)
-                  .flatMap(message -> publisherService.postMessage(chatId, message))
-                  .map(Message::getMessageId)
-                  .ifPresent(
-                      messageId -> rssTopicService.setRssTopicInactivity(topicId, messageId));
+              String message =
+                  templateResolverService.applyTemplateToRssTopic(templatePlaceholder, topic);
+              Optional<Integer> messageId =
+                  publisherService.postMessage(chatId, message).map(Message::getMessageId);
+              if (messageId.isPresent()) {
+                rssTopicService.setRssTopicInactivity(topicId, messageId.get());
+              } else {
+                // todo : save error message
+                rssTopicService.setRssTopicInactivity(topicId);
+              }
             });
   }
 }

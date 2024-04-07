@@ -48,6 +48,11 @@ public class RssTopicStorageService {
     topicRepository.updateRssTopicEntity(id, messageId);
   }
 
+  public void setRssTopicInactivity(String id) {
+    log.info("Inactive Rss topic by id - {}", id);
+    topicRepository.updateRssTopicEntity(id);
+  }
+
   public boolean isNotExistTopicByMd5Hash(String md5Hash) {
     return topicRepository.findRssTopicEntitiesByMd5Hash(md5Hash).isEmpty();
   }
