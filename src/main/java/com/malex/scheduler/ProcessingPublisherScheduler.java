@@ -1,10 +1,11 @@
 package com.malex.scheduler;
 
+import com.malex.exception.TelegramPublisherException;
+import com.malex.exception.TemplateResolverException;
 import com.malex.service.TelegramPublisherService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.TemplateStorageService;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,17 +39,27 @@ public class ProcessingPublisherScheduler {
               var topicId = topic.getId();
               var chatId = topic.getChatId();
               var templateId = topic.getTemplateId();
-              var templatePlaceholder = templateStorageService.findTemplateById(templateId);
-              String message =
-                  templateResolverService.applyTemplateToRssTopic(templatePlaceholder, topic);
-              Optional<Integer> messageId =
-                  publisherService.postMessage(chatId, message).map(Message::getMessageId);
-              if (messageId.isPresent()) {
-                rssTopicService.setRssTopicInactivity(topicId, messageId.get());
-              } else {
-                // todo : save error message
-                rssTopicService.setRssTopicInactivity(topicId);
-              }
+              handleException(
+                  topicId,
+                  () -> {
+                    var templatePlaceholder =
+                        templateStorageService.findExistOrDefaultTemplateById(templateId);
+                    templateResolverService
+                        .applyTemplateToRssTopic(templatePlaceholder, topic)
+                        .flatMap(message -> publisherService.postMessage(chatId, message))
+                        .map(Message::getMessageId)
+                        .ifPresent(
+                            messageId -> rssTopicService.setRssTopicInactivity(topicId, messageId));
+                  });
             });
+  }
+
+  private void handleException(String topicId, Runnable action) {
+    try {
+      action.run();
+    } catch (TemplateResolverException | TelegramPublisherException ex) {
+      log.error("Processing publish topics error - {}", ex.getMessage());
+      rssTopicService.setRssTopicInactivity(topicId);
+    }
   }
 }

@@ -1,5 +1,6 @@
 package com.malex.service;
 
+import com.malex.exception.TelegramPublisherException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +31,16 @@ public class TelegramPublisherService {
                 return message;
               });
     } catch (TelegramApiException ex) {
-
-      // https://stackoverflow.com/questions/61224362/telegram-bot-cant-find-end-of-the-entity-starting-at-truncated
       log.error(
           "Telegram Api error: chat_id - {}, text - {}, error - {}", chatId, text, ex.getMessage());
-      return Optional.empty();
+      throw new TelegramPublisherException(ex);
     }
   }
 
+  /**
+   * Issue with test format: HTML or Markdown
+   * https://stackoverflow.com/questions/61224362/telegram-bot-cant-find-end-of-the-entity-starting-at-truncated
+   */
   private Message post(Long chatId, String text) throws TelegramApiException {
     return sender.execute(
         SendMessage.builder()

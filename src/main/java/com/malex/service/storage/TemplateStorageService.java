@@ -39,8 +39,17 @@ public class TemplateStorageService {
   }
 
   @Cacheable(key = TEMPLATES_CACHE_KEY_ID)
-  public String findTemplateById(String id) {
-    return repository.findById(id).map(TemplateEntity::getTemplate).orElse(DEFAULT_TEMPLATE);
+  public String findExistOrDefaultTemplateById(String templateId) {
+    return findTemplateById(templateId).orElse(defaultTemplate());
+  }
+
+  @Cacheable(key = TEMPLATES_CACHE_KEY_ID)
+  public Optional<String> findTemplateById(String id) {
+    return repository.findById(id).map(TemplateEntity::getTemplate);
+  }
+
+  public String defaultTemplate() {
+    return DEFAULT_TEMPLATE;
   }
 
   @CacheEvict(allEntries = true)
