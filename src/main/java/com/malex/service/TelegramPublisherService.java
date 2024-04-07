@@ -30,6 +30,8 @@ public class TelegramPublisherService {
                 return message;
               });
     } catch (TelegramApiException ex) {
+
+      // https://stackoverflow.com/questions/61224362/telegram-bot-cant-find-end-of-the-entity-starting-at-truncated
       log.error(
           "Telegram Api error: chat_id - {}, text - {}, error - {}", chatId, text, ex.getMessage());
       return Optional.empty();
