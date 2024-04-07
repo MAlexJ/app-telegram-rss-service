@@ -16,6 +16,8 @@ public class CacheConfiguration {
 
   public static final String TEMPLATES_CACHE_NAME = "templates";
   public static final String TEMPLATES_CACHE_KEY_ID = "#id";
+  public static final String TEMPLATES_CACHE_TEMPLATE_KEY_ID = "#templateId";
+
 
   @Bean
   public CacheManager cacheManager() {

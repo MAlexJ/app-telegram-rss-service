@@ -2,6 +2,7 @@ package com.malex.scheduler;
 
 import com.malex.exception.TelegramPublisherException;
 import com.malex.exception.TemplateResolverException;
+import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.TelegramPublisherService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.RssTopicStorageService;
@@ -40,7 +41,7 @@ public class ProcessingPublisherScheduler {
               var chatId = topic.getChatId();
               var templateId = topic.getTemplateId();
               handleException(
-                  topicId,
+                  topic,
                   () -> {
                     var placeholder =
                         templateStorageService.findExistOrDefaultTemplateById(templateId);
@@ -54,12 +55,21 @@ public class ProcessingPublisherScheduler {
             });
   }
 
-  private void handleException(String topicId, Runnable action) {
+  private void handleException(RssTopicEntity topic, Runnable action) {
     try {
       action.run();
     } catch (TemplateResolverException | TelegramPublisherException ex) {
-      log.error("Processing publish topics error - {}", ex.getMessage());
-      // todo : save error to topic!
+      String topicId = topic.getId();
+      log.error("Processing publish topic by id - {}, error message- {}", topicId, ex.getMessage());
+      // todo : save error about topic and error cause
+      /*
+      1. RSS topic - boolean hasError -> true
+      2. entity class Error{
+      String message;
+      LocalDate date;
+      }
+      3. Topic record:
+       */
       rssTopicService.setRssTopicInactivity(topicId);
     }
   }

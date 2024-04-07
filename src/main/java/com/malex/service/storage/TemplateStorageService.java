@@ -1,7 +1,6 @@
 package com.malex.service.storage;
 
-import static com.malex.configuration.CacheConfiguration.TEMPLATES_CACHE_KEY_ID;
-import static com.malex.configuration.CacheConfiguration.TEMPLATES_CACHE_NAME;
+import static com.malex.configuration.CacheConfiguration.*;
 
 import com.malex.mapper.ObjectMapper;
 import com.malex.model.entity.TemplateEntity;
@@ -38,7 +37,13 @@ public class TemplateStorageService {
     return repository.findById(id).map(mapper::entityToDto);
   }
 
-  @Cacheable(key = TEMPLATES_CACHE_KEY_ID)
+  /**
+   * Issue: Cached key should be the same as input parameter
+   *
+   * @param templateId template id
+   * @return template placeholder
+   */
+  @Cacheable(key = TEMPLATES_CACHE_TEMPLATE_KEY_ID)
   public String findExistOrDefaultTemplateById(String templateId) {
     return findTemplateById(templateId).orElse(defaultTemplate());
   }
