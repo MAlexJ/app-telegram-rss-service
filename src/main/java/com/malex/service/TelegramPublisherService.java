@@ -46,7 +46,7 @@ public class TelegramPublisherService {
         SendMessage.builder()
             .protectContent(true)
             .chatId(chatId)
-            .parseMode(ParseMode.MARKDOWN)
+            .parseMode(ParseMode.HTML)
             .text(text)
             .build());
   }
