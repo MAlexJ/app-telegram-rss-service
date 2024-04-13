@@ -25,6 +25,11 @@ public class RssTopicStorageService {
         .toList();
   }
 
+  /** Todo for test */
+  public List<String> findAllActiveTest(List<String> subIds) {
+    return topicRepository.findActiveRecordIdsBySpecificFields(subIds);
+  }
+
   /** Save new rss topic */
   public void saveNewRssTopic(RssTopicDto dto) {
     var entity = mapper.dtoToEntity(dto);

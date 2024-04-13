@@ -6,7 +6,9 @@ import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.TelegramPublisherService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.RssTopicStorageService;
+import com.malex.service.storage.SubscriptionStorageService;
 import com.malex.service.storage.TemplateStorageService;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class ProcessingPublisherScheduler {
   private final TelegramPublisherService publisherService;
   private final TemplateStorageService templateStorageService;
   private final TemplateResolverService templateResolverService;
+  private final SubscriptionStorageService subscriptionStorageService;
 
   private final AtomicInteger schedulerProcessNumber = new AtomicInteger(0);
 
@@ -33,6 +36,12 @@ public class ProcessingPublisherScheduler {
   @Scheduled(cron = "${scheduled.processing.publisher.cron}")
   public void processingPublisherRss() {
     log.info("Start processing publish topics - {}", schedulerProcessNumber.incrementAndGet());
+
+    // test
+    List<String> subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
+//    List<String> testTopi = rssTopicService.findAllActiveTest(subscriptionIds);
+    // test
+
     rssTopicService
         .findFirstActiveRssTopicOrderByCreatedDate()
         .ifPresent(

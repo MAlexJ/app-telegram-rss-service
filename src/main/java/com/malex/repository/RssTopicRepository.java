@@ -1,6 +1,7 @@
 package com.malex.repository;
 
 import com.malex.model.entity.RssTopicEntity;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -24,4 +25,9 @@ public interface RssTopicRepository extends MongoRepository<RssTopicEntity, Stri
   void updateRssTopicEntity(String id);
 
   Optional<RssTopicEntity> findRssTopicEntitiesByMd5Hash(String md5Hash);
+
+  /** Todo for test Query to find all record IDs based on a list of specific fields */
+  //
+  @Query(value = "{ 'isActive': true, 'subscriptionId': { $in: ?0 } }", fields = "{ '_id': 1 }")
+  List<String> findActiveRecordIdsBySpecificFields(List<String> subscriptionIds);
 }

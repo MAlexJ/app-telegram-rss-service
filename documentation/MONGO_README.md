@@ -40,6 +40,22 @@ query: { team : { $regex : /marsl/ }}
 result: null
 ```
 
+#### Example 4: Find field record by list od ids
+
+Links:
+
+1. Find documents that contain an id in an array field and have a
+   name: https://stackoverflow.com/questions/71554779/find-documents-that-contain-an-id-in-an-array-field-and-have-a-name
+
+```
+query: { 'isActive': true, 'subscriptionId': { $in: ?0 } }", fields = "{ '_id': 1 }
+
+  @Query(value = "{ 'isActive': true, 'subscriptionId': { $in: ?0 } }", fields = "{ '_id': 1 }")
+  List<String> findActiveRecordIdsBySpecificFields(List<String> subscriptionIds);
+
+result: 1, 2, 3, 4
+```
+
 ### 2. Full text search in MongoDB
 
 link: https://habr.com/ru/articles/174457/ </br>
