@@ -25,11 +25,6 @@ public class RssTopicStorageService {
         .toList();
   }
 
-  /** Todo for test */
-  public List<String> findAllActiveTest(List<String> subIds) {
-    return topicRepository.findActiveRecordIdsBySpecificFields(subIds);
-  }
-
   /** Save new rss topic */
   public void saveNewRssTopic(RssTopicDto dto) {
     var entity = mapper.dtoToEntity(dto);
@@ -38,8 +33,10 @@ public class RssTopicStorageService {
   }
 
   /** Find first active rss topic order by created asc */
-  public Optional<RssTopicEntity> findFirstActiveRssTopicOrderByCreatedDate() {
-    return topicRepository.findFirstByIsActiveOrderByCreatedAsc(true);
+  public Optional<RssTopicEntity> findFirstActiveTopicBySubscriptionIdOrderByCreatedAsc(
+      String subscriptionId) {
+    return topicRepository.findFirstByIsActiveAndSubscriptionIdOrderByCreatedAsc(
+        true, subscriptionId);
   }
 
   /**

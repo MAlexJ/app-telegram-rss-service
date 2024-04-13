@@ -31,13 +31,8 @@ public class SubscriptionStorageService {
         .toList();
   }
 
-  /**
-   * Todo for test
-   *
-   * <p>Find all subscription ids for active subscriptions
-   */
+  /** Find all subscription ids for active user subscriptions */
   public List<String> findAllActiveSubscriptionIds() {
-    // implement as sql query
     return subscriptionRepository.findAllByActive(true).stream()
         .map(SubscriptionEntity::getId)
         .toList();

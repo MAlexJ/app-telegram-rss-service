@@ -8,6 +8,8 @@ import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
 import com.malex.service.storage.TemplateStorageService;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
@@ -36,32 +38,40 @@ public class ProcessingPublisherScheduler {
   @Scheduled(cron = "${scheduled.processing.publisher.cron}")
   public void processingPublisherRss() {
     log.info("Start processing publish topics - {}", schedulerProcessNumber.incrementAndGet());
+    var subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
+    randomlyRearrangingListIds(subscriptionIds)
+        .forEach(
+            subscriptionId ->
+                rssTopicService
+                    .findFirstActiveTopicBySubscriptionIdOrderByCreatedAsc(subscriptionId)
+                    .ifPresent(
+                        topic -> {
+                          var topicId = topic.getId();
+                          var chatId = topic.getChatId();
+                          var templateId = topic.getTemplateId();
+                          handleException(
+                              topic,
+                              () -> {
+                                var placeholder =
+                                    templateStorageService.findExistOrDefaultTemplateById(
+                                        templateId);
+                                templateResolverService
+                                    .applyTemplateToRssTopic(placeholder, topic)
+                                    .flatMap(
+                                        message -> publisherService.postMessage(chatId, message))
+                                    .map(Message::getMessageId)
+                                    .ifPresent(
+                                        messageId ->
+                                            rssTopicService.setRssTopicInactivity(
+                                                topicId, messageId));
+                              });
+                        }));
+  }
 
-    // test
-    List<String> subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
-//    List<String> testTopi = rssTopicService.findAllActiveTest(subscriptionIds);
-    // test
-
-    rssTopicService
-        .findFirstActiveRssTopicOrderByCreatedDate()
-        .ifPresent(
-            topic -> {
-              var topicId = topic.getId();
-              var chatId = topic.getChatId();
-              var templateId = topic.getTemplateId();
-              handleException(
-                  topic,
-                  () -> {
-                    var placeholder =
-                        templateStorageService.findExistOrDefaultTemplateById(templateId);
-                    templateResolverService
-                        .applyTemplateToRssTopic(placeholder, topic)
-                        .flatMap(message -> publisherService.postMessage(chatId, message))
-                        .map(Message::getMessageId)
-                        .ifPresent(
-                            messageId -> rssTopicService.setRssTopicInactivity(topicId, messageId));
-                  });
-            });
+  private List<String> randomlyRearrangingListIds(List<String> ids) {
+    var list = new ArrayList<>(ids);
+    Collections.shuffle(list);
+    return list;
   }
 
   private void handleException(RssTopicEntity topic, Runnable action) {

@@ -16,4 +16,8 @@ public interface RssSubscriptionRepository extends MongoRepository<SubscriptionE
 
   @Query("{'isActive': ?0 }")
   List<SubscriptionEntity> findAllByActive(boolean active);
+
+  /** todo result {"_id": "6619976075ced443a63c34be"} */
+  @Query(value = "{ 'isActive': true }", fields = "{ '_id': 1 }")
+  List<String> findAllActiveSubscriptionIds();
 }
