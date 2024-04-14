@@ -1,5 +1,7 @@
 package com.malex.scheduler;
 
+import com.malex.exception.TelegramPublisherException;
+import com.malex.exception.TemplateResolverException;
 import com.malex.mapper.JsonMapper;
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.TelegramPublisherService;
@@ -79,7 +81,7 @@ public class ProcessingPublisherScheduler {
   private void handleException(RssTopicEntity topic, Runnable action) {
     try {
       action.run();
-    } catch (Exception ex) {
+    } catch (TemplateResolverException | TelegramPublisherException ex) {
       String topicId = topic.getId();
       log.error("Processing publish topic by id - {}, error message- {}", topicId, ex.getMessage());
       errorStorageService.saveError(ex.getMessage(), jsonMapper.writeValueAsString(topic));
