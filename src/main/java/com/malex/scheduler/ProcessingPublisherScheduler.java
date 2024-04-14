@@ -1,10 +1,10 @@
 package com.malex.scheduler;
 
-import com.malex.exception.TelegramPublisherException;
-import com.malex.exception.TemplateResolverException;
+import com.malex.mapper.JsonMapper;
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.TelegramPublisherService;
 import com.malex.service.resolver.TemplateResolverService;
+import com.malex.service.storage.ErrorStorageService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
 import com.malex.service.storage.TemplateStorageService;
@@ -25,7 +25,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @RequiredArgsConstructor
 public class ProcessingPublisherScheduler {
 
+  private final JsonMapper jsonMapper;
   private final RssTopicStorageService rssTopicService;
+  private final ErrorStorageService errorStorageService;
   private final TelegramPublisherService publisherService;
   private final TemplateStorageService templateStorageService;
   private final TemplateResolverService templateResolverService;
@@ -39,7 +41,7 @@ public class ProcessingPublisherScheduler {
   public void processingPublisherRss() {
     log.info("Start processing publish topics - {}", schedulerProcessNumber.incrementAndGet());
     var subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
-    randomlyRearrangingListIds(subscriptionIds)
+    randomlyRearrangingIds(subscriptionIds)
         .forEach(
             subscriptionId ->
                 rssTopicService
@@ -68,7 +70,7 @@ public class ProcessingPublisherScheduler {
                         }));
   }
 
-  private List<String> randomlyRearrangingListIds(List<String> ids) {
+  private List<String> randomlyRearrangingIds(List<String> ids) {
     var list = new ArrayList<>(ids);
     Collections.shuffle(list);
     return list;
@@ -77,18 +79,10 @@ public class ProcessingPublisherScheduler {
   private void handleException(RssTopicEntity topic, Runnable action) {
     try {
       action.run();
-    } catch (TemplateResolverException | TelegramPublisherException ex) {
+    } catch (Exception ex) {
       String topicId = topic.getId();
       log.error("Processing publish topic by id - {}, error message- {}", topicId, ex.getMessage());
-      // todo : save error about topic and error cause
-      /*
-      1. RSS topic - boolean hasError -> true
-      2. entity class Error{
-      String message;
-      LocalDate date;
-      }
-      3. Topic record:
-       */
+      errorStorageService.saveError(ex.getMessage(), jsonMapper.writeValueAsString(topic));
       rssTopicService.setRssTopicInactivity(topicId);
     }
   }

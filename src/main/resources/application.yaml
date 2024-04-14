@@ -33,6 +33,8 @@ scheduled:
   processing:
     publisher:
       cron: ${APP_SERVICE_SCHEDULER_PROCESSING_PUBLISHER_CRONE:0 */1 * * * *}
+    cleaner:
+      cron: ${APP_SERVICE_SCHEDULER_PROCESSING_CLEANER_CRONE:0 0 */2 * * *}
     rss:
       cron: ${APP_SERVICE_SCHEDULER_PROCESSING_RSS_CRONE:0 */15 * * * *}
 
