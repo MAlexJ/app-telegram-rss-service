@@ -14,13 +14,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CacheConfiguration {
 
-  public static final String TEMPLATES_CACHE_NAME = "templates";
-  public static final String TEMPLATES_CACHE_KEY_ID = "#id";
-  public static final String TEMPLATES_CACHE_TEMPLATE_KEY_ID = "#templateId";
+  public static final String SUBSCRIPTION_CACHE_NAME = "subscriptions";
+  public static final String SUBSCRIPTION_CACHE_IDS = "'subscriptions_ids'";
+  public static final String SUBSCRIPTION_CACHE_ACTIVE = "#root.methodName";
 
+  public static final String TEMPLATES_CACHE_NAME = "templates";
+  public static final String TEMPLATES_CACHE_TEMPLATE_KEY_ID = "#templateId";
+  public static final String TEMPLATES_CACHE_KEY_ID = "#id";
 
   @Bean
   public CacheManager cacheManager() {
-    return new ConcurrentMapCacheManager(TEMPLATES_CACHE_NAME);
+    return new ConcurrentMapCacheManager();
   }
 }
