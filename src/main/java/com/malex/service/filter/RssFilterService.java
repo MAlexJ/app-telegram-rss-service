@@ -1,4 +1,4 @@
-package com.malex.service;
+package com.malex.service.filter;
 
 import com.malex.model.dto.RssTopicDto;
 import java.util.Arrays;

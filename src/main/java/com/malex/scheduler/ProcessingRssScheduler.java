@@ -1,6 +1,6 @@
 package com.malex.scheduler;
 
-import com.malex.service.RssFilterService;
+import com.malex.service.filter.RssFilterService;
 import com.malex.service.RssTopicService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
