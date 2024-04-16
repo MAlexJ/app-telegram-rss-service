@@ -26,8 +26,7 @@ public class SubscriptionStorageService {
 
   @CacheEvict(allEntries = true)
   public RssSubscriptionResponse subscribe(RssSubscriptionRequest request) {
-    log.info(
-        "Cacheable: subscribe to RSS - '{}', chanel id - '{}'", request.rss(), request.chatId());
+    log.info("Cacheable: subscribe - '{}', chanel id - '{}'", request.rss(), request.chatId());
     var entity = mapper.dtoToEntity(request);
     var persistenceEntity = subscriptionRepository.save(entity);
     return mapper.entityToDto(persistenceEntity);
