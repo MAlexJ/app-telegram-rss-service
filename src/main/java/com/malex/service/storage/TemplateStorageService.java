@@ -30,6 +30,7 @@ public class TemplateStorageService {
 
   @Cacheable
   public List<TemplateResponse> findAll() {
+    log.info("Cacheable: find all template responses");
     return repository.findAll().stream().map(mapper::entityToDto).toList();
   }
 
@@ -45,25 +46,25 @@ public class TemplateStorageService {
    */
   @Cacheable(key = TEMPLATES_CACHE_TEMPLATE_KEY_ID)
   public String findExistOrDefaultTemplateById(String templateId) {
-    return findTemplateById(templateId).orElse(defaultTemplate());
+    log.info("Cacheable: find exist or default template by id");
+    return findTemplateById(templateId).orElse(DEFAULT_TEMPLATE);
   }
 
   @Cacheable(key = TEMPLATES_CACHE_KEY_ID)
   public Optional<String> findTemplateById(String id) {
+    log.info("Cacheable: find template by id");
     return repository.findById(id).map(TemplateEntity::getTemplate);
-  }
-
-  public String defaultTemplate() {
-    return DEFAULT_TEMPLATE;
   }
 
   @CacheEvict(allEntries = true)
   public Optional<TemplateResponse> save(TemplateRequest request) {
+    log.info("Cacheable: save template - {}", request);
     return Optional.of(mapper.dtoToEntity(request)).map(repository::save).map(mapper::entityToDto);
   }
 
   @CacheEvict(allEntries = true)
   public void update(UpdateMessageTemplateRequest request) {
+    log.info("Cacheable: update template - {}", request);
     var templateId = request.id();
     var template = request.template();
     Optional.ofNullable(repository.updateMessageTemplateEntityBy(templateId, template))
@@ -74,6 +75,7 @@ public class TemplateStorageService {
 
   @CacheEvict(allEntries = true)
   public void deleteById(String id) {
+    log.info("Cacheable: delete template by id - {}", id);
     repository.deleteById(id);
   }
 }
