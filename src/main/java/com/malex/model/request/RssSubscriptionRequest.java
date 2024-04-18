@@ -1,6 +1,6 @@
 package com.malex.model.request;
 
-import com.malex.model.filter.RssFilter;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -9,7 +9,7 @@ import java.util.Objects;
  * <p>the text has string occurrences
  */
 public record RssSubscriptionRequest(
-    Long chatId, String templateId, String rss, RssFilter filter, boolean isActive) {
+    Long chatId, String templateId, String rss, List<String> filterIds, boolean isActive) {
 
   private static final String ERROR_MESSAGE_TEMPLATE = "'%s' is a mandatory parameter";
 

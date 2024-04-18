@@ -24,13 +24,13 @@ public interface ObjectMapper {
   @Mapping(source = "isActive", target = "active")
   SubscriptionEntity dtoToEntity(RssSubscriptionRequest dto);
 
+  @Mapping(source = "active", target = "isActive")
+  RssSubscriptionResponse entityToDto(SubscriptionEntity entity);
+
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)
   @Mapping(source = "isActive", target = "active")
   RssTopicEntity dtoToEntity(RssTopicDto dto);
-
-  @Mapping(source = "active", target = "isActive")
-  RssSubscriptionResponse entityToDto(SubscriptionEntity entity);
 
   @Mapping(source = "active", target = "isActive")
   RssTopicResponse entityToDto(RssTopicEntity entity);

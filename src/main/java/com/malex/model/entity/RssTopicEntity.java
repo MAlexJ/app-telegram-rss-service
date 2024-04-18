@@ -1,8 +1,8 @@
 package com.malex.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.malex.model.filter.RssFilter;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,7 +22,7 @@ public class RssTopicEntity implements Persistable<String> {
   private String templateId;
   private String subscriptionId;
   private String rss;
-  private RssFilter filter;
+  private List<String> filterIds;
   private String title;
   private String description;
   private String link;

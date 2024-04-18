@@ -7,30 +7,11 @@ Content-Type: application/json
 
 {
   "chatId": -1001600823930,
-  "templateId": "6603de40e625104809eea0e5",
-  "rss": "https://www.pravda.com.ua/rss",
-  "filter": {
-  },
+  "templateId": "6619963275ced443a63c3456",
+  "rss": "https://xxx",
+  "filterIds": ["66218df402ace91dcffcddae"],
   "isActive": true
 }
 
 ###
-POST http://localhost:8080/v1/subscriptions
-Content-Type: application/json
-
-{
-  "chatId": -1001600823930,
-  "templateId": "6603de40e625104809eea0e5",
-  "rss": "https://www.pravda.com.ua/rss",
-  "filter": {
-    "condition": {
-      "valueType": "PHRASE",
-      "value": "word"
-    }
-  },
-  "isActive": true
-}
-
-
-###
-PATCH http://localhost:8080/v1/subscriptions/6603de51e625104809eea0e6
+PATCH http://localhost:8080/v1/subscriptions/66218f8b1512f67839bc5234

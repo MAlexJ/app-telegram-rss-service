@@ -1,14 +1,14 @@
 package com.malex.model.response;
 
-import com.malex.model.filter.RssFilter;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record RssTopicResponse(
     String id,
     Long chatId,
     String subscriptionId,
     String rss,
-    RssFilter filter,
+    List<String> filterIds,
     String title,
     String description,
     String link,

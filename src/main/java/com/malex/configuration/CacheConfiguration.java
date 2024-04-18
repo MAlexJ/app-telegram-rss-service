@@ -22,6 +22,9 @@ public class CacheConfiguration {
   public static final String TEMPLATES_CACHE_TEMPLATE_KEY_ID = "#templateId";
   public static final String TEMPLATES_CACHE_KEY_ID = "#id";
 
+  public static final String FILTERS_CACHE_NAME = "filters";
+  public static final String FILTERS_CACHE_KEY_ID = "#root.method.name";
+
   @Bean
   public CacheManager cacheManager() {
     return new ConcurrentMapCacheManager();
