@@ -56,6 +56,10 @@ public class RssTopicStorageService {
   }
 
   public boolean isNotExistTopicByMd5Hash(String md5Hash) {
-    return topicRepository.findRssTopicEntitiesByMd5Hash(md5Hash).isEmpty();
+    var topics = topicRepository.findRssTopicEntitiesByMd5Hash(md5Hash);
+    if (topics.size() > 1) {
+      log.warn("Found more that one rss topic by md5Hash - '{}'", md5Hash);
+    }
+    return topics.isEmpty();
   }
 }

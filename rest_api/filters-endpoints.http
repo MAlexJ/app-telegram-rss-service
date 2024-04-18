@@ -1,7 +1,17 @@
 ###
-POST http://localhost:8080/v1/rss
+GET http://localhost:8080/v1/filters
+
+###
+POST http://localhost:8080/v1/filters
 Content-Type: application/json
 
 {
-  "url": "https://www.pravda.com.ua/rss"
+  "isActive": true,
+  "condition": {
+    "type": "EXCLUDE",
+    "keyWords": ["Words", "USA", "Eu"]
+  }
 }
+
+###
+PATCH http://localhost:8080/v1/filters/66212a9461821f54bd138f86

@@ -6,7 +6,6 @@ import com.malex.model.request.FilterRequest;
 import com.malex.model.response.FilterResponse;
 import com.malex.repository.FilterRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,7 @@ public class FilterStorageService {
   }
 
   /** Inactive filter by id */
-  public Integer disableFilterByID(String id) {
-    var count = repository.setInactiveFilterStatusById(id);
-    return Optional.of(count).map(Long::intValue).orElse(0);
+  public Integer disableFilterById(String id) {
+    return repository.setInactiveFilterStatusById(id).intValue();
   }
 }

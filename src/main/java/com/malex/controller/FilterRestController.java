@@ -33,7 +33,7 @@ public class FilterRestController {
   @PatchMapping("/{id}")
   public ResponseEntity<Void> disableFilter(@PathVariable String id) {
     log.info("HTTP request, unsubscribe by id - {}", id);
-    return buildResponse(id, service.disableFilterByID(id));
+    return buildResponse(id, service.disableFilterById(id));
   }
 
   private ResponseEntity<Void> buildResponse(String id, Integer updatedRecords) {

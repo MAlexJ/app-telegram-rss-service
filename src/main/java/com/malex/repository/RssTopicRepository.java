@@ -1,6 +1,7 @@
 package com.malex.repository;
 
 import com.malex.model.entity.RssTopicEntity;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -24,5 +25,5 @@ public interface RssTopicRepository extends MongoRepository<RssTopicEntity, Stri
   @Update(update = "{ $set: { isActive : false}}")
   void updateRssTopicEntity(String id);
 
-  Optional<RssTopicEntity> findRssTopicEntitiesByMd5Hash(String md5Hash);
+  List<RssTopicEntity> findRssTopicEntitiesByMd5Hash(String md5Hash);
 }

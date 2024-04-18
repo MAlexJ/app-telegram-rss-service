@@ -1,7 +1,6 @@
 package com.malex.model.filter;
 
-import com.malex.model.entity.FilterEntity;
-
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
-public record FilterCondition(ConditionType type,  List<String> keyWords) {}
+public record FilterCondition(@NotNull ConditionType type, @NotNull List<String> keyWords) {}
