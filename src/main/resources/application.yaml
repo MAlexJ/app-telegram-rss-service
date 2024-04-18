@@ -6,6 +6,8 @@ spring:
     import: optional:file:.env[.properties]
   application:
     name: ${APP_SERVICE_NAME:app-service}
+  jpa:
+    show-sql: true
 
   data:
     mongodb:

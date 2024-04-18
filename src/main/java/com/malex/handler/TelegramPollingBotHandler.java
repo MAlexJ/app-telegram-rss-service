@@ -2,7 +2,7 @@ package com.malex.handler;
 
 import com.malex.model.dto.ChatDto;
 import com.malex.service.storage.TelegramStorageService;
-import com.malex.util.MessageFormatUtil;
+import com.malex.utils.MessageFormatUtils;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,7 +70,7 @@ public class TelegramPollingBotHandler extends InitStatePollingHandler {
               msg ->
                   log.info(
                       "Super group message: '{}', to '{}' '{}' chat, from user: '{}'",
-                      MessageFormatUtil.shortMessage(text),
+                      MessageFormatUtils.shortMessage(text),
                       chat.getType(),
                       chat.getTitle(),
                       user.getFirstName()));

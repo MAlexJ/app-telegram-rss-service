@@ -1,7 +1,9 @@
 package com.malex.scheduler;
 
-import com.malex.service.filter.RssFilterService;
+import com.malex.model.entity.FilterEntity;
 import com.malex.service.RssTopicService;
+import com.malex.service.filter.RssFilterService;
+import com.malex.service.storage.FilterStorageService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
 import java.util.*;
@@ -20,6 +22,7 @@ public class ProcessingRssScheduler {
 
   private final RssTopicService topicService;
   private final RssFilterService filterService;
+  private final FilterStorageService filterStorageService;
   private final RssTopicStorageService topicStorageService;
   private final SubscriptionStorageService subscriptionService;
 
@@ -35,6 +38,11 @@ public class ProcessingRssScheduler {
   @Scheduled(cron = "${scheduled.processing.rss.cron}")
   public void processingRssSubscriptions() {
     log.info("Start processing RSS subscriptions - {}", schedulerProcessNumber.incrementAndGet());
+
+    // test logic
+    List<FilterEntity> filters = filterStorageService.findAllActiveFilters();
+    log.info("Filters - {}", filters);
+
     subscriptionService.findAllActiveSubscriptions().stream()
         .map(topicService::processingRssTopics)
         .flatMap(Collection::stream)

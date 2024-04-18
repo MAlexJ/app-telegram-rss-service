@@ -1,10 +1,10 @@
-package com.malex.util;
+package com.malex.utils;
 
 import java.util.Optional;
 
-public class MessageFormatUtil {
+public class MessageFormatUtils {
 
-  private MessageFormatUtil() {
+  private MessageFormatUtils() {
     // not use
   }
 

@@ -12,7 +12,7 @@ public class ErrorStorageService {
   private final ErrorRepository repository;
 
   public void saveError(String errorMessage, String details) {
-    ErrorEntity errorEntity = new ErrorEntity();
+    var errorEntity = new ErrorEntity();
     errorEntity.setErrorMessage(errorMessage);
     errorEntity.setDetails(details);
     repository.save(errorEntity);

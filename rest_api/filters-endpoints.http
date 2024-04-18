@@ -1,0 +1,7 @@
+###
+POST http://localhost:8080/v1/rss
+Content-Type: application/json
+
+{
+  "url": "https://www.pravda.com.ua/rss"
+}
