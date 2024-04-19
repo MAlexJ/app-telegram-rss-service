@@ -1,14 +1,12 @@
 package com.malex.model.dto;
 
 import com.malex.model.entity.SubscriptionEntity;
-import java.util.List;
 
 public record RssTopicDto(
     String subscriptionId,
     Long chatId,
     String templateId,
     String rss,
-    List<String> filterIds,
     String title,
     String description,
     String link,
@@ -22,7 +20,6 @@ public record RssTopicDto(
         entity.getChatId(),
         entity.getTemplateId(),
         entity.getRss(),
-        entity.getFilterIds(),
         item.title(),
         item.description(),
         item.link(),
