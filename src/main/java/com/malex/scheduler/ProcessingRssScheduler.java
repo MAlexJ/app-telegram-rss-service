@@ -1,7 +1,6 @@
 package com.malex.scheduler;
 
 import com.malex.service.RssTopicService;
-import com.malex.service.filter.SubscriptionCriteriaFilteringService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
 import java.util.*;
@@ -21,7 +20,6 @@ public class ProcessingRssScheduler {
   private final RssTopicService topicService;
   private final RssTopicStorageService topicStorageService;
   private final SubscriptionStorageService subscriptionService;
-  private final SubscriptionCriteriaFilteringService filterService;
 
   private final AtomicInteger schedulerProcessNumber = new AtomicInteger(0);
 
@@ -36,9 +34,8 @@ public class ProcessingRssScheduler {
   public void processingRssSubscriptions() {
     log.info("Start processing RSS subscriptions - {}", schedulerProcessNumber.incrementAndGet());
     subscriptionService.findAllActiveSubscriptions().stream()
-        .map(topicService::processingRssTopics)
+        .map(topicService::processingRssTopicsWithFilteringCriteria)
         .flatMap(Collection::stream)
-        .filter(filterService::applyFilterByCriteria)
         .filter(topic -> topicStorageService.isNotExistTopicByMd5Hash(topic.md5Hash()))
         .forEach(topicStorageService::saveNewRssTopic);
   }

@@ -2,13 +2,13 @@ package com.malex.service.filter;
 
 import static com.malex.model.filter.ConditionType.INCLUDE;
 
-import com.malex.model.dto.RssTopicDto;
 import com.malex.model.entity.FilterEntity;
 import com.malex.model.filter.ConditionType;
 import com.malex.model.filter.FilterCondition;
 import com.malex.service.storage.FilterStorageService;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +22,10 @@ public class SubscriptionCriteriaFilteringService {
   private final FilterStorageService filterStorageService;
 
   /** Apply filtering of rss topics by criteria */
-  public boolean applyFilterByCriteria(RssTopicDto topic) {
+  public boolean applyFilterByCriteria(String text, List<String> topicFilterIds) {
 
     // 1. find all topic filter ids
-    var topicFilterIds = topic.filterIds();
-    if (topicFilterIds.isEmpty()) {
+    if (Objects.isNull(text) || topicFilterIds.isEmpty()) {
       return true;
     }
 
@@ -44,14 +43,11 @@ public class SubscriptionCriteriaFilteringService {
                     FilterCondition::type,
                     Collectors.flatMapping(fc -> fc.keyWords().stream(), Collectors.toList())));
 
-    // 4. extract topic title
-    String title = topic.title();
-
-    // 5. find include matching
+    // 4. find include matching
     boolean includeAnyMatch =
-        filterConditions.get(INCLUDE).stream().anyMatch(key -> findOccurrencePhrase(title, key));
+        filterConditions.get(INCLUDE).stream().anyMatch(key -> findOccurrencePhrase(text, key));
 
-    // 6. find exclude matching
+    // 5. find exclude matching
 
     return includeAnyMatch;
   }
