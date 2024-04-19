@@ -1,7 +1,7 @@
 package com.malex.scheduler;
 
 import com.malex.service.RssTopicService;
-import com.malex.service.filter.RssFilterService;
+import com.malex.service.filter.SubscriptionCriteriaFilteringService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
 import java.util.*;
@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProcessingRssScheduler {
 
   private final RssTopicService topicService;
-  private final RssFilterService filterService;
   private final RssTopicStorageService topicStorageService;
   private final SubscriptionStorageService subscriptionService;
+  private final SubscriptionCriteriaFilteringService filterService;
 
   private final AtomicInteger schedulerProcessNumber = new AtomicInteger(0);
 

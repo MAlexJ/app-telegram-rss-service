@@ -19,7 +19,16 @@ public class RssTopicService {
   public List<RssTopicDto> processingRssTopics(SubscriptionEntity subscription) {
     var url = subscription.getRss();
     var rssItemList = rssWebService.readRssNews(url);
-    return rssItemList.stream().map(rssItem -> buildRssTopicDto(subscription, rssItem)).toList();
+    return rssItemList.stream()
+        .filter(
+            rssItem -> {
+              String title = rssItem.title();
+              String description = rssItem.description();
+              // apply filter by criteria
+              return true;
+            })
+        .map(rssItem -> buildRssTopicDto(subscription, rssItem))
+        .toList();
   }
 
   private RssTopicDto buildRssTopicDto(SubscriptionEntity subscription, RssItemDto rssItem) {

@@ -1,13 +1,7 @@
 package com.malex.service.filter;
 
-import static com.malex.model.filter.ConditionType.INCLUDE;
-
 import com.malex.model.dto.RssTopicDto;
-import com.malex.model.entity.FilterEntity;
-import com.malex.service.storage.FilterStorageService;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,32 +11,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RssFilterService {
 
-  private final FilterStorageService filterStorageService;
-
   private static final String EMPTY_STRING = " ";
 
   /** Apply filtering of rss topics by criteria */
   public boolean applyFilterByCriteria(RssTopicDto topic) {
-    var filterIds = topic.filterIds();
-    if (filterIds.isEmpty()) {
-      return true;
-    }
-    List<FilterEntity> filters =
-        filterStorageService.findAllActiveFilters().stream()
-            .filter(filter -> filterIds.contains(filter.getId()))
-            .toList();
-
-    List<String> includeKewWords =
-        filters.stream()
-            .map(FilterEntity::getCondition)
-            .filter(condition -> INCLUDE == condition.type())
-            .flatMap(condition -> condition.keyWords().stream())
-            .toList();
-
-    String title = topic.title();
-    return includeKewWords.stream().anyMatch(key -> findOccurrencePhrase(title, key));
-
-    //
+    throw new UnsupportedOperationException();
     //    return Optional.ofNullable(topic.filter())
     //        .flatMap(
     //            filter ->
@@ -78,14 +51,5 @@ public class RssFilterService {
     return Arrays.stream(wordArray) //
         .filter(str -> !str.isBlank())
         .anyMatch(str -> str.equalsIgnoreCase(word));
-  }
-
-  /** find the occurrence of specific phrase within a text */
-  private boolean findOccurrencePhrase(String text, String phrase) {
-    return toLowerCase(text).indexOf(toLowerCase(phrase)) >= 1;
-  }
-
-  private String toLowerCase(String str) {
-    return Optional.ofNullable(str).map(String::toLowerCase).orElse(str);
   }
 }
