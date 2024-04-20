@@ -48,7 +48,7 @@ public class SubscriptionCriteriaFilteringService {
             .filter(entry -> INCLUDE == entry.getKey())
             .map(Map.Entry::getValue)
             .flatMap(Collection::stream)
-            .anyMatch(key -> findOccurrencePhrase(text, key));
+            .anyMatch(key -> findOccurrencePhrase(INCLUDE, text, key));
 
     // 5. find exclude matching
     boolean excludeNoneMatch =
@@ -56,17 +56,21 @@ public class SubscriptionCriteriaFilteringService {
             .filter(entry -> EXCLUDE == entry.getKey())
             .map(Map.Entry::getValue)
             .flatMap(Collection::stream)
-            .noneMatch(key -> findOccurrencePhrase(text, key));
+            .noneMatch(key -> findOccurrencePhrase(EXCLUDE, text, key));
 
     log.info(
         "Filter: include anyMatch - {}, exclude noneMatch - {}", includeAnyMatch, excludeNoneMatch);
 
-    return includeAnyMatch;
+    return includeAnyMatch && excludeNoneMatch;
   }
 
   /** find the occurrence of specific phrase within a text */
-  private boolean findOccurrencePhrase(String text, String phrase) {
-    return toLowerCase(text).indexOf(toLowerCase(phrase)) >= 1;
+  private boolean findOccurrencePhrase(ConditionType type, String text, String phrase) {
+    if (toLowerCase(text).indexOf(toLowerCase(phrase)) >= 1) {
+      log.info("Filter: {} by word - {}", type, phrase);
+      return true;
+    }
+    return false;
   }
 
   private String toLowerCase(String str) {

@@ -29,12 +29,4 @@ public class TelegramStorageService {
       chatRepository.save(mapper.dtoToEntity(chatDto));
     }
   }
-
-  public List<UserDto> findAllUsers() {
-    return userRepository.findAll().stream().map(mapper::entityToDto).toList();
-  }
-
-  public List<ChatDto> findAllChats() {
-    return chatRepository.findAll().stream().map(mapper::entityToDto).toList();
-  }
 }

@@ -52,8 +52,6 @@ public class ProcessingPublisherScheduler {
     var topicId = topic.getId();
     var chatId = topic.getChatId();
     var templateId = topic.getTemplateId();
-
-    // todo refactor template storage and template resolver services
     var placeholder = templateStorageService.findExistOrDefaultTemplateById(templateId);
     templateResolverService
         .applyTemplateToRssTopic(placeholder, topic)
