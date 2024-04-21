@@ -1,0 +1,13 @@
+###
+GET http://localhost:8080/v1/customizations
+
+###
+POST http://localhost:8080/v1/customizations
+Content-Type: application/json
+
+{
+  "isActive": true,
+  "imageClass": "",
+  "titleClass": "PageArticleContent_title",
+  "descriptionClass": "PageContentCommonStyling_text"
+}

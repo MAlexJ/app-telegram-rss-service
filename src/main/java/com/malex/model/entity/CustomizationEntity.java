@@ -1,6 +1,8 @@
 package com.malex.model.entity;
 
+import java.time.LocalDateTime;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -21,4 +23,6 @@ public class CustomizationEntity {
 
   private String titleClass;
   private String descriptionClass;
+
+  @CreatedDate private LocalDateTime created;
 }
