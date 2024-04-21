@@ -10,19 +10,21 @@ public record RssTopicDto(
     String title,
     String description,
     String link,
+    String image,
     String md5Hash,
     Integer messageId,
     boolean isActive) {
 
-  public RssTopicDto(SubscriptionEntity entity, RssItemDto item, String md5Hash) {
+  public RssTopicDto(SubscriptionEntity subscription, RssItemDto item, String md5Hash) {
     this(
-        entity.getId(),
-        entity.getChatId(),
-        entity.getTemplateId(),
-        entity.getRss(),
+        subscription.getId(),
+        subscription.getChatId(),
+        subscription.getTemplateId(),
+        subscription.getRss(),
         item.title(),
         item.description(),
         item.link(),
+        subscription.getImage(),
         md5Hash,
         null,
         true);

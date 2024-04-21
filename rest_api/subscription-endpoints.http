@@ -8,8 +8,12 @@ Content-Type: application/json
 {
   "chatId": -1001600823930,
   "templateId": "6619963275ced443a63c3456",
-  "rss": "https://xxx",
-  "filterIds": ["66218df402ace91dcffcddae"],
+  "rss": "https://site/xml/index.xml",
+  "image": "https://logo-650x360.jpg",
+  "filterIds": [
+    "66218df402ace91dcffcddae",
+    "662415cffc13084689b00a35"
+  ],
   "isActive": true
 }
 

@@ -3,19 +3,19 @@ package com.malex.model.request;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * text contains the word
- *
- * <p>the text has string occurrences
- */
+/** RSS subscription request */
 public record RssSubscriptionRequest(
-    Long chatId, String templateId, String rss, List<String> filterIds, boolean isActive) {
+    Long chatId,
+    String templateId,
+    String rss,
+    String image,
+    List<String> filterIds,
+    boolean isActive) {
 
   private static final String ERROR_MESSAGE_TEMPLATE = "'%s' is a mandatory parameter";
 
   public RssSubscriptionRequest {
     Objects.requireNonNull(chatId, errorMessage("chatId"));
-    Objects.requireNonNull(templateId, errorMessage("templateId"));
     Objects.requireNonNull(rss, errorMessage("rss"));
   }
 

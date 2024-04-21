@@ -33,6 +33,7 @@ dependencies {
     implementation "com.apptasticsoftware:rssreader:${rssreaderVersion}"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiWeb}"
     implementation "com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}"
+    implementation "org.jsoup:jsoup:${jsoupHtmlParser}"
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"

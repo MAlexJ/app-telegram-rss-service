@@ -21,6 +21,10 @@ public class SubscriptionEntity implements Persistable<String> {
   private Long chatId;
   private String templateId;
   private String rss;
+
+  /** default image for rss topic message */
+  private String image;
+
   private List<String> filterIds;
   private boolean isActive;
 
