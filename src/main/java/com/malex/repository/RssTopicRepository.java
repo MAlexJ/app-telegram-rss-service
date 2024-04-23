@@ -1,6 +1,7 @@
 package com.malex.repository;
 
 import com.malex.model.entity.RssTopicEntity;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -26,4 +27,6 @@ public interface RssTopicRepository extends MongoRepository<RssTopicEntity, Stri
   void updateRssTopicEntity(String id);
 
   List<RssTopicEntity> findRssTopicEntitiesByMd5Hash(String md5Hash);
+
+  List<RssTopicEntity> findAllByCreatedBefore(LocalDateTime created);
 }

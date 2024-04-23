@@ -7,6 +7,7 @@ public record RssSubscriptionResponse(
     String id,
     Long chatId,
     String templateId,
+    String customizationId,
     String rss,
     String image,
     List<String> filterIds,

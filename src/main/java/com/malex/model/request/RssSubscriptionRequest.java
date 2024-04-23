@@ -7,6 +7,7 @@ import java.util.Objects;
 public record RssSubscriptionRequest(
     Long chatId,
     String templateId,
+    String customizationId,
     String rss,
     String image,
     List<String> filterIds,

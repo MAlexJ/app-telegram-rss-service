@@ -5,6 +5,7 @@ import com.malex.model.dto.RssTopicDto;
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.model.response.RssTopicResponse;
 import com.malex.repository.RssTopicRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -61,5 +62,15 @@ public class RssTopicStorageService {
       log.warn("Found more that one rss topic by md5Hash - '{}'", md5Hash);
     }
     return topics.isEmpty();
+  }
+
+  public List<String> findAllTopicIdsBeforeDate(LocalDateTime dateTime) {
+    return topicRepository.findAllByCreatedBefore(dateTime).stream()
+        .map(RssTopicEntity::getId)
+        .toList();
+  }
+
+  public void removeTopicById(String id) {
+    topicRepository.deleteById(id);
   }
 }

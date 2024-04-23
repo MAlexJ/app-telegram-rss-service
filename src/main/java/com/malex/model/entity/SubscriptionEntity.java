@@ -20,6 +20,7 @@ public class SubscriptionEntity implements Persistable<String> {
   @MongoId private String id;
   private Long chatId;
   private String templateId;
+  private String customizationId;
   private String rss;
 
   /** default image for rss topic message */
