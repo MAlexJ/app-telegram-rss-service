@@ -10,7 +10,6 @@ public record RssTopicResponse(
     String title,
     String description,
     String link,
-    String image,
     String md5Hash,
     boolean isActive,
     LocalDateTime created) {}

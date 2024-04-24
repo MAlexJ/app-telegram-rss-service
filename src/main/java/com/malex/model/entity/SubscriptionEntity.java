@@ -19,12 +19,9 @@ public class SubscriptionEntity implements Persistable<String> {
 
   @MongoId private String id;
   private Long chatId;
+  private String imageId;
   private String templateId;
-  private String customizationId;
   private String rss;
-
-  /** default image for rss topic message */
-  private String image;
 
   private List<String> filterIds;
   private boolean isActive;

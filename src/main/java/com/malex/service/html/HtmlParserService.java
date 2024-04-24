@@ -1,7 +1,8 @@
 package com.malex.service.html;
 
-import com.malex.model.dto.CustomizationDto;
+import com.malex.model.dto.ImageDto;
 import com.malex.webservice.JsoupWebService;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,39 +18,44 @@ public class HtmlParserService {
 
   private final JsoupWebService jsoupWebService;
 
-  public Optional<String> applyCustomization(String url, String htmlClass) {
-    Optional<Document> document = jsoupWebService.readHtml(url);
-    return findElementTextByClass(document, htmlClass);
-  }
-
-  private Optional<String> findElementTextByClass(
-      Optional<Document> documentOpt, String htmlClass) {
-    return documentOpt.stream()
+  public Optional<String> findImageOrDefaultUrlByCriteria(String url, ImageDto image) {
+    var imageClassName = image.attributeClassName();
+    var keywords = image.additionalClassAttributes();
+    return jsoupWebService
+        .readHtml(url)
         .flatMap(
             document ->
-                document.getAllElements().stream()
-                    .map(Element::className)
-                    .filter(elementClassName -> elementClassName.contains(htmlClass))
-                    .map(fullClassName -> findElementsByClass(document, fullClassName)))
+                findSrcAttributeByClassName(document, imageClassName, keywords)
+                    .or(() -> Optional.of(image.defaultImage())));
+  }
+
+  private Optional<String> findSrcAttributeByClassName(
+      Document document, String imageClassName, List<String> keywords) {
+    return document.getAllElements().stream()
+        .map(Element::className)
+        .filter(className -> className.contains(imageClassName))
+        .filter(className -> isMatchingClassKeyWords(keywords, className))
+        .map(
+            fullClassName -> {
+              Elements elements = document.getElementsByClass(fullClassName);
+              return elements.text();
+            })
         .findFirst();
   }
 
-  private String findElementsByClass(Document document, String fullClassName) {
-    Elements elements = document.getElementsByClass(fullClassName);
-    return elements.text();
+  private boolean isMatchingClassKeyWords(List<String> keywords, String className) {
+    if (keywords.isEmpty()) {
+      return true;
+    }
+    return keywords.stream().anyMatch(attr -> findOccurrencePhrase(className, attr));
   }
 
-  public Optional<String> applyCustomization(String url, CustomizationDto customizationDto) {
-    String titleClass = customizationDto.titleClass();
-    String descriptionClass = customizationDto.descriptionClass();
-    String imagedClass = customizationDto.imageClass();
+  /** find the occurrence of specific phrase within a text */
+  private boolean findOccurrencePhrase(String text, String phrase) {
+    return toLowerCase(text).indexOf(toLowerCase(phrase)) >= 1;
+  }
 
-    Optional<Document> documentOpt = jsoupWebService.readHtml(url);
-    Optional<String> titleOpt = findElementTextByClass(documentOpt, titleClass);
-    Optional<String> descriptionOpt = findElementTextByClass(documentOpt, descriptionClass);
-    if (titleOpt.isPresent() && descriptionOpt.isPresent()) {
-      return Optional.of(titleOpt.get() + "\n" + descriptionOpt.get());
-    }
-    return Optional.empty();
+  private String toLowerCase(String str) {
+    return Optional.ofNullable(str).map(String::toLowerCase).orElse(str);
   }
 }

@@ -5,12 +5,3 @@ Content-Type: application/json
 {
   "url": "https://xml/index.xml"
 }
-
-###
-POST http://localhost:8080/v1/rss/xpath
-Content-Type: application/json
-
-{
-  "url": "https://loshadmi.html",
-  "htmlClass": "PageArticleContent_title"
-}

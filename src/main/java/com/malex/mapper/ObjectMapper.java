@@ -1,12 +1,12 @@
 package com.malex.mapper;
 
 import com.malex.model.dto.ChatDto;
-import com.malex.model.dto.CustomizationDto;
+import com.malex.model.dto.ImageDto;
 import com.malex.model.dto.RssTopicDto;
 import com.malex.model.dto.UserDto;
 import com.malex.model.entity.*;
-import com.malex.model.request.CustomizationRequest;
 import com.malex.model.request.FilterRequest;
+import com.malex.model.request.ImageRequest;
 import com.malex.model.request.RssSubscriptionRequest;
 import com.malex.model.request.TemplateRequest;
 import com.malex.model.response.FilterResponse;
@@ -63,10 +63,10 @@ public interface ObjectMapper {
   FilterResponse entityToDto(FilterEntity entity);
 
   @Mapping(source = "active", target = "isActive")
-  CustomizationDto entityToDto(CustomizationEntity entity);
+  ImageDto entityToDto(ImageEntity entity);
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)
   @Mapping(source = "isActive", target = "active")
-  CustomizationEntity dtoToEntity(CustomizationRequest dto);
+  ImageEntity dtoToEntity(ImageRequest dto);
 }

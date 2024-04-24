@@ -6,10 +6,9 @@ import java.util.Objects;
 /** RSS subscription request */
 public record RssSubscriptionRequest(
     Long chatId,
+    String imageId,
     String templateId,
-    String customizationId,
     String rss,
-    String image,
     List<String> filterIds,
     boolean isActive) {
 

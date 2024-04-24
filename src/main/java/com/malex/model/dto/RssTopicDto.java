@@ -10,7 +10,6 @@ public record RssTopicDto(
     String title,
     String description,
     String link,
-    String image,
     String md5Hash,
     Integer messageId,
     boolean isActive) {
@@ -24,7 +23,6 @@ public record RssTopicDto(
         item.title(),
         item.description(),
         item.link(),
-        subscription.getImage(),
         md5Hash,
         null,
         true);

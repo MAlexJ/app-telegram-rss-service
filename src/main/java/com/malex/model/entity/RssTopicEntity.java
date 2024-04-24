@@ -25,9 +25,6 @@ public class RssTopicEntity implements Persistable<String> {
   private String description;
   private String link;
 
-  /** default image for rss topic message */
-  private String image;
-
   /**
    * Spring Data: Unique field in MongoDB document
    *

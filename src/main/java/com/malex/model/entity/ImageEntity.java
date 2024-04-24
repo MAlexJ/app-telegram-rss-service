@@ -1,6 +1,7 @@
 package com.malex.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.TypeAlias;
@@ -9,20 +10,21 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Data
-@Document(collection = "customizations")
-@TypeAlias("CustomizationEntity")
-public class CustomizationEntity {
+@Document(collection = "images")
+@TypeAlias("ImageEntity")
+public class ImageEntity {
 
   @MongoId private String id;
 
   @Field(name = "active")
   private boolean isActive;
 
-  /** Html classes tags for title, description and image */
-  private String imageClass;
+  /** default image for rss news */
+  private String defaultImage;
 
-  private String titleClass;
-  private String descriptionClass;
+  private String attributeClassName;
+  // Todo: additional attributes for searching
+  private List<String> additionalClassAttributes;
 
   @CreatedDate private LocalDateTime created;
 }
