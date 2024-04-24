@@ -11,3 +11,12 @@ Content-Type: application/json
   "titleClass": "PageArticleContent_title",
   "descriptionClass": "PageContentCommonStyling_text"
 }
+
+###
+POST http://localhost:8080/v1/customizations/test
+Content-Type: application/json
+
+{
+  "url": "https://xxx.html",
+  "customizationId": "662567dd4d8f1b6355a3dea7"
+}

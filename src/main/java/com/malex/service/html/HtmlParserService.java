@@ -1,5 +1,6 @@
 package com.malex.service.html;
 
+import com.malex.model.dto.CustomizationDto;
 import com.malex.webservice.JsoupWebService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,19 @@ public class HtmlParserService {
   private String findElementsByClass(Document document, String fullClassName) {
     Elements elements = document.getElementsByClass(fullClassName);
     return elements.text();
+  }
+
+  public Optional<String> applyCustomization(String url, CustomizationDto customizationDto) {
+    String titleClass = customizationDto.titleClass();
+    String descriptionClass = customizationDto.descriptionClass();
+    String imagedClass = customizationDto.imageClass();
+
+    Optional<Document> documentOpt = jsoupWebService.readHtml(url);
+    Optional<String> titleOpt = findElementTextByClass(documentOpt, titleClass);
+    Optional<String> descriptionOpt = findElementTextByClass(documentOpt, descriptionClass);
+    if (titleOpt.isPresent() && descriptionOpt.isPresent()) {
+      return Optional.of(titleOpt.get() + "\n" + descriptionOpt.get());
+    }
+    return Optional.empty();
   }
 }
