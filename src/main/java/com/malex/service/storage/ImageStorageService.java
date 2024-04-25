@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ImageStorageService {
 
-  private final ImageRepository repository;
   private final ObjectMapper mapper;
+  private final ImageRepository repository;
 
   public List<ImageDto> findAll() {
     return repository.findAll().stream().map(mapper::entityToDto).toList();

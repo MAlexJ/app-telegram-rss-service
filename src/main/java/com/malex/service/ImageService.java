@@ -1,7 +1,10 @@
 package com.malex.service;
 
+import com.malex.model.dto.ImageDto;
+import com.malex.model.request.ImageRequest;
 import com.malex.service.html.HtmlParserService;
 import com.malex.service.storage.ImageStorageService;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,5 +20,13 @@ public class ImageService {
     return storageService
         .findById(imageId)
         .flatMap(imageDto -> parserService.findImageOrDefaultUrlByCriteria(url, imageDto));
+  }
+
+  public List<ImageDto> findAll() {
+    return storageService.findAll();
+  }
+
+  public ImageDto save(ImageRequest request) {
+    return storageService.save(request);
   }
 }
