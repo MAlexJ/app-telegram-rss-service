@@ -20,6 +20,16 @@ telegram:
     username: ${APP_SERVICE_TELEGRAM_BOT_USERNAME:bot_name}
     token: ${APP_SERVICE_TELEGRAM_BOT_TOKEN:app_token}
 
+calculate:
+  md5Hash:
+    for:
+      link: ${APP_SERVICE_CALCULATE_MD5_ONLY_FOR_LINK:true}
+
+filter:
+  criteria:
+    to:
+      title: ${APP_SERVICE_FILTER_CRITERIA_ONLY_TO_TITLE:true}
+
 management:
   endpoints:
     web:

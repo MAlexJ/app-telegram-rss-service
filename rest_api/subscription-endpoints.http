@@ -7,9 +7,9 @@ Content-Type: application/json
 
 {
   "chatId": -1001600823930,
-  "templateId": "6619963275ced443a63c3456",
+  "templateId": "662c96f3a4d53c774c815f51",
   "imageId": "6619963275ced443a63c3456",
-  "rss": "https://site/xml/index.xml",
+  "rss": "https://habr.com/ru/rss/articles/?fl=ru",
   "filterIds": [
     "66218df402ace91dcffcddae",
     "662415cffc13084689b00a35"

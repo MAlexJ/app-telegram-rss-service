@@ -15,6 +15,8 @@ public record RssItemDto(
     String pubDate,
     String comments) {
 
+  private static final String NULL_FRIENDLY_FORMAT = "";
+
   public RssItemDto(Item item) {
     this(
         readStingValue(item.getTitle()),
@@ -29,7 +31,7 @@ public record RssItemDto(
   }
 
   private static String readStingValue(Optional<String> value) {
-    return value.orElse("");
+    return value.orElse(NULL_FRIENDLY_FORMAT);
   }
 
   private static Boolean readBooleanValue(Optional<Boolean> value) {

@@ -9,8 +9,8 @@ POST http://localhost:8080/v1/templates
 Content-Type: application/json
 
 {
-  "description": "Base template",
-  "template": "{{link}} \n {{title}}",
+  "description": "Full template",
+  "template": "{{title}} \n {{description}} \n {{link}}",
   "isActive": true
 }
 
