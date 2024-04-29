@@ -7,7 +7,6 @@ import com.malex.service.ErrorService;
 import com.malex.service.TelegramPublisherService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -18,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProcessingPublisherScheduler {
+public class RssTopicPublisherScheduler {
 
   private final ErrorService errorService;
   private final RssTopicStorageService rssTopicService;
@@ -26,13 +25,11 @@ public class ProcessingPublisherScheduler {
   private final TemplateResolverService templateResolverService;
   private final SubscriptionStorageService subscriptionStorageService;
 
-  private final AtomicInteger schedulerProcessNumber = new AtomicInteger(0);
-
   @Async
   @Transactional
   @Scheduled(cron = "${scheduled.processing.publisher.cron}")
-  public void processingPublisherRss() {
-    log.info("Start processing publish topics - {}", schedulerProcessNumber.incrementAndGet());
+  public void processingRssTopics() {
+    log.info("Start processing publish topics");
     var subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
     randomlyRearrangingIds(subscriptionIds)
         .forEach(

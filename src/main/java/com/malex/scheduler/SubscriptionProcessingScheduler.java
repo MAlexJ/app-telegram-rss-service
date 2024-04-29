@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProcessingRssScheduler {
+public class SubscriptionProcessingScheduler {
 
   private final RssTopicService topicService;
   private final RssTopicStorageService topicStorageService;

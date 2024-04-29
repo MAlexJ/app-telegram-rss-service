@@ -23,7 +23,7 @@ public class TemplateResolverService {
 
   /** Find the template and apply to the element */
   public Optional<String> findTemplateAndApplyToRssTopic(String templateId, RssTopicEntity topic) {
-    // 1. find template in db or default
+    // 1. find template in database or default if not found
     var template = templateStorageService.findExistOrDefaultTemplateById(templateId);
     // 2. apply template to topic
     return mergeRssTopicWithTemplate(topic, template);
@@ -48,6 +48,7 @@ public class TemplateResolverService {
   private Optional<String> applySpecialCharacterSubstitution(Writer writer) throws IOException {
     try (writer) {
       var text = writer.toString();
+      // todo move it to database
       return Optional.ofNullable(text) //
           .map(desc -> desc.replaceAll("[\\p{Cf}]", ""))
           .map(desc -> desc.replace("&quot;", "\""))
