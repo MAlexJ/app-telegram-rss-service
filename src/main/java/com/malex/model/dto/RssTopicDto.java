@@ -6,6 +6,7 @@ public record RssTopicDto(
     String subscriptionId,
     Long chatId,
     String templateId,
+    String image,
     String rss,
     String title,
     String description,
@@ -14,14 +15,20 @@ public record RssTopicDto(
     Integer messageId,
     boolean isActive) {
 
-  public RssTopicDto(SubscriptionEntity subscription, RssItemDto item, String md5Hash) {
+  public RssTopicDto(
+      SubscriptionEntity subscription,
+      RssItemDto item,
+      String image,
+      String description,
+      String md5Hash) {
     this(
         subscription.getId(),
         subscription.getChatId(),
         subscription.getTemplateId(),
+        image,
         subscription.getRss(),
         item.title(),
-        item.description(),
+        description,
         item.link(),
         md5Hash,
         null,

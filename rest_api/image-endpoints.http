@@ -7,12 +7,8 @@ Content-Type: application/json
 
 {
   "isActive": true,
-  "defaultImage": "https://cdnstatic.rg.ru/images/rg-social-dummy-logo-650x360.jpg",
-  "attributeClassName": "PageArticleContent",
-  "additionalClassAttributes": [
-    "Image",
-    "img"
-  ]
+  "link": "https://upload.wikimedia.org/wikipedia/ru/7/7f/Habrahabr_logo.png",
+  "image": "base64_format"
 }
 
 ###

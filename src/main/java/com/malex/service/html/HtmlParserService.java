@@ -18,15 +18,22 @@ public class HtmlParserService {
 
   private final JsoupWebService jsoupWebService;
 
+  /**
+   * { "isActive": true, "defaultImage":
+   * "https://cdnstatic.rg.ru/images/rg-social-dummy-logo-650x360.jpg", "attributeClassName":
+   * "PageArticleContent", "additionalClassAttributes": [ "Image", "img" ] }
+   *
+   * @param url
+   * @param image
+   * @return
+   */
   public Optional<String> findImageOrDefaultUrlByCriteria(String url, ImageDto image) {
-    var imageClassName = image.attributeClassName();
-    var keywords = image.additionalClassAttributes();
+    //    "attributeClassName": "PageArticleContent",
+    var imageClassName = "PageArticleContent";
+    var keywords = List.of("Image", "img");
     return jsoupWebService
         .readHtml(url)
-        .flatMap(
-            document ->
-                findSrcAttributeByClassName(document, imageClassName, keywords)
-                    .or(() -> Optional.of(image.defaultImage())));
+        .flatMap(document -> findSrcAttributeByClassName(document, imageClassName, keywords));
   }
 
   private Optional<String> findSrcAttributeByClassName(

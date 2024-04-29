@@ -27,8 +27,7 @@ calculate:
 
 filter:
   criteria:
-    to:
-      title: ${APP_SERVICE_FILTER_CRITERIA_ONLY_TO_TITLE:true}
+      title: ${APP_SERVICE_FILTER_CRITERIA_ONLY_FOR_TITLE:true}
 
 management:
   endpoints:

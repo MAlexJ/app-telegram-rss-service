@@ -1,7 +1,6 @@
 package com.malex.model.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.TypeAlias;
@@ -19,12 +18,11 @@ public class ImageEntity {
   @Field(name = "active")
   private boolean isActive;
 
-  /** default image for rss news */
-  private String defaultImage;
+  /** http link to image */
+  private String link;
 
-  private String attributeClassName;
-  // Todo: additional attributes for searching
-  private List<String> additionalClassAttributes;
+  /** image in base 64 format */
+  private String image;
 
   @CreatedDate private LocalDateTime created;
 }

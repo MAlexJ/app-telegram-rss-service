@@ -3,6 +3,7 @@ package com.malex.service.filter;
 import static com.malex.model.filter.ConditionType.EXCLUDE;
 import static com.malex.model.filter.ConditionType.INCLUDE;
 
+import com.malex.model.dto.RssItemDto;
 import com.malex.model.entity.FilterEntity;
 import com.malex.model.filter.ConditionType;
 import com.malex.model.filter.FilterCondition;
@@ -11,6 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /** Subscription criteria (include or exclude keywords) filtering service */
@@ -19,19 +21,27 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubscriptionCriteriaFilteringService {
 
+  private static final String TEXT_FORMAT = "%s %s";
+
+  @Value("${filter.criteria.title}")
+  private boolean filterCriteriaOnlyToTitle;
+
   private final FilterStorageService filterStorageService;
 
   /** Apply filtering of rss topics by criteria */
-  public boolean applyFilterByCriteria(String text, List<String> topicFilterIds) {
-    // 1. find all topic filter ids
-    if (Objects.isNull(text) || topicFilterIds.isEmpty()) {
+  public boolean applyFilterByCriteria(RssItemDto itemDto, List<String> topicFilterIds) {
+    // 1. define text
+    String text = defineTextOrDefaultBehaviorToApplyFilters(itemDto);
+
+    // 2. to check filters presence for rss topic
+    if (topicFilterIds.isEmpty()) {
       return true;
     }
 
-    // 2. find all filters in db
+    // 3. find all filters in db
     List<FilterEntity> dbFilters = filterStorageService.findAllActiveFilters();
 
-    // 3. find all exclude and include filter conditional by type
+    // 4. find all exclude and include filter conditional by type
     Map<ConditionType, List<String>> filterConditions =
         dbFilters.stream()
             // apply subscription criteria
@@ -42,35 +52,39 @@ public class SubscriptionCriteriaFilteringService {
                     FilterCondition::type,
                     Collectors.flatMapping(fc -> fc.keyWords().stream(), Collectors.toList())));
 
-    // 4. find include matching
+    // 5. find include matching
     boolean includeAnyMatch =
         filterConditions.entrySet().stream()
             .filter(entry -> INCLUDE == entry.getKey())
             .map(Map.Entry::getValue)
             .flatMap(Collection::stream)
-            .anyMatch(key -> findOccurrencePhrase(INCLUDE, text, key));
+            .anyMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
 
-    // 5. find exclude matching
+    // 6. find exclude matching
     boolean excludeNoneMatch =
         filterConditions.entrySet().stream()
             .filter(entry -> EXCLUDE == entry.getKey())
             .map(Map.Entry::getValue)
             .flatMap(Collection::stream)
-            .noneMatch(key -> findOccurrencePhrase(EXCLUDE, text, key));
-
-    log.info(
-        "Filter: include anyMatch - {}, exclude noneMatch - {}", includeAnyMatch, excludeNoneMatch);
+            .noneMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
 
     return includeAnyMatch && excludeNoneMatch;
   }
 
-  /** find the occurrence of specific phrase within a text */
-  private boolean findOccurrencePhrase(ConditionType type, String text, String phrase) {
-    if (toLowerCase(text).indexOf(toLowerCase(phrase)) >= 1) {
-      log.info("Filter: {} by word - {}", type, phrase);
-      return true;
+  /** Define text to apply filters */
+  private String defineTextOrDefaultBehaviorToApplyFilters(RssItemDto rssItem) {
+    var title = rssItem.title();
+    // default behavior
+    if (filterCriteriaOnlyToTitle) {
+      return title;
     }
-    return false;
+    var description = rssItem.description();
+    return String.format(TEXT_FORMAT, title, description);
+  }
+
+  /** find the occurrence of specific phrase within a text */
+  private boolean findOccurrencePhraseIgnoreCase(String text, String phrase) {
+    return toLowerCase(text).indexOf(toLowerCase(phrase)) >= 1;
   }
 
   private String toLowerCase(String str) {

@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Slf4j
 @Component
@@ -24,7 +23,6 @@ public class ProcessingPublisherScheduler {
   private final ErrorService errorService;
   private final RssTopicStorageService rssTopicService;
   private final TelegramPublisherService publisherService;
-  private final TemplateStorageService templateStorageService;
   private final TemplateResolverService templateResolverService;
   private final SubscriptionStorageService subscriptionStorageService;
 
@@ -44,19 +42,18 @@ public class ProcessingPublisherScheduler {
                     .flatMap(
                         topic ->
                             errorService.handleException(
-                                topic, () -> processPublishRssTopic(topic)))
+                                topic, () -> executeRssTopicPublication(topic)))
                     .ifPresent(rssTopicService::setRssTopicInactivity));
   }
 
-  private void processPublishRssTopic(RssTopicEntity topic) {
+  private void executeRssTopicPublication(RssTopicEntity topic) {
     var topicId = topic.getId();
+    var image = topic.getImage();
     var chatId = topic.getChatId();
     var templateId = topic.getTemplateId();
-    var placeholder = templateStorageService.findExistOrDefaultTemplateById(templateId);
     templateResolverService
-        .applyTemplateToRssTopic(placeholder, topic)
-        .flatMap(message -> publisherService.postMessage(chatId, message))
-        .map(Message::getMessageId)
+        .findTemplateAndApplyToRssTopic(templateId, topic)
+        .map(text -> publisherService.sendMessage(chatId, image, text))
         .ifPresent(messageId -> rssTopicService.setRssTopicInactivity(topicId, messageId));
   }
 }

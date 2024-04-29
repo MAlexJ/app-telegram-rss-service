@@ -3,6 +3,7 @@ package com.malex.service.resolver;
 import com.github.mustachejava.MustacheFactory;
 import com.malex.exception.TemplateResolverException;
 import com.malex.model.entity.RssTopicEntity;
+import com.malex.service.storage.TemplateStorageService;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -18,8 +19,17 @@ import org.springframework.stereotype.Service;
 public class TemplateResolverService {
 
   private final MustacheFactory mustacheFactory;
+  private final TemplateStorageService templateStorageService;
 
-  public Optional<String> applyTemplateToRssTopic(String template, RssTopicEntity topic) {
+  /** Find the template and apply to the element */
+  public Optional<String> findTemplateAndApplyToRssTopic(String templateId, RssTopicEntity topic) {
+    // 1. find template in db or default
+    var template = templateStorageService.findExistOrDefaultTemplateById(templateId);
+    // 2. apply template to topic
+    return mergeRssTopicWithTemplate(topic, template);
+  }
+
+  private Optional<String> mergeRssTopicWithTemplate(RssTopicEntity topic, String template) {
     try (var writer = new StringWriter();
         var reader = new StringReader(template)) {
       var mustache = mustacheFactory.compile(reader, null);

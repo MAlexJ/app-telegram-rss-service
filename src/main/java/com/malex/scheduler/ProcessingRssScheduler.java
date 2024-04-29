@@ -34,9 +34,11 @@ public class ProcessingRssScheduler {
   public void processingRssSubscriptions() {
     log.info("Start processing RSS subscriptions - {}", schedulerProcessNumber.incrementAndGet());
     subscriptionService.findAllActiveSubscriptions().stream()
+        // todo : calculate md5 by criteria and apply filter by md5 hash
         .map(topicService::processingRssTopicsWithFilteringCriteria)
         .flatMap(Collection::stream)
         .filter(topic -> topicStorageService.isNotExistTopicByMd5Hash(topic.md5Hash()))
+        // todo apply customization and parsing
         .forEach(topicStorageService::saveNewRssTopic);
   }
 }
