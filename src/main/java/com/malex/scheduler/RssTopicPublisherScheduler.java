@@ -40,7 +40,7 @@ public class RssTopicPublisherScheduler {
                         topic ->
                             errorService.handleException(
                                 topic, () -> executeRssTopicPublication(topic)))
-                    .ifPresent(rssTopicService::setRssTopicInactivity));
+                    .ifPresent(rssTopicService::deactivateRssTopics));
   }
 
   private void executeRssTopicPublication(RssTopicEntity topic) {
@@ -51,6 +51,6 @@ public class RssTopicPublisherScheduler {
     templateResolverService
         .findTemplateAndApplyToRssTopic(templateId, topic)
         .map(text -> publisherService.sendMessage(chatId, image, text))
-        .ifPresent(messageId -> rssTopicService.setRssTopicInactivity(topicId, messageId));
+        .ifPresent(messageId -> rssTopicService.deactivateRssTopics(topicId, messageId));
   }
 }

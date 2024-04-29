@@ -46,13 +46,13 @@ public class RssTopicStorageService {
    * @param id - topic GUID id
    * @param messageId - telegram offset message id
    */
-  public void setRssTopicInactivity(String id, Integer messageId) {
-    log.info("Inactive Rss topic by id - {}, message id - {}", id, messageId);
+  public void deactivateRssTopics(String id, Integer messageId) {
+    log.info("Deactivate Rss topic by id - {}, message id - {}", id, messageId);
     topicRepository.updateRssTopicEntity(id, messageId);
   }
 
-  public void setRssTopicInactivity(String id) {
-    log.info("Inactive Rss topic by id - {}", id);
+  public void deactivateRssTopics(String id) {
+    log.info("Deactivate Rss topic by id - {}", id);
     topicRepository.updateRssTopicEntity(id);
   }
 
