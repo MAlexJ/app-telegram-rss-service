@@ -25,6 +25,9 @@ public class CacheConfiguration {
   public static final String FILTERS_CACHE_NAME = "filters";
   public static final String FILTERS_CACHE_KEY_ID = "#root.method.name";
 
+  public static final String IMAGES_CACHE_NAME = "images";
+  public static final String IMAGES_CACHE_KEY_ID = "#id";
+
   @Bean
   public CacheManager cacheManager() {
     return new ConcurrentMapCacheManager();

@@ -5,9 +5,9 @@ import com.malex.model.dto.RssItemDto;
 import com.malex.model.dto.RssTopicDto;
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.service.filter.SubscriptionCriteriaFilteringService;
+import com.malex.service.image.ImageService;
 import com.malex.webservice.RssReaderWebService;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RssTopicService {
+
+  private final ImageService imageService;
   private final Md5HashService md5HashService;
   private final RssReaderWebService rssWebService;
   private final SubscriptionCriteriaFilteringService filterService;
 
-  @Value("${calculate.md5Hash.for.link}")
+  @Value("${md5Hash.calculation.baseOn.link}")
   private boolean calculateMd5HashBaseOnLink;
 
   /** Convert Rss items from subscription to rss topics */
@@ -51,27 +53,30 @@ public class RssTopicService {
         .toList();
   }
 
+  private String calculateMd5HashByCriteria(RssItemDto rssItem) {
+    var link = rssItem.link();
+    if (calculateMd5HashBaseOnLink) {
+      return md5HashService.md5HashCalculation(link);
+    }
+    var title = rssItem.title();
+    var description = rssItem.description();
+    return md5HashService.md5HashCalculation(title, description);
+  }
+
   private RssTopicContentCustomisation applyCustomisationToDescription(
       String imageId, RssItemDto rssItem) {
     // 1. get description
     var description = rssItem.description();
-    // 2. define image
-    // todo for test only
-    var image = "https://upload.wikimedia.org/wikipedia/ru/7/7f/Habrahabr_logo.png";
-    if (Objects.isNull(imageId)) {
-      image = "";
-    }
+    // 2. define image url
+    var image = imageService.findById(imageId);
+    // 3. parse description
     try {
       Document document = Jsoup.parse(description);
-
-      // Attribute attribute =
-      // Jsoup.parse(description).selectFirst("img").attribute("src").getValue();
       Optional<String> imageOpt =
           Optional.ofNullable(document.selectFirst("img"))
               .map(el -> el.attribute("src"))
               .map(Attribute::getValue);
 
-      // Element firstParagraph =  Jsoup.parse(description).selectFirst("p").text();
       Optional<String> firstParagraph =
           Optional.ofNullable(document.selectFirst("p")).map(Element::text);
 
@@ -87,15 +92,5 @@ public class RssTopicService {
       log.error(ex.getMessage());
     }
     return new RssTopicContentCustomisation(image, description);
-  }
-
-  private String calculateMd5HashByCriteria(RssItemDto rssItem) {
-    var link = rssItem.link();
-    if (calculateMd5HashBaseOnLink) {
-      return md5HashService.md5HashCalculation(link);
-    }
-    var title = rssItem.title();
-    var description = rssItem.description();
-    return md5HashService.md5HashCalculation(title, description);
   }
 }

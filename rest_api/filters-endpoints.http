@@ -9,7 +9,21 @@ Content-Type: application/json
   "isActive": true,
   "condition": {
     "type": "EXCLUDE",
-    "keyWords": ["Words", "USA", "Eu"]
+    "keyWords": [
+      "геймдев",
+      "кафедра",
+      "mobile",
+      "python",
+      "алиса",
+      "алису",
+      "фотопроект",
+      "робот",
+      "инсайдер",
+      "project manager",
+      "одежд",
+      " сапр ",
+      "it-школа"
+    ]
   }
 }
 

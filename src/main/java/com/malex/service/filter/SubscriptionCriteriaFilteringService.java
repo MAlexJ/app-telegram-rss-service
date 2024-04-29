@@ -53,12 +53,18 @@ public class SubscriptionCriteriaFilteringService {
                     Collectors.flatMapping(fc -> fc.keyWords().stream(), Collectors.toList())));
 
     // 5. find include matching
-    boolean includeAnyMatch =
-        filterConditions.entrySet().stream()
-            .filter(entry -> INCLUDE == entry.getKey())
-            .map(Map.Entry::getValue)
-            .flatMap(Collection::stream)
-            .anyMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
+    var includeConditionMap =
+        filterConditions.entrySet().stream().filter(entry -> INCLUDE == entry.getKey()).toList();
+    boolean includeAnyMatch;
+    if (includeConditionMap.isEmpty()) {
+      includeAnyMatch = true;
+    } else {
+      includeAnyMatch =
+          includeConditionMap.stream()
+              .map(Map.Entry::getValue)
+              .flatMap(Collection::stream)
+              .anyMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
+    }
 
     // 6. find exclude matching
     boolean excludeNoneMatch =

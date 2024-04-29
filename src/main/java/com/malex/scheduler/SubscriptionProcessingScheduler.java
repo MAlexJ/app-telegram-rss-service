@@ -4,7 +4,6 @@ import com.malex.service.RssTopicService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -21,8 +20,6 @@ public class SubscriptionProcessingScheduler {
   private final RssTopicStorageService topicStorageService;
   private final SubscriptionStorageService subscriptionService;
 
-  private final AtomicInteger schedulerProcessNumber = new AtomicInteger(0);
-
   /**
    * Find all active subscriptions, apply user filters and determine whether such a record in
    * database or not. <br>
@@ -32,7 +29,7 @@ public class SubscriptionProcessingScheduler {
   @Transactional
   @Scheduled(cron = "${scheduled.processing.rss.cron}")
   public void processingRssSubscriptions() {
-    log.info("Start processing RSS subscriptions - {}", schedulerProcessNumber.incrementAndGet());
+    log.info("Start processing RSS subscriptions");
     subscriptionService.findAllActiveSubscriptions().stream()
         // todo : calculate md5 by criteria and apply filter by md5 hash
         .map(topicService::processingRssTopicsWithFilteringCriteria)

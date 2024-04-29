@@ -3,7 +3,7 @@ package com.malex.controller;
 import com.malex.model.dto.ImageDto;
 import com.malex.model.request.ImageRequest;
 import com.malex.model.request.ImageSearchRequest;
-import com.malex.service.ImageService;
+import com.malex.service.image.ImageService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
