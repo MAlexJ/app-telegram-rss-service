@@ -34,4 +34,19 @@ public record RssTopicDto(
         null,
         true);
   }
+
+  public RssTopicDto(SubscriptionItemDto subscription, String image, String description) {
+    this(
+        subscription.subscriptionId(),
+        subscription.chatId(),
+        subscription.templateId(),
+        image,
+        "subscription.rss() -> null",
+        subscription.title(),
+        description,
+        subscription.link(),
+        subscription.md5Hash(),
+        null,
+        true);
+  }
 }

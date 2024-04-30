@@ -1,11 +1,12 @@
 package com.malex.service;
 
 import com.malex.model.customisation.RssTopicContentCustomisation;
-import com.malex.model.dto.RssItemDto;
 import com.malex.model.dto.RssTopicDto;
+import com.malex.model.dto.SubscriptionItemDto;
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.service.filter.SubscriptionCriteriaFilteringService;
 import com.malex.service.image.ImageService;
+import com.malex.service.storage.RssTopicStorageService;
 import com.malex.webservice.RssReaderWebService;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -24,52 +24,42 @@ import org.springframework.stereotype.Service;
 public class RssTopicService {
 
   private final ImageService imageService;
-  private final Md5HashService md5HashService;
   private final RssReaderWebService rssWebService;
+  private final RssTopicStorageService topicStorageService;
   private final SubscriptionCriteriaFilteringService filterService;
 
-  @Value("${md5Hash.calculation.baseOn.link}")
-  private boolean calculateMd5HashBaseOnLink;
-
   /** Convert Rss items from subscription to rss topics */
-  public List<RssTopicDto> processingRssTopicsWithFilteringCriteria(
-      SubscriptionEntity subscription) {
-    var url = subscription.getRss();
-    var filterIds = subscription.getFilterIds();
-    var imageId = subscription.getImageId();
-    return rssWebService.readRssNews(url).stream()
-        .filter(rssItem -> filterService.applyFilterByCriteria(rssItem, filterIds))
-        .map(
-            rssItem -> {
-              var md5Hash = calculateMd5HashByCriteria(rssItem);
-              var customisationContent = applyCustomisationToDescription(imageId, rssItem);
-              return new RssTopicDto(
-                  subscription,
-                  rssItem,
-                  customisationContent.image(),
-                  customisationContent.description(),
-                  md5Hash);
-            })
-        .toList();
+  public List<SubscriptionItemDto> readRssTopics(SubscriptionEntity subscription) {
+    return rssWebService.readRssNews(subscription).stream().toList();
   }
 
-  private String calculateMd5HashByCriteria(RssItemDto rssItem) {
-    var link = rssItem.link();
-    if (calculateMd5HashBaseOnLink) {
-      return md5HashService.md5HashCalculation(link);
-    }
-    var title = rssItem.title();
-    var description = rssItem.description();
-    return md5HashService.md5HashCalculation(title, description);
+  public boolean isNotExistTopicByMd5Hash(SubscriptionItemDto item) {
+    var md5Hash = item.md5Hash();
+    return topicStorageService.isNotExistTopicByMd5Hash(md5Hash);
+  }
+
+  /** check whether the filter criteria are included or excluded. */
+  public boolean verifyIncludedOrExcludedFilterCriteria(SubscriptionItemDto item) {
+    return filterService.applyFilterByCriteria(item);
+  }
+
+  /** Apply Rss Topic customisation */
+  public RssTopicDto applyRssTopicCustomization(SubscriptionItemDto item) {
+    var imageId = item.imageId();
+    var description = item.description();
+    var customisationContent = applyCustomisationToDescription(imageId, description);
+    return new RssTopicDto(item, customisationContent.image(), customisationContent.description());
+  }
+
+  public void saveNewRssTopic(RssTopicDto rssTopic) {
+    topicStorageService.saveNewRssTopic(rssTopic);
   }
 
   private RssTopicContentCustomisation applyCustomisationToDescription(
-      String imageId, RssItemDto rssItem) {
-    // 1. get description
-    var description = rssItem.description();
-    // 2. define image url
+      String imageId, String description) {
+    // 1. define image url
     var image = imageService.findById(imageId);
-    // 3. parse description
+    // 2. parse description
     try {
       Document document = Jsoup.parse(description);
       Optional<String> imageOpt =

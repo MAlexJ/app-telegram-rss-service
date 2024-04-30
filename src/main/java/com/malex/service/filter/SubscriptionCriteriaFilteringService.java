@@ -3,7 +3,7 @@ package com.malex.service.filter;
 import static com.malex.model.filter.ConditionType.EXCLUDE;
 import static com.malex.model.filter.ConditionType.INCLUDE;
 
-import com.malex.model.dto.RssItemDto;
+import com.malex.model.dto.SubscriptionItemDto;
 import com.malex.model.entity.FilterEntity;
 import com.malex.model.filter.ConditionType;
 import com.malex.model.filter.FilterCondition;
@@ -29,15 +29,20 @@ public class SubscriptionCriteriaFilteringService {
   private final FilterStorageService filterStorageService;
 
   /** Apply filtering of rss topics by criteria */
-  public boolean applyFilterByCriteria(RssItemDto itemDto, List<String> topicFilterIds) {
-    String text = defineTextOrDefaultBehaviorToApplyFilters(itemDto);
-    if (topicFilterIds.isEmpty()) {
+  public boolean applyFilterByCriteria(SubscriptionItemDto subscriptionItem) {
+    var filterIds = subscriptionItem.filterIds();
+    if (filterIds.isEmpty()) {
       return true;
     }
+
+    var title = subscriptionItem.title();
+    var description = subscriptionItem.description();
+    var text = defineTextOrDefaultBehaviorToApplyFilters(title, description);
+
     var filterConditionMap =
-            filterStorageService.findAllActiveFilters().stream()
+        filterStorageService.findAllActiveFilters().stream()
             // apply subscription criteria
-            .filter(filter -> topicFilterIds.contains(filter.getId()))
+            .filter(filter -> filterIds.contains(filter.getId()))
             .map(FilterEntity::getCondition)
             .collect(
                 Collectors.groupingBy(
@@ -75,13 +80,11 @@ public class SubscriptionCriteriaFilteringService {
   }
 
   /** Define text to apply filters */
-  private String defineTextOrDefaultBehaviorToApplyFilters(RssItemDto rssItem) {
-    var title = rssItem.title();
+  private String defineTextOrDefaultBehaviorToApplyFilters(String title, String description) {
     // default behavior
     if (filterCriteriaOnlyToTitle) {
       return title;
     }
-    var description = rssItem.description();
     return String.format(TEXT_FORMAT, title, description);
   }
 

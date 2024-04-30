@@ -1,7 +1,6 @@
 package com.malex.scheduler;
 
 import com.malex.service.RssTopicService;
-import com.malex.service.storage.RssTopicStorageService;
 import com.malex.service.storage.SubscriptionStorageService;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubscriptionProcessingScheduler {
 
   private final RssTopicService topicService;
-  private final RssTopicStorageService topicStorageService;
   private final SubscriptionStorageService subscriptionService;
 
   /**
@@ -31,22 +29,11 @@ public class SubscriptionProcessingScheduler {
   public void processingRssSubscriptions() {
     log.info("Start processing RSS subscriptions");
     subscriptionService.findAllActiveSubscriptions().stream()
-        // todo : calculate md5 by criteria and apply filter by md5 hash
-           // 1. String md5Hase = calculateMd5HashByCriteria ()
-            .map(subscription -> {
-              //
-
-              return subscription;
-            })
-
-            .filter( subscription ->  {
-
-              return true;
-            })
-        .map(topicService::processingRssTopicsWithFilteringCriteria)
+        .map(topicService::readRssTopics)
         .flatMap(Collection::stream)
-        .filter(topic -> topicStorageService.isNotExistTopicByMd5Hash(topic.md5Hash()))
-        // todo apply customization and parsing
-        .forEach(topicStorageService::saveNewRssTopic);
+        .filter(topicService::isNotExistTopicByMd5Hash)
+        .filter(topicService::verifyIncludedOrExcludedFilterCriteria)
+        .map(topicService::applyRssTopicCustomization)
+        .forEach(topicService::saveNewRssTopic);
   }
 }
