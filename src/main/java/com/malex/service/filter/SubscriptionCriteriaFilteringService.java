@@ -30,20 +30,12 @@ public class SubscriptionCriteriaFilteringService {
 
   /** Apply filtering of rss topics by criteria */
   public boolean applyFilterByCriteria(RssItemDto itemDto, List<String> topicFilterIds) {
-    // 1. define text
     String text = defineTextOrDefaultBehaviorToApplyFilters(itemDto);
-
-    // 2. to check filters presence for rss topic
     if (topicFilterIds.isEmpty()) {
       return true;
     }
-
-    // 3. find all filters in db
-    List<FilterEntity> dbFilters = filterStorageService.findAllActiveFilters();
-
-    // 4. find all exclude and include filter conditional by type
-    Map<ConditionType, List<String>> filterConditions =
-        dbFilters.stream()
+    var filterConditionMap =
+            filterStorageService.findAllActiveFilters().stream()
             // apply subscription criteria
             .filter(filter -> topicFilterIds.contains(filter.getId()))
             .map(FilterEntity::getCondition)
@@ -52,29 +44,34 @@ public class SubscriptionCriteriaFilteringService {
                     FilterCondition::type,
                     Collectors.flatMapping(fc -> fc.keyWords().stream(), Collectors.toList())));
 
-    // 5. find include matching
-    var includeConditionMap =
-        filterConditions.entrySet().stream().filter(entry -> INCLUDE == entry.getKey()).toList();
-    boolean includeAnyMatch;
-    if (includeConditionMap.isEmpty()) {
-      includeAnyMatch = true;
-    } else {
-      includeAnyMatch =
-          includeConditionMap.stream()
-              .map(Map.Entry::getValue)
-              .flatMap(Collection::stream)
-              .anyMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
-    }
+    return hasInclusiveFilterMatchingCondition(filterConditionMap, text)
+        && hasExcludingFilterMatchingCondition(filterConditionMap, text);
+  }
 
-    // 6. find exclude matching
-    boolean excludeNoneMatch =
-        filterConditions.entrySet().stream()
-            .filter(entry -> EXCLUDE == entry.getKey())
+  private boolean hasExcludingFilterMatchingCondition(
+      Map<ConditionType, List<String>> conditions, String text) {
+    return findConditionByType(conditions, EXCLUDE).stream()
+        .map(Map.Entry::getValue)
+        .flatMap(Collection::stream)
+        .noneMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
+  }
+
+  private boolean hasInclusiveFilterMatchingCondition(
+      Map<ConditionType, List<String>> conditions, String text) {
+    var conditionMap = findConditionByType(conditions, INCLUDE);
+    return conditionMap.isEmpty()
+        || conditionMap.stream()
             .map(Map.Entry::getValue)
             .flatMap(Collection::stream)
-            .noneMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
+            .anyMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
+  }
 
-    return includeAnyMatch && excludeNoneMatch;
+  /** There is an excluding condition for matching */
+  private List<Map.Entry<ConditionType, List<String>>> findConditionByType(
+      Map<ConditionType, List<String>> conditions, ConditionType type) {
+    return conditions.entrySet().stream() //
+        .filter(entry -> type == entry.getKey())
+        .toList();
   }
 
   /** Define text to apply filters */
@@ -90,10 +87,15 @@ public class SubscriptionCriteriaFilteringService {
 
   /** find the occurrence of specific phrase within a text */
   private boolean findOccurrencePhraseIgnoreCase(String text, String phrase) {
-    return toLowerCase(text).indexOf(toLowerCase(phrase)) >= 1;
+    var textOpt = toLowerCase(text);
+    var phraseOpt = toLowerCase(phrase);
+    if (textOpt.isEmpty() || phraseOpt.isEmpty()) {
+      return false;
+    }
+    return textOpt.get().indexOf(phraseOpt.get()) >= 1;
   }
 
-  private String toLowerCase(String str) {
-    return Optional.ofNullable(str).map(String::toLowerCase).orElse(str);
+  private Optional<String> toLowerCase(String str) {
+    return Optional.ofNullable(str).map(String::toLowerCase);
   }
 }

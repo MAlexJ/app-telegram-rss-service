@@ -32,6 +32,17 @@ public class SubscriptionProcessingScheduler {
     log.info("Start processing RSS subscriptions");
     subscriptionService.findAllActiveSubscriptions().stream()
         // todo : calculate md5 by criteria and apply filter by md5 hash
+           // 1. String md5Hase = calculateMd5HashByCriteria ()
+            .map(subscription -> {
+              //
+
+              return subscription;
+            })
+
+            .filter( subscription ->  {
+
+              return true;
+            })
         .map(topicService::processingRssTopicsWithFilteringCriteria)
         .flatMap(Collection::stream)
         .filter(topic -> topicStorageService.isNotExistTopicByMd5Hash(topic.md5Hash()))
