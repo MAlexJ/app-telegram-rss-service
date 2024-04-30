@@ -3,6 +3,7 @@ package com.malex.service.resolver;
 import com.github.mustachejava.MustacheFactory;
 import com.malex.exception.TemplateResolverException;
 import com.malex.model.entity.RssTopicEntity;
+import com.malex.service.storage.SpecialCharacterStorageService;
 import com.malex.service.storage.TemplateStorageService;
 import java.io.IOException;
 import java.io.StringReader;
@@ -20,6 +21,7 @@ public class TemplateResolverService {
 
   private final MustacheFactory mustacheFactory;
   private final TemplateStorageService templateStorageService;
+  private final SpecialCharacterStorageService specialCharacterStorageService;
 
   /** Find the template and apply to the element */
   public Optional<String> findTemplateAndApplyToRssTopic(String templateId, RssTopicEntity topic) {
@@ -48,7 +50,8 @@ public class TemplateResolverService {
   private Optional<String> applySpecialCharacterSubstitution(Writer writer) throws IOException {
     try (writer) {
       var text = writer.toString();
-      // todo move it to database
+      // todo save to db, impl controller
+      var characterList = specialCharacterStorageService.findAll();
       return Optional.ofNullable(text) //
           .map(desc -> desc.replaceAll("[\\p{Cf}]", ""))
           .map(desc -> desc.replace("&quot;", "\""))
@@ -57,6 +60,8 @@ public class TemplateResolverService {
           .map(desc -> desc.replace("&#700;", "'"))
           .map(desc -> desc.replace("&amp;#8722;", "-"))
           .map(desc -> desc.replace("&#8722;", "-"));
+      //          .map(desc -> desc.replace("&gt;", " "))
+      //          .map(desc -> desc.replace("&lt;", " "));
     }
   }
 }

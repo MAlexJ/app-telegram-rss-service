@@ -4,7 +4,7 @@ import static com.malex.utils.RssTopicUtils.randomlyRearrangingIds;
 
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.ErrorService;
-import com.malex.service.TelegramPublisherService;
+import com.malex.webservice.TelegramPublisherWebService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.*;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class RssTopicPublisherScheduler {
 
   private final ErrorService errorService;
   private final RssTopicStorageService rssTopicService;
-  private final TelegramPublisherService publisherService;
+  private final TelegramPublisherWebService publisherService;
   private final TemplateResolverService templateResolverService;
   private final SubscriptionStorageService subscriptionStorageService;
 

@@ -28,6 +28,8 @@ public class CacheConfiguration {
   public static final String IMAGES_CACHE_NAME = "images";
   public static final String IMAGES_CACHE_KEY_ID = "#id";
 
+  public static final String SPECIAL_CHARACTER_CACHE_NAME = "special_characters";
+
   @Bean
   public CacheManager cacheManager() {
     return new ConcurrentMapCacheManager();

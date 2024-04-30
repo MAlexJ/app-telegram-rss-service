@@ -1,4 +1,4 @@
-package com.malex.service;
+package com.malex.webservice;
 
 import static com.malex.utils.MessageFormatUtils.shortMessage;
 
@@ -18,7 +18,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TelegramPublisherService {
+public class TelegramPublisherWebService {
 
   private final DefaultAbsSender sender;
 
@@ -54,7 +54,9 @@ public class TelegramPublisherService {
             .chatId(chatId)
             .parseMode(ParseMode.HTML)
             .photo(new InputFile(image))
+            // SendPhoto query: [400] Bad Request: message caption is too long
             .caption(text)
+            .protectContent(true)
             .build());
   }
 }

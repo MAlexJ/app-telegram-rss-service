@@ -3,7 +3,7 @@ package com.malex.controller;
 import com.malex.exception.TelegramPublisherException;
 import com.malex.model.request.MessageRequest;
 import com.malex.model.response.MessageResponse;
-import com.malex.service.TelegramPublisherService;
+import com.malex.webservice.TelegramPublisherWebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MessageRestController {
 
-  private final TelegramPublisherService service;
+  private final TelegramPublisherWebService service;
 
   /**
    * Send message to specified chat
