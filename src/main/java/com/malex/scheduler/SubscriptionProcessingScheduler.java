@@ -2,7 +2,6 @@ package com.malex.scheduler;
 
 import com.malex.service.RssTopicService;
 import com.malex.service.storage.SubscriptionStorageService;
-import java.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -28,12 +27,8 @@ public class SubscriptionProcessingScheduler {
   @Scheduled(cron = "${scheduled.processing.rss.cron}")
   public void processingRssSubscriptions() {
     log.info("Start processing RSS subscriptions");
-    subscriptionService.findAllActiveSubscriptions().stream()
-        .map(topicService::readRssTopics)
-        .flatMap(Collection::stream)
-        .filter(topicService::isNotExistTopicByMd5Hash)
-        .filter(topicService::verifyIncludedOrExcludedFilterCriteria)
-        .map(topicService::applyRssTopicCustomization)
-        .forEach(topicService::saveNewRssTopic);
+    subscriptionService
+        .findAllActiveSubscriptions()
+        .forEach(topicService::processingRssSubscriptions);
   }
 }

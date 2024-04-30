@@ -1,6 +1,9 @@
 package com.malex.model.dto;
 
+import static com.malex.utils.MessageFormatUtils.errorMessage;
+
 import java.util.List;
+import java.util.Objects;
 
 public record SubscriptionItemDto(
     // item info
@@ -13,4 +16,10 @@ public record SubscriptionItemDto(
     Long chatId,
     String templateId,
     String imageId,
-    List<String> filterIds) {}
+    String customizationId,
+    List<String> filterIds) {
+
+  public SubscriptionItemDto {
+    Objects.requireNonNull(md5Hash, errorMessage(md5Hash));
+  }
+}

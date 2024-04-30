@@ -26,8 +26,11 @@ public class ImageService {
         .flatMap(imageDto -> parserService.findImageOrDefaultUrlByCriteria(url, imageDto));
   }
 
-  public String findById(String id) {
-    return storageService.findById(id).map(ImageDto::link).orElseGet(() -> defaultImageUrl);
+  public String findImageByIdOrProvideDefault(String imageId) {
+    return Optional.ofNullable(imageId)
+        .flatMap(storageService::findById)
+        .map(ImageDto::link)
+        .orElseGet(() -> defaultImageUrl);
   }
 
   public List<ImageDto> findAll() {

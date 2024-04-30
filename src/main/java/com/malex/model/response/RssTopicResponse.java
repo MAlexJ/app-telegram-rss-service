@@ -7,7 +7,6 @@ public record RssTopicResponse(
     Long chatId,
     String subscriptionId,
     String image,
-    String rss,
     String title,
     String description,
     String link,

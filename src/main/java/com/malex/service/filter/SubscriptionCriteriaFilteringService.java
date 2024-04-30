@@ -28,8 +28,8 @@ public class SubscriptionCriteriaFilteringService {
 
   private final FilterStorageService filterStorageService;
 
-  /** Apply filtering of rss topics by criteria */
-  public boolean applyFilterByCriteria(SubscriptionItemDto subscriptionItem) {
+  /** check whether the filter criteria are included or excluded. */
+  public boolean verifyIncludedOrExcludedFilterCriteria(SubscriptionItemDto subscriptionItem) {
     var filterIds = subscriptionItem.filterIds();
     if (filterIds.isEmpty()) {
       return true;

@@ -62,6 +62,7 @@ public class RssReaderWebService {
     var templateId = subscription.getTemplateId();
     var imageId = subscription.getImageId();
     var filterIds = subscription.getFilterIds();
+    var customizationId = subscription.getCustomizationId();
     // item info
     var link = readStingValue(item.getLink());
     var title = readStingValue(item.getTitle());
@@ -69,7 +70,16 @@ public class RssReaderWebService {
     // MD5 hash calculation
     var md5Hash = hashService.calculateMd5HashByCriteria(link, title, description);
     return new SubscriptionItemDto(
-        title, description, link, md5Hash, subscriptionId, chatId, templateId, imageId, filterIds);
+        title,
+        description,
+        link,
+        md5Hash,
+        subscriptionId,
+        chatId,
+        templateId,
+        imageId,
+        customizationId,
+        filterIds);
   }
 
   private String readStingValue(Optional<String> value) {

@@ -37,10 +37,6 @@ public interface ObjectMapper {
   @Mapping(source = "active", target = "isActive")
   RssTopicResponse entityToDto(RssTopicEntity entity);
 
-  ChatDto entityToDto(ChatEntity entity);
-
-  UserDto entityToDto(UserEntity entity);
-
   @Mapping(target = "id", ignore = true)
   ChatEntity dtoToEntity(ChatDto dto);
 

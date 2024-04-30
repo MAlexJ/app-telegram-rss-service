@@ -8,6 +8,7 @@ public record RssSubscriptionResponse(
     Long chatId,
     String imageId,
     String templateId,
+    String customizationId,
     String rss,
     List<String> filterIds,
     boolean isActive,

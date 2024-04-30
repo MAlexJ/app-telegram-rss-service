@@ -21,6 +21,7 @@ public class SubscriptionEntity implements Persistable<String> {
   private Long chatId;
   private String imageId;
   private String templateId;
+  private String customizationId;
   private String rss;
 
   private List<String> filterIds;

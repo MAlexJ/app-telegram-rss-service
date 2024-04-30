@@ -1,13 +1,10 @@
 package com.malex.model.dto;
 
-import com.malex.model.entity.SubscriptionEntity;
-
 public record RssTopicDto(
     String subscriptionId,
     Long chatId,
     String templateId,
     String image,
-    String rss,
     String title,
     String description,
     String link,
@@ -15,35 +12,28 @@ public record RssTopicDto(
     Integer messageId,
     boolean isActive) {
 
-  public RssTopicDto(
-      SubscriptionEntity subscription,
-      RssItemDto item,
-      String image,
-      String description,
-      String md5Hash) {
-    this(
-        subscription.getId(),
-        subscription.getChatId(),
-        subscription.getTemplateId(),
-        image,
-        subscription.getRss(),
-        item.title(),
-        description,
-        item.link(),
-        md5Hash,
-        null,
-        true);
-  }
-
   public RssTopicDto(SubscriptionItemDto subscription, String image, String description) {
     this(
         subscription.subscriptionId(),
         subscription.chatId(),
         subscription.templateId(),
         image,
-        "subscription.rss() -> null",
         subscription.title(),
         description,
+        subscription.link(),
+        subscription.md5Hash(),
+        null,
+        true);
+  }
+
+  public RssTopicDto(SubscriptionItemDto subscription, String image) {
+    this(
+        subscription.subscriptionId(),
+        subscription.chatId(),
+        subscription.templateId(),
+        image,
+        subscription.title(),
+        subscription.description(),
         subscription.link(),
         subscription.md5Hash(),
         null,
