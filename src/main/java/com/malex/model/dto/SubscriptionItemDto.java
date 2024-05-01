@@ -4,7 +4,9 @@ import static com.malex.utils.MessageFormatUtils.errorMessage;
 
 import java.util.List;
 import java.util.Objects;
+import lombok.Builder;
 
+@Builder
 public record SubscriptionItemDto(
     // item info
     String title,
