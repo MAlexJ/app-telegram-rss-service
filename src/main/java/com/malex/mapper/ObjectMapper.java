@@ -4,10 +4,7 @@ import com.malex.model.dto.ChatDto;
 import com.malex.model.dto.RssTopicDto;
 import com.malex.model.dto.UserDto;
 import com.malex.model.entity.*;
-import com.malex.model.request.CustomizationRequest;
-import com.malex.model.request.FilterRequest;
-import com.malex.model.request.RssSubscriptionRequest;
-import com.malex.model.request.TemplateRequest;
+import com.malex.model.request.*;
 import com.malex.model.response.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -59,4 +56,10 @@ public interface ObjectMapper {
   CustomizationEntity dtoToEntity(CustomizationRequest dto);
 
   CustomizationResponse entityToDto(CustomizationEntity entity);
+
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "created", ignore = true)
+  SpecialCharacterEntity dtoToEntity(SpecialCharacterRequest dto);
+
+  SpecialCharacterResponse entityToDto(SpecialCharacterEntity entity);
 }

@@ -2,7 +2,9 @@ package com.malex.service.storage;
 
 import static com.malex.configuration.CacheConfiguration.SPECIAL_CHARACTER_CACHE_NAME;
 
-import com.malex.model.entity.SpecialCharacterEntity;
+import com.malex.mapper.ObjectMapper;
+import com.malex.model.request.SpecialCharacterRequest;
+import com.malex.model.response.SpecialCharacterResponse;
 import com.malex.repository.SpecialCharacterRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +21,18 @@ import org.springframework.stereotype.Service;
 public class SpecialCharacterStorageService {
 
   private final SpecialCharacterRepository repository;
+  private final ObjectMapper mapper;
 
   @Cacheable
-  public List<SpecialCharacterEntity> findAll() {
-    return repository.findAll();
+  public List<SpecialCharacterResponse> findAll() {
+    return repository.findAll().stream().map(mapper::entityToDto).toList();
   }
 
   @CacheEvict(allEntries = true)
-  public SpecialCharacterEntity save(SpecialCharacterEntity entity) {
-    return repository.save(entity);
+  public SpecialCharacterResponse save(SpecialCharacterRequest request) {
+    log.info("CacheEvict: save special character - {}", request);
+    var entity = mapper.dtoToEntity(request);
+    var persistEntity = repository.save(entity);
+    return mapper.entityToDto(persistEntity);
   }
 }
