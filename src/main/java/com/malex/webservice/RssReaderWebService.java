@@ -3,7 +3,6 @@ package com.malex.webservice;
 import com.apptasticsoftware.rssreader.RssReader;
 import com.malex.mapper.RssItemMapper;
 import com.malex.model.dto.RssItemDto;
-import com.malex.model.dto.SubscriptionItemDto;
 import com.malex.model.entity.SubscriptionEntity;
 import java.io.IOException;
 import java.util.Collections;
@@ -24,13 +23,12 @@ public class RssReaderWebService {
     try {
       return new RssReader().read(url).map(mapper::mapItemToDto).toList();
     } catch (IOException e) {
-      log.error("Error reading RSS by url - {}, error - {}", url, e.getMessage());
-      return Collections.emptyList();
+      return handleError(url, e);
     }
   }
 
   /** Read the latest news on Rss url */
-  public List<SubscriptionItemDto> readRssNews(SubscriptionEntity subscription) {
+  public List<RssItemDto> readRssNews(SubscriptionEntity subscription) {
     try {
       var url = subscription.getRss();
       return new RssReader()
@@ -38,8 +36,12 @@ public class RssReaderWebService {
           .map(item -> mapper.mapItemToDtoWithMd5Hash(item, subscription))
           .toList();
     } catch (IOException e) {
-      log.error("Error reading RSS by subscription - {}, error - {}", subscription, e.getMessage());
-      return Collections.emptyList();
+      return handleError(subscription, e);
     }
+  }
+
+  private List<RssItemDto> handleError(Object obj, IOException e) {
+    log.error("Error reading RSS by - {}, error - {}", obj, e.getMessage());
+    return Collections.emptyList();
   }
 }

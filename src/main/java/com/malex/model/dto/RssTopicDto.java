@@ -12,30 +12,44 @@ public record RssTopicDto(
     Integer messageId,
     boolean isActive) {
 
-  public RssTopicDto(SubscriptionItemDto subscription, String image, String description) {
+  public RssTopicDto(RssItemDto rssItem, String image, String description) {
     this(
-        subscription.subscriptionId(),
-        subscription.chatId(),
-        subscription.templateId(),
+        rssItem.subscriptionId(),
+        rssItem.chatId(),
+        rssItem.templateId(),
         image,
-        subscription.title(),
+        rssItem.title(),
         description,
-        subscription.link(),
-        subscription.md5Hash(),
+        rssItem.link(),
+        rssItem.md5Hash(),
         null,
         true);
   }
 
-  public RssTopicDto(SubscriptionItemDto subscription, String image) {
+  public RssTopicDto(RssItemDto rssItem, String image) {
     this(
-        subscription.subscriptionId(),
-        subscription.chatId(),
-        subscription.templateId(),
+        rssItem.subscriptionId(),
+        rssItem.chatId(),
+        rssItem.templateId(),
         image,
-        subscription.title(),
-        subscription.description(),
-        subscription.link(),
-        subscription.md5Hash(),
+        rssItem.title(),
+        rssItem.description(),
+        rssItem.link(),
+        rssItem.md5Hash(),
+        null,
+        true);
+  }
+
+  public RssTopicDto(RssItemDto rssItem) {
+    this(
+        rssItem.subscriptionId(),
+        rssItem.chatId(),
+        rssItem.templateId(),
+        null,
+        rssItem.title(),
+        rssItem.description(),
+        rssItem.link(),
+        rssItem.md5Hash(),
         null,
         true);
   }

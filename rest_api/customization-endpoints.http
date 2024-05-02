@@ -1,0 +1,22 @@
+###
+GET http://localhost:8080/v1/customizations
+
+###
+POST http://localhost:8080/v1/customizations
+Content-Type: application/json
+
+{
+  "defaultImage": "https://upload.wikimedia.org/wikipedia/ru/7/7f/Habrahabr_logo.png",
+  "image": {
+    "tag": "img",
+    "attribute": "src"
+  },
+  "text": {
+    "tag": "p",
+    "exclusionaryPhrases": [
+      "Читать дальше →",
+      "Читать далее",
+      "Читать дальше"
+    ]
+  }
+}

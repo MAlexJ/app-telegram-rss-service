@@ -25,10 +25,10 @@ public class CacheConfiguration {
   public static final String FILTERS_CACHE_NAME = "filters";
   public static final String FILTERS_CACHE_KEY_ID = "#root.method.name";
 
-  public static final String IMAGES_CACHE_NAME = "images";
-  public static final String IMAGES_CACHE_KEY_ID = "#id";
-
   public static final String SPECIAL_CHARACTER_CACHE_NAME = "special_characters";
+
+  public static final String CUSTOMIZATION_CACHE_NAME = "customization";
+  public static final String CUSTOMIZATION_CACHE_KEY_ID = "#customizationId";
 
   @Bean
   public CacheManager cacheManager() {

@@ -1,6 +1,6 @@
 package com.malex.service;
 
-import com.malex.model.dto.SubscriptionItemDto;
+import com.malex.model.dto.RssItemDto;
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.service.customisation.CustomisationService;
 import com.malex.service.filter.SubscriptionCriteriaFilteringService;
@@ -28,7 +28,7 @@ public class RssTopicService {
         .forEach(topicStorageService::saveNewRssTopic);
   }
 
-  private boolean verifyRssTopiMd5HashIdnDatabase(SubscriptionItemDto item) {
+  private boolean verifyRssTopiMd5HashIdnDatabase(RssItemDto item) {
     return topicStorageService.isNotExistTopicByMd5Hash(item.md5Hash());
   }
 }

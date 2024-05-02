@@ -3,7 +3,7 @@ package com.malex.service.filter;
 import static com.malex.model.filter.ConditionType.EXCLUDE;
 import static com.malex.model.filter.ConditionType.INCLUDE;
 
-import com.malex.model.dto.SubscriptionItemDto;
+import com.malex.model.dto.RssItemDto;
 import com.malex.model.entity.FilterEntity;
 import com.malex.model.filter.ConditionType;
 import com.malex.model.filter.FilterCondition;
@@ -29,15 +29,15 @@ public class SubscriptionCriteriaFilteringService {
   private final FilterStorageService filterStorageService;
 
   /** check whether the filter criteria are included or excluded. */
-  public boolean verifyIncludedOrExcludedFilterCriteria(SubscriptionItemDto subscriptionItem) {
-    var filterIds = subscriptionItem.filterIds();
+  public boolean verifyIncludedOrExcludedFilterCriteria(RssItemDto rssItem) {
+    var filterIds = rssItem.filterIds();
     if (filterIds.isEmpty()) {
       return true;
     }
 
-    var title = subscriptionItem.title();
-    var description = subscriptionItem.description();
-    var text = defineTextOrDefaultBehaviorToApplyFilters(title, description);
+    var title = rssItem.title();
+    var description = rssItem.description();
+    var text = defineBehaviorForTextMessageOrProvideDefault(title, description);
 
     var filterConditionMap =
         filterStorageService.findAllActiveFilters().stream()
@@ -79,8 +79,8 @@ public class SubscriptionCriteriaFilteringService {
         .toList();
   }
 
-  /** Define text to apply filters */
-  private String defineTextOrDefaultBehaviorToApplyFilters(String title, String description) {
+  /** Define the behavior for a text message or provide the default to apply filters */
+  private String defineBehaviorForTextMessageOrProvideDefault(String title, String description) {
     // default behavior
     if (filterCriteriaOnlyToTitle) {
       return title;

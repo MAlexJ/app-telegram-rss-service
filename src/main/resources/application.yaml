@@ -25,11 +25,6 @@ md5Hash:
     baseOn:
       link: ${APP_SERVICE_CALCULATE_MD5_ONLY_FOR_LINK:true}
 
-default:
-  topic:
-    image:
-      url: ${APP_SERVICE_DEFAULT_TOPIC_IMAGE_URL:https://upload.wikimedia.org/wikipedia/ru/7/7f/Habrahabr_logo.png}
-
 filter:
   criteria:
     title: ${APP_SERVICE_FILTER_CRITERIA_ONLY_FOR_TITLE:false}

@@ -1,11 +1,15 @@
 package com.malex.service.customisation;
 
-import com.malex.model.customisation.RssTopicContentCustomisation;
+import com.malex.model.customization.Text;
+import com.malex.model.dto.RssItemDto;
 import com.malex.model.dto.RssTopicDto;
-import com.malex.model.dto.SubscriptionItemDto;
-import com.malex.service.image.ImageService;
-import java.util.Objects;
+import com.malex.model.entity.CustomizationEntity;
+import com.malex.model.request.CustomizationRequest;
+import com.malex.model.response.CustomizationResponse;
+import com.malex.service.storage.CustomizationStorageService;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -19,48 +23,69 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomisationService {
 
-  private final ImageService imageService;
+  private final CustomizationStorageService storageService;
+
+  public CustomizationResponse save(CustomizationRequest request) {
+    return storageService.save(request);
+  }
+
+  public List<CustomizationResponse> findAll() {
+    return storageService.findAll();
+  }
 
   /** Apply Rss Topic customisation */
-  public RssTopicDto applyRssTopicCustomization(SubscriptionItemDto item) {
-    var image = imageService.findImageByIdOrProvideDefault(item.imageId());
-    var customizationId = item.customizationId();
-    // todo >>> find customisation from db and apply
-    return Objects.isNull(customizationId)
-        ? new RssTopicDto(item, image)
-        : applyCustomization(item, image);
+  public RssTopicDto applyRssTopicCustomization(RssItemDto rssItem) {
+    return Optional.ofNullable(rssItem.customizationId())
+        .flatMap(
+            customizationId ->
+                storageService
+                    .findById(customizationId)
+                    .map(customization -> applyCustomization(customization, rssItem)))
+        .orElseGet(() -> new RssTopicDto(rssItem));
   }
 
-  private RssTopicDto applyCustomization(SubscriptionItemDto item, String image) {
-    var description = item.description();
-    var customisationContent = applyCustomisationToDescription(image, description);
-    String customisationImage = customisationContent.image();
-    String customisationDescriptions = customisationContent.description();
-    return new RssTopicDto(item, customisationImage, customisationDescriptions);
+  protected RssTopicDto applyCustomization(CustomizationEntity customisation, RssItemDto rssItem) {
+    var document = Jsoup.parse(rssItem.description());
+    var image = extractCustomisationImage(document, customisation);
+    var text = extractCustomisationText(document, customisation.getText());
+    return new RssTopicDto(rssItem, image, text);
   }
 
-  private RssTopicContentCustomisation applyCustomisationToDescription(
-      String image, String description) {
-    try {
-      Document document = Jsoup.parse(description);
-      Optional<String> imageOpt =
-          Optional.ofNullable(document.selectFirst("img"))
-              .map(el -> el.attribute("src"))
-              .map(Attribute::getValue);
+  private String extractCustomisationImage(Document document, CustomizationEntity customisation) {
+    var defaultImage = customisation.getDefaultImage();
+    var image = customisation.getImage();
+    var tag = image.tag();
+    var attribute = image.attribute();
+    return Optional.ofNullable(document.selectFirst(tag))
+        .map(el -> el.attribute(attribute))
+        .map(Attribute::getValue)
+        .orElse(defaultImage);
+  }
 
-      Optional<String> firstParagraph =
-          Optional.ofNullable(document.selectFirst("p")).map(Element::text);
+  private String extractCustomisationText(Document document, Text customisation) {
+    var tag = customisation.tag();
+    var description =
+        document.select(tag).stream()
+            .map(Element::text)
+            .filter(t -> !t.isBlank())
+            .collect(Collectors.joining(" "));
+    return extractText(document, description, customisation.exclusionaryPhrases());
+  }
 
-      if (imageOpt.isPresent() && firstParagraph.isPresent()) {
-        return new RssTopicContentCustomisation(imageOpt.get(), firstParagraph.get());
-      }
-
-      if (firstParagraph.isPresent()) {
-        return new RssTopicContentCustomisation(image, firstParagraph.get());
-      }
-    } catch (Exception ex) {
-      log.error(ex.getMessage());
-    }
-    return new RssTopicContentCustomisation(image, description);
+  private String extractText(Document document, String description, List<String> excludePhrases) {
+    return Optional.of(description)
+        .filter(text -> !text.isBlank())
+        .or(
+            () ->
+                Optional.of(document.text())
+                    .map(
+                        text -> {
+                          var result = text;
+                          for (String phrase : excludePhrases) {
+                            result = result.replace(phrase, "");
+                          }
+                          return result;
+                        }))
+        .orElseThrow();
   }
 }

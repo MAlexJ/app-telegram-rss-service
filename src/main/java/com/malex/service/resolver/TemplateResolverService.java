@@ -59,9 +59,11 @@ public class TemplateResolverService {
           .map(desc -> desc.replace("&#8242;", "'"))
           .map(desc -> desc.replace("&#700;", "'"))
           .map(desc -> desc.replace("&amp;#8722;", "-"))
-          .map(desc -> desc.replace("&#8722;", "-"));
-      //          .map(desc -> desc.replace("&gt;", " "))
-      //          .map(desc -> desc.replace("&lt;", " "));
+          .map(desc -> desc.replace("&#8722;", "-"))
+          .map(desc -> desc.replace("&gt;", ">"))
+          .map(desc -> desc.replace("&amp;gt;", ">"))
+          .map(desc -> desc.replace("&lt;", "<"))
+          .map(desc -> desc.replace("&amp;lt", "<"));
     }
   }
 }

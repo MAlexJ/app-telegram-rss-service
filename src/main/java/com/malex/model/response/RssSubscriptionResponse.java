@@ -6,7 +6,6 @@ import java.util.List;
 public record RssSubscriptionResponse(
     String id,
     Long chatId,
-    String imageId,
     String templateId,
     String customizationId,
     String rss,
