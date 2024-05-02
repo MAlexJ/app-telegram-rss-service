@@ -26,20 +26,6 @@ public record RssTopicDto(
         true);
   }
 
-  public RssTopicDto(RssItemDto rssItem, String image) {
-    this(
-        rssItem.subscriptionId(),
-        rssItem.chatId(),
-        rssItem.templateId(),
-        image,
-        rssItem.title(),
-        rssItem.description(),
-        rssItem.link(),
-        rssItem.md5Hash(),
-        null,
-        true);
-  }
-
   public RssTopicDto(RssItemDto rssItem) {
     this(
         rssItem.subscriptionId(),
