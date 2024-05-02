@@ -26,6 +26,7 @@ public class FilterStorageService {
 
   @Cacheable
   public List<FilterResponse> findAllFilters() {
+    log.info("Cacheable: find all filters");
     return repository.findAll().stream().map(mapper::entityToDto).toList();
   }
 
@@ -37,6 +38,7 @@ public class FilterStorageService {
 
   @CacheEvict(allEntries = true)
   public FilterResponse save(FilterRequest request) {
+    log.info("CacheEvict: save filter - {}", request);
     var entity = mapper.dtoToEntity(request);
     var persistEntity = repository.save(entity);
     return mapper.entityToDto(persistEntity);

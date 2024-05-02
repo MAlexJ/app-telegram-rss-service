@@ -25,6 +25,7 @@ public class SpecialCharacterStorageService {
 
   @Cacheable
   public List<SpecialCharacterResponse> findAll() {
+    log.info("Cacheable: find all special characters");
     return repository.findAll().stream().map(mapper::entityToDto).toList();
   }
 

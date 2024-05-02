@@ -58,13 +58,13 @@ public class TemplateStorageService {
 
   @CacheEvict(allEntries = true)
   public Optional<TemplateResponse> save(TemplateRequest request) {
-    log.info("Cacheable: save template - {}", request);
+    log.info("CacheEvict: save template - {}", request);
     return Optional.of(mapper.dtoToEntity(request)).map(repository::save).map(mapper::entityToDto);
   }
 
   @CacheEvict(allEntries = true)
   public void update(UpdateMessageTemplateRequest request) {
-    log.info("Cacheable: update template - {}", request);
+    log.info("CacheEvict: update template - {}", request);
     var templateId = request.id();
     var template = request.template();
     Optional.ofNullable(repository.updateMessageTemplateEntityBy(templateId, template))
@@ -75,7 +75,7 @@ public class TemplateStorageService {
 
   @CacheEvict(allEntries = true)
   public void deleteById(String id) {
-    log.info("Cacheable: delete template by id - {}", id);
+    log.info("CacheEvict: delete template by id - {}", id);
     repository.deleteById(id);
   }
 }
