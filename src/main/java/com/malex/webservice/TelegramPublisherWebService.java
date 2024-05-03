@@ -3,7 +3,6 @@ package com.malex.webservice;
 import static com.malex.utils.MessageFormatUtils.shortMessage;
 
 import com.malex.exception.TelegramPublisherException;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,18 +21,27 @@ public class TelegramPublisherWebService {
 
   private final DefaultAbsSender sender;
 
-  /** Send message with image and text */
-  public Integer sendMessage(Long chatId, String image, String text) {
+  /** Send simple message */
+  public Integer sendMessage(Long chatId, String text) {
     try {
-      var message =
-          Objects.isNull(image)
-              ? postSimpleMessage(chatId, text)
-              : postMediaMessage(chatId, image, text);
+      var message = postSimpleMessage(chatId, text);
       return message.getMessageId();
     } catch (TelegramApiException ex) {
       throw new TelegramPublisherException(ex);
     } finally {
-      log.info("Publish RSS topic to chat_id - '{}', text - {}", chatId, shortMessage(text));
+      logMessage(chatId, text);
+    }
+  }
+
+  /** Send message with image and text */
+  public Integer sendMessage(Long chatId, String image, String text) {
+    try {
+      var message = postMediaMessage(chatId, image, text);
+      return message.getMessageId();
+    } catch (TelegramApiException ex) {
+      throw new TelegramPublisherException(ex);
+    } finally {
+      logMessage(chatId, text);
     }
   }
 
@@ -54,9 +62,13 @@ public class TelegramPublisherWebService {
             .chatId(chatId)
             .parseMode(ParseMode.HTML)
             .photo(new InputFile(image))
-            // SendPhoto query: [400] Bad Request: message caption is too long
+            // todo: SendPhoto query: [400] Bad Request: message caption is too long
             .caption(text)
             .protectContent(true)
             .build());
+  }
+
+  private void logMessage(Long chatId, String text) {
+    log.info("Publish RSS topic to chat_id - '{}', text - {}", chatId, shortMessage(text));
   }
 }

@@ -1,5 +1,6 @@
 package com.malex.service.customisation;
 
+import com.malex.mapper.RssTopicMapper;
 import com.malex.model.customization.Text;
 import com.malex.model.dto.RssItemDto;
 import com.malex.model.dto.RssTopicDto;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomisationService {
 
+  private final RssTopicMapper topicMapper;
   private final CustomizationStorageService storageService;
 
   public CustomizationResponse save(CustomizationRequest request) {
@@ -41,14 +43,14 @@ public class CustomisationService {
                 storageService
                     .findById(customizationId)
                     .map(customization -> applyCustomization(customization, rssItem)))
-        .orElseGet(() -> new RssTopicDto(rssItem));
+        .orElseGet(() -> topicMapper.mapToDto(rssItem));
   }
 
   protected RssTopicDto applyCustomization(CustomizationEntity customisation, RssItemDto rssItem) {
     var document = Jsoup.parse(rssItem.description());
     var image = extractCustomisationImage(document, customisation);
     var text = extractCustomisationText(document, customisation.getText());
-    return new RssTopicDto(rssItem, image, text);
+    return topicMapper.mapToDto(rssItem, image, text);
   }
 
   private String extractCustomisationImage(Document document, CustomizationEntity customisation) {

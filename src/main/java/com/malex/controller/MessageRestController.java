@@ -4,6 +4,7 @@ import com.malex.exception.TelegramPublisherException;
 import com.malex.model.request.MessageRequest;
 import com.malex.model.response.MessageResponse;
 import com.malex.webservice.TelegramPublisherWebService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +32,11 @@ public class MessageRestController {
   public ResponseEntity<MessageResponse> send(@RequestBody MessageRequest request) {
     log.info("HTTP request - {}", request);
     var text = request.text();
-    var image = request.image();
     var chatId = request.chatId();
-    return buildResponse(service.sendMessage(chatId, image, text));
+    return buildResponse(
+        Optional.ofNullable(request.image())
+            .map(image -> service.sendMessage(chatId, image, text))
+            .orElseGet(() -> service.sendMessage(chatId, text)));
   }
 
   private ResponseEntity<MessageResponse> buildResponse(Integer messageId) {
