@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,7 +24,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TemplateStorageService {
 
-  private static final String DEFAULT_TEMPLATE = "{{title}} \n {{link}}";
+  @Value("${template.default}")
+  private String defaultTemplate;
 
   private final TemplateRepository repository;
   private final ObjectMapper mapper;
@@ -47,7 +49,7 @@ public class TemplateStorageService {
   @Cacheable(key = TEMPLATES_CACHE_TEMPLATE_KEY_ID)
   public String findExistOrDefaultTemplateById(String templateId) {
     log.info("Cacheable: find exist or default template by id");
-    return findTemplateById(templateId).orElse(DEFAULT_TEMPLATE);
+    return findTemplateById(templateId).orElse(defaultTemplate);
   }
 
   @Cacheable(key = TEMPLATES_CACHE_KEY_ID)
