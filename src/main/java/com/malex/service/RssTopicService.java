@@ -22,13 +22,13 @@ public class RssTopicService {
 
   public void processingRssSubscriptions(SubscriptionEntity subscription) {
     rssWebService.readRssNews(subscription).stream()
-        .filter(this::verifyRssTopiMd5HashIdnDatabase)
-        .filter(filteringService::verifyIncludedOrExcludedFilterCriteria)
+        .filter(this::verifyMd5HashRssTopic)
+        .filter(filteringService::applyFilteringCriteriaIncludedOrExcluded)
         .map(customisationService::applyRssTopicCustomization)
-        .forEach(topicStorageService::saveNewRssTopic);
+        .forEach(topicStorageService::saveRssTopic);
   }
 
-  private boolean verifyRssTopiMd5HashIdnDatabase(RssItemDto item) {
+  private boolean verifyMd5HashRssTopic(RssItemDto item) {
     return topicStorageService.isNotExistTopicByMd5Hash(item.md5Hash());
   }
 }

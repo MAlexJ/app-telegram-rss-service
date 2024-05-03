@@ -29,9 +29,9 @@ public class SubscriptionCriteriaFilteringService {
   private final FilterStorageService filterStorageService;
 
   /** check whether the filter criteria are included or excluded. */
-  public boolean verifyIncludedOrExcludedFilterCriteria(RssItemDto rssItem) {
+  public boolean applyFilteringCriteriaIncludedOrExcluded(RssItemDto rssItem) {
     var filterIds = rssItem.filterIds();
-    if (filterIds.isEmpty()) {
+    if (Objects.isNull(filterIds) || filterIds.isEmpty()) {
       return true;
     }
 
@@ -53,7 +53,7 @@ public class SubscriptionCriteriaFilteringService {
         && hasExcludingFilterMatchingCondition(filterConditionMap, text);
   }
 
-  private boolean hasExcludingFilterMatchingCondition(
+  protected boolean hasExcludingFilterMatchingCondition(
       Map<ConditionType, List<String>> conditions, String text) {
     return findConditionByType(conditions, EXCLUDE).stream()
         .map(Map.Entry::getValue)
@@ -61,7 +61,7 @@ public class SubscriptionCriteriaFilteringService {
         .noneMatch(key -> findOccurrencePhraseIgnoreCase(text, key));
   }
 
-  private boolean hasInclusiveFilterMatchingCondition(
+  protected boolean hasInclusiveFilterMatchingCondition(
       Map<ConditionType, List<String>> conditions, String text) {
     var conditionMap = findConditionByType(conditions, INCLUDE);
     return conditionMap.isEmpty()
@@ -95,7 +95,7 @@ public class SubscriptionCriteriaFilteringService {
     if (textOpt.isEmpty() || phraseOpt.isEmpty()) {
       return false;
     }
-    return textOpt.get().indexOf(phraseOpt.get()) >= 1;
+    return textOpt.get().contains(phraseOpt.get());
   }
 
   private Optional<String> toLowerCase(String str) {

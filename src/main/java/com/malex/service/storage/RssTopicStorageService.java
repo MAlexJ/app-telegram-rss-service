@@ -27,7 +27,7 @@ public class RssTopicStorageService {
   }
 
   /** Save new rss topic */
-  public void saveNewRssTopic(RssTopicDto dto) {
+  public void saveRssTopic(RssTopicDto dto) {
     var entity = mapper.dtoToEntity(dto);
     var persistEntity = topicRepository.save(entity);
     log.info("Saved item id - {}", persistEntity.getId());

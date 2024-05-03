@@ -22,7 +22,7 @@ class CustomisationServiceTest {
 
   private final String defaultImage = "https://image.jpeg";
 
-  @InjectMocks CustomisationService customisationService;
+  @InjectMocks private CustomisationService customisationService;
 
   @Mock private RssTopicMapper topicMapper;
 
