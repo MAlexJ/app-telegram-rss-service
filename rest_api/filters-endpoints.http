@@ -6,7 +6,6 @@ POST http://localhost:8080/v1/filters
 Content-Type: application/json
 
 {
-  "isActive": true,
   "condition": {
     "type": "EXCLUDE",
     "keyWords": [
@@ -28,4 +27,4 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8080/v1/filters/66212a9461821f54bd138f86
+DELETE http://localhost:8080/v1/filters/66212a9461821f54bd138f86

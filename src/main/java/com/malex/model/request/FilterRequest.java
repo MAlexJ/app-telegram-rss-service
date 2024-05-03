@@ -2,4 +2,4 @@ package com.malex.model.request;
 
 import com.malex.model.filter.FilterCondition;
 
-public record FilterRequest(boolean isActive, FilterCondition condition) {}
+public record FilterRequest(FilterCondition condition) {}

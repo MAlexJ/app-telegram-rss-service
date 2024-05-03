@@ -45,10 +45,8 @@ public interface ObjectMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)
-  @Mapping(source = "isActive", target = "active")
   FilterEntity dtoToEntity(FilterRequest dto);
 
-  @Mapping(source = "active", target = "isActive")
   FilterResponse entityToDto(FilterEntity entity);
 
   @Mapping(target = "id", ignore = true)

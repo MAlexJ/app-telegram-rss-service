@@ -7,7 +7,6 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Data
@@ -16,9 +15,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class FilterEntity {
 
   @MongoId private String id;
-
-  @Field(name = "active")
-  private boolean isActive;
 
   @NotNull private FilterCondition condition;
 

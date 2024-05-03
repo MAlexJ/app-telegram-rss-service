@@ -87,6 +87,67 @@ class SubscriptionCriteriaFilteringServiceTest {
   }
 
   @Test
+  void itemIncludeDoesntMatchFilterTest() {
+    // given
+    var title = "one two second";
+    var description = "three four five";
+    var filterId = "123456";
+    var rssItemDto = buildRssItem(title, description, filterId);
+    // and
+    var filter = buildFilter(filterId, ConditionType.INCLUDE, List.of("Xxxx"));
+
+    // when
+    mockFilterBehavior(filter);
+    // and
+    boolean actual = service.applyFilteringCriteriaIncludedOrExcluded(rssItemDto);
+
+    // then
+    assertFalse(actual);
+  }
+
+  @Test
+  void itemIncludeFilterFirstOccurrenceTest() {
+    // given
+    var first = "first";
+    // and
+    var title = first + " two second";
+    var description = "three four five";
+    var filterId = "123456";
+    var rssItemDto = buildRssItem(title, description, filterId);
+    // and
+    var filter = buildFilter(filterId, ConditionType.INCLUDE, List.of(first));
+
+    // when
+    mockFilterBehavior(filter);
+    // and
+    boolean actual = service.applyFilteringCriteriaIncludedOrExcluded(rssItemDto);
+
+    // then
+    assertTrue(actual);
+  }
+
+  @Test
+  void itemIncludeFilterLastOccurrenceTest() {
+    // given
+    var last = "last";
+    // and
+    var title = "one two second";
+    var description = "three four five" + last;
+    var filterId = "123456";
+    var rssItemDto = buildRssItem(title, description, filterId);
+    // and
+    var filter = buildFilter(filterId, ConditionType.INCLUDE, List.of(last));
+
+    // when
+    mockFilterBehavior(filter);
+    // and
+    boolean actual = service.applyFilteringCriteriaIncludedOrExcluded(rssItemDto);
+
+    // then
+    assertTrue(actual);
+  }
+
+  @Test
   void itemExcludeFilterTest() {
     // given
     var title = "one two second";
@@ -94,7 +155,7 @@ class SubscriptionCriteriaFilteringServiceTest {
     var filterId = "123456";
     var rssItemDto = buildRssItem(title, description, filterId);
     // and
-    var filter = buildFilter(filterId, ConditionType.EXCLUDE, List.of("two"));
+    var filter = buildFilter(filterId, ConditionType.EXCLUDE, List.of("two", "first"));
 
     // when
     mockFilterBehavior(filter);

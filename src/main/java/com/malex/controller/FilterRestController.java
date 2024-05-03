@@ -20,36 +20,20 @@ public class FilterRestController {
 
   @GetMapping
   public ResponseEntity<List<FilterResponse>> findAll() {
-    List<FilterResponse> filters = service.findAllFilters();
-    return ResponseEntity.ok(filters);
+    log.info("HTTP request find all filters");
+    return ResponseEntity.ok(service.findAll());
   }
 
   @PostMapping
   public ResponseEntity<FilterResponse> save(@RequestBody FilterRequest request) {
-    var response = service.save(request);
-    return ResponseEntity.ok(response);
+    log.info("HTTP request - {}", request);
+    return ResponseEntity.ok(service.save(request));
   }
 
-  @PatchMapping("/{id}")
-  public ResponseEntity<Void> disableFilter(@PathVariable String id) {
-    log.info("HTTP request, unsubscribe by id - {}", id);
-    return buildResponse(id, service.disableFilterById(id));
-  }
-
-  private ResponseEntity<Void> buildResponse(String id, Integer updatedRecords) {
-    return switch (updatedRecords) {
-      case 0 -> {
-        log.warn("No record was found by id - {}", id);
-        yield ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-      }
-      case 1 -> {
-        log.info("Filter inactive by id - '{}' form RSS", id);
-        yield ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-      }
-      default -> {
-        log.warn("Updated more than one records - '{}' by id - '{}'", updatedRecords, id);
-        yield ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-      }
-    };
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteById(@PathVariable String id) {
+    log.info("HTTP request, delete filter by id - {}", id);
+    service.deleteById(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }
