@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TemplateResolverConfiguration {
 
-    @Bean
-    public MustacheFactory mustacheFactory() {
-        return new DefaultMustacheFactory();
-    }
+  @Bean
+  public MustacheFactory mustacheFactory() {
+    return new DefaultMustacheFactory();
+  }
 }
-

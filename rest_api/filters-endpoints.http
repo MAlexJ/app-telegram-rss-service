@@ -6,12 +6,42 @@ POST http://localhost:8080/v1/filters
 Content-Type: application/json
 
 {
-  "isActive": true,
   "condition": {
     "type": "EXCLUDE",
-    "keyWords": ["Words", "USA", "Eu"]
+    "keyWords": [
+        "геймдев",
+        " PHP ",
+        "C++",
+        " C# ",
+        "/t.me/",
+        "университет",
+        "мозг",
+        "крипта",
+        "компьютер",
+        "игра",
+        "видеоигр",
+        "школа",
+        "игровой",
+        "кафедра",
+        "кафедр",
+        "удаленк",
+        "mobile",
+        "python",
+        "алиса",
+        "алису",
+        "фотопроект",
+        "робот",
+        "инсайдер",
+        "project manager",
+        "одежд",
+        "сапр",
+        "it-школа",
+        "тестировщи",
+        "python",
+        "it школа"
+    ]
   }
 }
 
 ###
-PATCH http://localhost:8080/v1/filters/66212a9461821f54bd138f86
+DELETE http://localhost:8080/v1/filters/66212a9461821f54bd138f86

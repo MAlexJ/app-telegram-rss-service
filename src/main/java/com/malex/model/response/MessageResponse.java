@@ -1,10 +1,11 @@
 package com.malex.model.response;
 
-import org.telegram.telegrambots.meta.api.objects.Message;
 
-public record MessageResponse(Integer messageId, Integer date) {
+import java.time.LocalDateTime;
 
-  public MessageResponse(Message message) {
-    this(message.getMessageId(), message.getDate());
+public record MessageResponse(Integer messageId, LocalDateTime date) {
+
+  public MessageResponse(Integer messageId) {
+    this(messageId, LocalDateTime.now());
   }
 }

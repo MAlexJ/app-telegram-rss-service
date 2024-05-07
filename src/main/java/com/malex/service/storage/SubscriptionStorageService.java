@@ -26,7 +26,7 @@ public class SubscriptionStorageService {
 
   @CacheEvict(allEntries = true)
   public RssSubscriptionResponse subscribe(RssSubscriptionRequest request) {
-    log.info("Cacheable: subscribe - '{}', chanel id - '{}'", request.rss(), request.chatId());
+    log.info("CacheEvict: subscribe - '{}', chanel id - '{}'", request.rss(), request.chatId());
     var entity = mapper.dtoToEntity(request);
     var persistenceEntity = subscriptionRepository.save(entity);
     return mapper.entityToDto(persistenceEntity);
@@ -34,7 +34,7 @@ public class SubscriptionStorageService {
 
   @CacheEvict(allEntries = true)
   public Integer unsubscribe(String subscriptionId) {
-    log.info("Cacheable: unsubscribe form RSS by id - '{}'", subscriptionId);
+    log.info("CacheEvict: unsubscribe form RSS by id - '{}'", subscriptionId);
     return subscriptionRepository.updateRssSubscriptionEntity(subscriptionId);
   }
 

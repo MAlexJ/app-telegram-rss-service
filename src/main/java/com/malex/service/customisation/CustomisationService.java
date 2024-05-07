@@ -1,0 +1,93 @@
+package com.malex.service.customisation;
+
+import com.malex.mapper.RssTopicMapper;
+import com.malex.model.customization.Text;
+import com.malex.model.dto.RssItemDto;
+import com.malex.model.dto.RssTopicDto;
+import com.malex.model.entity.CustomizationEntity;
+import com.malex.model.request.CustomizationRequest;
+import com.malex.model.response.CustomizationResponse;
+import com.malex.service.storage.CustomizationStorageService;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class CustomisationService {
+
+  private final RssTopicMapper topicMapper;
+  private final CustomizationStorageService storageService;
+
+  public CustomizationResponse save(CustomizationRequest request) {
+    return storageService.save(request);
+  }
+
+  public List<CustomizationResponse> findAll() {
+    return storageService.findAll();
+  }
+
+  /** Apply Rss Topic customisation */
+  public RssTopicDto applyRssTopicCustomization(RssItemDto rssItem) {
+    return Optional.ofNullable(rssItem.customizationId())
+        .flatMap(
+            customizationId ->
+                storageService
+                    .findById(customizationId)
+                    .map(customization -> applyCustomization(customization, rssItem)))
+        .orElseGet(() -> topicMapper.mapToDto(rssItem));
+  }
+
+  protected RssTopicDto applyCustomization(CustomizationEntity customisation, RssItemDto rssItem) {
+    var document = Jsoup.parse(rssItem.description());
+    var image = extractCustomisationImage(document, customisation);
+    var text = extractCustomisationText(document, customisation.getText());
+    return topicMapper.mapToDto(rssItem, image, text);
+  }
+
+  private String extractCustomisationImage(Document document, CustomizationEntity customisation) {
+    var defaultImage = customisation.getDefaultImage();
+    var image = customisation.getImage();
+    var tag = image.tag();
+    var attribute = image.attribute();
+    return Optional.ofNullable(document.selectFirst(tag))
+        .map(el -> el.attribute(attribute))
+        .map(Attribute::getValue)
+        .orElse(defaultImage);
+  }
+
+  private String extractCustomisationText(Document document, Text customisation) {
+    var tag = customisation.tag();
+    var description =
+        document.select(tag).stream()
+            .map(Element::text)
+            .filter(t -> !t.isBlank())
+            .collect(Collectors.joining(" "));
+    return extractText(document, description, customisation.exclusionaryPhrases());
+  }
+
+  private String extractText(Document document, String description, List<String> excludePhrases) {
+    return Optional.of(description)
+        .filter(text -> !text.isBlank())
+        .or(
+            () ->
+                Optional.of(document.text())
+                    .map(
+                        text -> {
+                          var result = text;
+                          for (String phrase : excludePhrases) {
+                            result = result.replace(phrase, "");
+                          }
+                          return result;
+                        }))
+        .orElseThrow();
+  }
+}

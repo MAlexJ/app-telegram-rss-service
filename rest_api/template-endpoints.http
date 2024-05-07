@@ -4,13 +4,23 @@ GET http://localhost:8080/v1/templates
 ###
 GET http://localhost:8080/v1/templates/6603de40e625104809eea0e5
 
-###
+### Base template
 POST http://localhost:8080/v1/templates
 Content-Type: application/json
 
 {
-  "description": "Base template",
-  "template": "{{link}} \n {{title}}",
+  "description": "Full template",
+  "template": "{{title}} \n {{description}} \n {{link}}",
+  "isActive": true
+}
+
+### Habr template
+POST http://localhost:8080/v1/templates
+Content-Type: application/json
+
+{
+  "description": "Habr template",
+  "template":  "<b>{{title}}</b>\n\n {{description}} \n\n <a href=\"{{link}}\">Читать статью</a>",
   "isActive": true
 }
 
@@ -23,5 +33,5 @@ Content-Type: application/json
 
 {
   "id": "65eb75375a860f2e8c9f45bd",
-  "template": "Txxx"
+  "template": "{{title}} \n {{link}}"
 }

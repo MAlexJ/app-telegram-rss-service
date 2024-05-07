@@ -20,7 +20,7 @@ public class RssTopicEntity implements Persistable<String> {
   private Long chatId;
   private String templateId;
   private String subscriptionId;
-  private String rss;
+  private String image;
   private String title;
   private String description;
   private String link;

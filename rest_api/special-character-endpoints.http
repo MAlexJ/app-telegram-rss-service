@@ -1,0 +1,101 @@
+###
+GET http://localhost:8080/v1/special/characters
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "[\\p{Cf}]",
+  "replacement": ""
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&quot;",
+  "replacement": "\""
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&#39;",
+  "replacement":  "'"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&#8242;",
+  "replacement": "'"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&#700;",
+  "replacement": "'"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&amp;#8722;",
+  "replacement": "-"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&#8722;",
+  "replacement": "-"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&gt;",
+  "replacement": ">"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&amp;gt;",
+  "replacement": ">"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&lt;",
+  "replacement": "<"
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
+  "symbol": "&amp;lt",
+  "replacement": "<"
+}

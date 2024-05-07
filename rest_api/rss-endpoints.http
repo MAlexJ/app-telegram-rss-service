@@ -3,5 +3,5 @@ POST http://localhost:8080/v1/rss
 Content-Type: application/json
 
 {
-  "url": "https://xml/index.xml"
+  "url": "https://habr.com/ru/rss/articles/?fl=ru"
 }
