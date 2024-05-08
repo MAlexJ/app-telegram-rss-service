@@ -11,4 +11,4 @@ LABEL org.name="malex"
 FROM eclipse-temurin:21-jdk-jammy
 EXPOSE 8080 5005
 COPY --from=build /home/gradle/src/build/libs/app-telegram-rss-service-1.0.5.jar app.jar
-ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005","-jar","/app.jar"]
+ENTRYPOINT ["java","-Xdebug", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8983","-jar","/app.jar"]
