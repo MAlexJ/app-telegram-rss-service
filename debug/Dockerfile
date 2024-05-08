@@ -9,6 +9,6 @@ RUN gradle build
 LABEL org.name="malex"
 # Package stage
 FROM eclipse-temurin:21-jdk-jammy
-EXPOSE 8080 8983
+EXPOSE 8080 9229
 COPY --from=build /home/gradle/src/build/libs/app-telegram-rss-service-1.0.5.jar app.jar
-ENTRYPOINT ["java","-Xdebug", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8983","-jar","/app.jar"]
+ENTRYPOINT ["java","-Xdebug", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9229","-jar","/app.jar"]
