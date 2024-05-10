@@ -17,10 +17,10 @@ public interface ObjectMapper {
   @Mapping(target = "lastModified", ignore = true)
   @Mapping(target = "created", ignore = true)
   @Mapping(source = "isActive", target = "active")
-  SubscriptionEntity dtoToEntity(RssSubscriptionRequest dto);
+  SubscriptionEntity dtoToEntity(SubscriptionRequest dto);
 
   @Mapping(source = "active", target = "isActive")
-  RssSubscriptionResponse entityToDto(SubscriptionEntity entity);
+  SubscriptionResponse entityToDto(SubscriptionEntity entity);
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)

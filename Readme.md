@@ -1,8 +1,4 @@
-### RSS processing service
-
-### Description
-
-..........................
+### RSS news service
 
 ##### Description:
 

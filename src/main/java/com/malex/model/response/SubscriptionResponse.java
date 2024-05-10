@@ -3,7 +3,7 @@ package com.malex.model.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record RssSubscriptionResponse(
+public record SubscriptionResponse(
     String id,
     Long chatId,
     String templateId,

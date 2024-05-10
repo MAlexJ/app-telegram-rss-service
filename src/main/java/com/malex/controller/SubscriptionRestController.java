@@ -1,7 +1,7 @@
 package com.malex.controller;
 
-import com.malex.model.request.RssSubscriptionRequest;
-import com.malex.model.response.RssSubscriptionResponse;
+import com.malex.model.request.SubscriptionRequest;
+import com.malex.model.response.SubscriptionResponse;
 import com.malex.service.storage.SubscriptionStorageService;
 import java.util.List;
 import java.util.Objects;
@@ -20,25 +20,25 @@ public class SubscriptionRestController {
   private final SubscriptionStorageService service;
 
   @GetMapping
-  public ResponseEntity<List<RssSubscriptionResponse>> findSubscriptions() {
+  public ResponseEntity<List<SubscriptionResponse>> findSubscriptions() {
     log.info("HTTP request find all subscription");
     return ResponseEntity.ok(service.findSubscriptions());
   }
 
   @PostMapping
-  public ResponseEntity<RssSubscriptionResponse> subscribe(
-      @RequestBody RssSubscriptionRequest request) {
+  public ResponseEntity<SubscriptionResponse> subscribe(
+      @RequestBody SubscriptionRequest request) {
     log.info("HTTP request - {}", request);
     return ResponseEntity.status(HttpStatus.CREATED).body(service.subscribe(request));
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<RssSubscriptionResponse> unsubscribe(@PathVariable String id) {
+  public ResponseEntity<SubscriptionResponse> unsubscribe(@PathVariable String id) {
     log.info("HTTP request, unsubscribe by id - {}", id);
     return buildResponse(id, service.unsubscribe(id));
   }
 
-  private ResponseEntity<RssSubscriptionResponse> buildResponse(
+  private ResponseEntity<SubscriptionResponse> buildResponse(
       String id, Integer numberOfTopicsUpdated) {
     if (Objects.isNull(numberOfTopicsUpdated)) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

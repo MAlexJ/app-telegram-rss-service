@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 /** RSS subscription request */
-public record RssSubscriptionRequest(
+public record SubscriptionRequest(
     Long chatId,
     String templateId,
     String customizationId,
@@ -14,7 +14,7 @@ public record RssSubscriptionRequest(
     List<String> filterIds,
     boolean isActive) {
 
-  public RssSubscriptionRequest {
+  public SubscriptionRequest {
     Objects.requireNonNull(chatId, errorMessage("chatId"));
     Objects.requireNonNull(rss, errorMessage("rss"));
   }

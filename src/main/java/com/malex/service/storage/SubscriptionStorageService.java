@@ -4,8 +4,8 @@ import static com.malex.configuration.CacheConfiguration.*;
 
 import com.malex.mapper.ObjectMapper;
 import com.malex.model.entity.SubscriptionEntity;
-import com.malex.model.request.RssSubscriptionRequest;
-import com.malex.model.response.RssSubscriptionResponse;
+import com.malex.model.request.SubscriptionRequest;
+import com.malex.model.response.SubscriptionResponse;
 import com.malex.repository.RssSubscriptionRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class SubscriptionStorageService {
   private final ObjectMapper mapper;
 
   @CacheEvict(allEntries = true)
-  public RssSubscriptionResponse subscribe(RssSubscriptionRequest request) {
+  public SubscriptionResponse subscribe(SubscriptionRequest request) {
     log.info("CacheEvict: subscribe - '{}', chanel id - '{}'", request.rss(), request.chatId());
     var entity = mapper.dtoToEntity(request);
     var persistenceEntity = subscriptionRepository.save(entity);
@@ -39,7 +39,7 @@ public class SubscriptionStorageService {
   }
 
   @Cacheable
-  public List<RssSubscriptionResponse> findSubscriptions() {
+  public List<SubscriptionResponse> findSubscriptions() {
     log.info("Cacheable: find all subscriptions response");
     return subscriptionRepository.findAll().stream() //
         .map(mapper::entityToDto)
