@@ -135,3 +135,23 @@ issues and minimize downtime.
 
 link: https://uptimerobot.com/ <br>
 tutorial: https://www.youtube.com/watch?v=wP-tFyZhoio <br>
+
+### Github action
+
+issue:  ./gradlew: Permission denied
+link: https://stackoverflow.com/questions/17668265/gradlew-permission-denied
+
+You need to update the execution permission for gradlew
+
+1. add action workflow
+
+2. Locally pull changes
+
+3. run Git command:
+
+```
+git update-index --chmod=+x gradlew
+git add .
+git commit -m "Changing permission of gradlew"
+git push
+```
