@@ -6,6 +6,15 @@ POST http://localhost:8080/v1/special/characters
 Content-Type: application/json
 
 {
+  "symbol": " &amp; ",
+  "replacement": " & "
+}
+
+###
+POST http://localhost:8080/v1/special/characters
+Content-Type: application/json
+
+{
   "symbol": "[\\p{Cf}]",
   "replacement": ""
 }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,14 +54,15 @@ public class TemplateResolverService {
       var text = writer.toString();
       var characterList = specialCharacterService.findAll();
       return Optional.ofNullable(text) //
-          .map(
-              desc -> {
-                String result = desc;
-                for (SpecialCharacterResponse symbol : characterList) {
-                  result = result.replaceAll(symbol.symbol(), symbol.replacement());
-                }
-                return result;
-              });
+          .map(desc -> replaceSpecialCharacters(desc, characterList));
     }
+  }
+
+  String replaceSpecialCharacters(String desc, List<SpecialCharacterResponse> characterList) {
+    String result = desc;
+    for (SpecialCharacterResponse symbol : characterList) {
+      result = result.replaceAll(symbol.symbol(), symbol.replacement());
+    }
+    return result;
   }
 }
