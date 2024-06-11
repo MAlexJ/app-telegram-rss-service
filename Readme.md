@@ -3,8 +3,8 @@
 ##### Description:
 
 * Java 21
-* Springboot 3.2.4
-* Gradle 8.7
+* Springboot 3.3.0
+* Gradle 8.8
 * Mongo atlas database
 * render.com webservice
 * UptimeRobot webservice monitoring
