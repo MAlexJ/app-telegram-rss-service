@@ -23,8 +23,16 @@ public class ErrorService {
       action.run();
       return Optional.empty();
     } catch (TemplateResolverException | TelegramPublisherException ex) {
-      log.error("Error processing RSS topic, error message- {}", ex.getMessage());
-      errorStorageService.saveError(ex.getMessage(), jsonMapper.writeValueAsString(topic));
+      var errorMessage = ex.getMessage();
+      log.error("Error processing RSS topic, error message- {}", errorMessage);
+      if (errorMessage.contains("message caption is too long")) {
+        errorStorageService.saveError(
+            String.format(
+                "Error - %s , text length - %s", errorMessage, topic.getDescription().length()),
+            jsonMapper.writeValueAsString(topic));
+      } else {
+        errorStorageService.saveError(errorMessage, jsonMapper.writeValueAsString(topic));
+      }
       return Optional.ofNullable(topic.getId());
     }
   }

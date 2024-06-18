@@ -4,9 +4,10 @@ import static com.malex.utils.RssTopicUtils.randomlyRearrangingIds;
 
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.ErrorService;
-import com.malex.webservice.TelegramPublisherWebService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.*;
+import com.malex.webservice.TelegramPublisherWebService;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -50,7 +51,11 @@ public class RssTopicPublisherScheduler {
     var templateId = topic.getTemplateId();
     templateResolverService
         .findTemplateAndApplyToRssTopic(templateId, topic)
-        .map(text -> publisherService.sendMessage(chatId, image, text))
+        .map(
+            text ->
+                Objects.isNull(image)
+                    ? publisherService.sendMessage(chatId, text)
+                    : publisherService.sendMessage(chatId, image, text))
         .ifPresent(messageId -> rssTopicService.deactivateRssTopics(topicId, messageId));
   }
 }
