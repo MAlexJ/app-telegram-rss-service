@@ -35,6 +35,13 @@ public class RssTopicPublisherScheduler {
     randomlyRearrangingIds(subscriptionIds)
         .forEach(
             subscriptionId ->
+                /*
+                 * Refactor code:
+                 * 1. find first 3 or 5 topics
+                 * 2. collect all topics from all subscription
+                 * 3. rearranging all topics
+                 * 4. send topics to telegram with delay
+                 */
                 rssTopicService
                     .findFirstActiveTopicBySubscriptionIdOrderByCreatedAsc(subscriptionId)
                     .flatMap(
@@ -51,11 +58,14 @@ public class RssTopicPublisherScheduler {
     var templateId = topic.getTemplateId();
     templateResolverService
         .findTemplateAndApplyToRssTopic(templateId, topic)
-        .map(
-            text ->
-                Objects.isNull(image)
-                    ? publisherService.sendMessage(chatId, text)
-                    : publisherService.sendMessage(chatId, image, text))
+        .map(text -> publishTopic(text, image, chatId))
         .ifPresent(messageId -> rssTopicService.deactivateRssTopics(topicId, messageId));
+  }
+
+  /** Return telegram message Id */
+  private Integer publishTopic(String text, String image, Long chatId) {
+    return Objects.isNull(image)
+        ? publisherService.sendMessage(chatId, text)
+        : publisherService.sendMessage(chatId, image, text);
   }
 }
