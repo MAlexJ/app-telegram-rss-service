@@ -47,12 +47,14 @@ public class CustomisationService {
   }
 
   protected RssTopicDto applyCustomization(CustomizationEntity customisation, RssItemDto rssItem) {
+    // rss item description representation
     var document = Jsoup.parse(rssItem.description());
     var image = extractCustomisationImage(document, customisation);
     var text = extractCustomisationText(document, customisation.getText());
     return topicMapper.mapToDto(rssItem, image, text);
   }
 
+  /** Extract image tag from rss item description or provide default */
   private String extractCustomisationImage(Document document, CustomizationEntity customisation) {
     var defaultImage = customisation.getDefaultImage();
     var image = customisation.getImage();
@@ -64,6 +66,12 @@ public class CustomisationService {
         .orElse(defaultImage);
   }
 
+  /**
+   * Extract text from rss item description
+   *
+   * @param document - rss item description representation
+   * @param customisation - ?
+   */
   private String extractCustomisationText(Document document, Text customisation) {
     var tag = customisation.tag();
     var description =
