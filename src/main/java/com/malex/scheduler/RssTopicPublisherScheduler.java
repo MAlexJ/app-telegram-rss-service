@@ -10,7 +10,6 @@ import com.malex.webservice.TelegramPublisherWebService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,9 +26,6 @@ public class RssTopicPublisherScheduler {
   private final TemplateResolverService templateResolverService;
   private final SubscriptionStorageService subscriptionStorageService;
 
-  @Value("${rss.publish.topic.limit:30}")
-  private Integer limit;
-
   @Async
   @Transactional
   @Scheduled(cron = "${scheduled.processing.publisher.cron}")
@@ -40,7 +36,7 @@ public class RssTopicPublisherScheduler {
         .forEach(
             subscriptionId ->
                 rssTopicService
-                    .findFirstActiveTopicsBySubscriptionIdOrderByCreatedAsc(subscriptionId, limit)
+                    .findActiveTopicBySubscriptionIdOrderByCreatedAsc(subscriptionId)
                     .forEach(
                         topic ->
                             errorService

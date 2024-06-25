@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -18,6 +19,9 @@ public class RssTopicStorageService {
 
   private final RssTopicRepository topicRepository;
   private final ObjectMapper mapper;
+
+  @Value("${rss.publish.topic.limit:30}")
+  private Integer limit;
 
   public List<RssTopicResponse> findAllTopics() {
     return topicRepository.findAll().stream() //
@@ -33,9 +37,9 @@ public class RssTopicStorageService {
   }
 
   /** Find first active rss topics order by created asc */
-  public List<RssTopicEntity> findFirstActiveTopicsBySubscriptionIdOrderByCreatedAsc(
-      String subscriptionId, int limit) {
-    return topicRepository.findFirstTopicByActiveAndSubscriptionIdOrderByCreatedAsc(
+  public List<RssTopicEntity> findActiveTopicBySubscriptionIdOrderByCreatedAsc(
+      String subscriptionId) {
+    return topicRepository.findActiveTopicBySubscriptionIdOrderByCreatedAsc(
         true, subscriptionId, limit);
   }
 

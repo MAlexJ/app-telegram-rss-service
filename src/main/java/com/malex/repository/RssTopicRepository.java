@@ -12,10 +12,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RssTopicRepository extends MongoRepository<RssTopicEntity, String> {
 
-  /** Fids firs active topics */
-  @Aggregation(pipeline = {"{ '$sort' : { 'customerId' : 1 } }", "{ '$limit' : ?2 }"})
-  @Query("{'isActive': ?0, 'subscriptionId': ?1}")
-  List<RssTopicEntity> findFirstTopicByActiveAndSubscriptionIdOrderByCreatedAsc(
+  /** Fids active topics ordered by date created */
+  @Aggregation(
+      pipeline = {
+        "{ '$match': { 'isActive' : ?0 , 'subscriptionId': ?1} }",
+        "{ '$sort' : { 'created' : 1 } }",
+        "{ '$limit' : ?2 }"
+      })
+  List<RssTopicEntity> findActiveTopicBySubscriptionIdOrderByCreatedAsc(
       boolean isActive, String subscriptionId, int limit);
 
   /** Update RSS topic and set topic inactivity */
