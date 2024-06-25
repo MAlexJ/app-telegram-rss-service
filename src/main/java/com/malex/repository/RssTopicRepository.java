@@ -3,7 +3,6 @@ package com.malex.repository;
 import com.malex.model.entity.RssTopicEntity;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -12,10 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RssTopicRepository extends MongoRepository<RssTopicEntity, String> {
-
-  /** Fids firs active topic */
-  Optional<RssTopicEntity> findFirstByIsActiveAndSubscriptionIdOrderByCreatedAsc(
-      boolean isActive, String subscriptionId);
 
   /** Fids firs active topics */
   @Aggregation(pipeline = {"{ '$sort' : { 'customerId' : 1 } }", "{ '$limit' : ?2 }"})

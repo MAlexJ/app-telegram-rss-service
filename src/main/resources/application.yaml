@@ -29,6 +29,11 @@ telegram:
     username: ${APP_SERVICE_TELEGRAM_BOT_USERNAME:bot_name}
     token: ${APP_SERVICE_TELEGRAM_BOT_TOKEN:app_token}
 
+rss:
+  publish:
+    topic:
+      limit: ${APP_SERVICE_RSS_PUBLISH_TOPIC_LIMIT:10}
+
 md5Hash:
   calculation:
     baseOn:

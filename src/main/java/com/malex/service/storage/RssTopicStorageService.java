@@ -32,11 +32,11 @@ public class RssTopicStorageService {
     log.info("Saved item id - {}", persistEntity.getId());
   }
 
-  /** Find first 10 active rss topics order by created asc */
-  public List<RssTopicEntity> findFirst10ActiveTopicsBySubscriptionIdOrderByCreatedAsc(
-      String subscriptionId) {
+  /** Find first active rss topics order by created asc */
+  public List<RssTopicEntity> findFirstActiveTopicsBySubscriptionIdOrderByCreatedAsc(
+      String subscriptionId, int limit) {
     return topicRepository.findFirstTopicByActiveAndSubscriptionIdOrderByCreatedAsc(
-        true, subscriptionId, 10);
+        true, subscriptionId, limit);
   }
 
   /**

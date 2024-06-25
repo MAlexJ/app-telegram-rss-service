@@ -10,6 +10,7 @@ import com.malex.webservice.TelegramPublisherWebService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -26,23 +27,25 @@ public class RssTopicPublisherScheduler {
   private final TemplateResolverService templateResolverService;
   private final SubscriptionStorageService subscriptionStorageService;
 
+  @Value("${rss.publish.topic.limit:30}")
+  private Integer limit;
+
   @Async
   @Transactional
   @Scheduled(cron = "${scheduled.processing.publisher.cron}")
   public void processingRssTopics() {
     log.info("Start processing publish topics");
     var subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
-    randomlyRearrangingIds(subscriptionIds).forEach(this::publishRssTopics);
-  }
-
-  void publishRssTopics(String subscriptionId) {
-    rssTopicService
-        .findFirst10ActiveTopicsBySubscriptionIdOrderByCreatedAsc(subscriptionId)
+    randomlyRearrangingIds(subscriptionIds)
         .forEach(
-            topic ->
-                errorService
-                    .handleException(topic, () -> executeRssTopicPublication(topic))
-                    .ifPresent(rssTopicService::deactivateRssTopics));
+            subscriptionId ->
+                rssTopicService
+                    .findFirstActiveTopicsBySubscriptionIdOrderByCreatedAsc(subscriptionId, limit)
+                    .forEach(
+                        topic ->
+                            errorService
+                                .handleException(topic, () -> executeRssTopicPublication(topic))
+                                .ifPresent(rssTopicService::deactivateRssTopics)));
   }
 
   private void executeRssTopicPublication(RssTopicEntity topic) {
