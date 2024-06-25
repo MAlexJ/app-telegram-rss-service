@@ -35,7 +35,6 @@ public class RssTopicPublisherScheduler {
     randomlyRearrangingIds(subscriptionIds).forEach(this::publishRssTopics);
   }
 
-  @Transactional
   void publishRssTopics(String subscriptionId) {
     rssTopicService
         .findFirst10ActiveTopicsBySubscriptionIdOrderByCreatedAsc(subscriptionId)
