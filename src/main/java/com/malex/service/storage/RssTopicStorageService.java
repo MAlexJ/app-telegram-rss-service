@@ -7,7 +7,6 @@ import com.malex.model.response.RssTopicResponse;
 import com.malex.repository.RssTopicRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,11 +32,11 @@ public class RssTopicStorageService {
     log.info("Saved item id - {}", persistEntity.getId());
   }
 
-  /** Find first active rss topic order by created asc */
-  public Optional<RssTopicEntity> findFirstActiveTopicBySubscriptionIdOrderByCreatedAsc(
+  /** Find first 10 active rss topics order by created asc */
+  public List<RssTopicEntity> findFirst10ActiveTopicsBySubscriptionIdOrderByCreatedAsc(
       String subscriptionId) {
-    return topicRepository.findFirstByIsActiveAndSubscriptionIdOrderByCreatedAsc(
-        true, subscriptionId);
+    return topicRepository.findFirstTopicByActiveAndSubscriptionIdOrderByCreatedAsc(
+        true, subscriptionId, 10);
   }
 
   /**

@@ -25,6 +25,21 @@ public class ErrorService {
     } catch (TemplateResolverException | TelegramPublisherException ex) {
       var errorMessage = ex.getMessage();
       log.error("Error processing RSS topic, error message- {}", errorMessage);
+      /*
+       * Telegram API
+       * 1. Telegram API will not allow more than 30 messages per second or so
+       * 2. Also note that your bot will not be able to send more than 20 messages per minute to the same group.
+       */
+      if (errorMessage.contains("retry after")) {
+        errorStorageService.saveError(
+            String.format(
+                "Error - %s , text length - %s", errorMessage, topic.getDescription().length()),
+            jsonMapper.writeValueAsString(topic));
+      }
+
+      /*
+       * Handle cases and truncate message ~500, ~700 characters
+       */
       if (errorMessage.contains("message caption is too long")) {
         errorStorageService.saveError(
             String.format(

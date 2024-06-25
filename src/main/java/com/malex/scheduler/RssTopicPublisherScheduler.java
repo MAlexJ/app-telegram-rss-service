@@ -32,22 +32,17 @@ public class RssTopicPublisherScheduler {
   public void processingRssTopics() {
     log.info("Start processing publish topics");
     var subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
-    randomlyRearrangingIds(subscriptionIds)
+    randomlyRearrangingIds(subscriptionIds).forEach(this::publishRssTopics);
+  }
+
+  @Transactional
+  void publishRssTopics(String subscriptionId) {
+    rssTopicService
+        .findFirst10ActiveTopicsBySubscriptionIdOrderByCreatedAsc(subscriptionId)
         .forEach(
-            subscriptionId ->
-                /*
-                 * Refactor code:
-                 * 1. find first 3 or 5 topics
-                 * 2. collect all topics from all subscription
-                 * 3. rearranging all topics
-                 * 4. send topics to telegram with delay
-                 */
-                rssTopicService
-                    .findFirstActiveTopicBySubscriptionIdOrderByCreatedAsc(subscriptionId)
-                    .flatMap(
-                        topic ->
-                            errorService.handleException(
-                                topic, () -> executeRssTopicPublication(topic)))
+            topic ->
+                errorService
+                    .handleException(topic, () -> executeRssTopicPublication(topic))
                     .ifPresent(rssTopicService::deactivateRssTopics));
   }
 

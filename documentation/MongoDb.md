@@ -60,6 +60,42 @@ result: 1, 2, 3, 4
 
 link: https://habr.com/ru/articles/174457/ </br>
 
+### 3. Mongo limit
+
+link: https://stackoverflow.com/questions/64238483/mongodb-atlas-how-to-apply-limit-and-sort-using-atlas-consoles-filter-option
+
+1. Connect your MongoDB atlas two command line.
+2. Create aggregate function on collection
+3. Click on the collection, then you will find the option of aggregation so click on Aggregation
+
+### 4. Mongo aggregation approach
+
+link: https://stackoverflow.com/questions/71291238/how-to-use-limit-and-skip-in-spring-data-mongodb-repository/71292598#71292598
+link:
+
+```java
+
+@Repository
+public interface CustomerRepository extends MongoRepository<Customer, String> {
+
+    @Aggregation(pipeline = {
+            "{ '$match': { 'customerId' : ?0 } }",
+            "{ '$sort' : { 'customerId' : 1 } }",
+            "{ '$skip' : ?1 }",
+            "{ '$limit' : ?2 }"
+    })
+    List<Customer> findByCustomerId(final String customerId, int skip, int limit);
+
+    @Aggregation(pipeline = {
+            "{ '$match': { 'customerId' : ?0 } }",
+            "{ '$sort' : { 'customerId' : 1 } }",
+            "{ '$skip' : ?1 }"
+    })
+    Page<Customer> findCustomers(final String customerId, int skip, Pageable pageable);
+
+}
+```
+
 ## Configuration
 
 ##### How to set up database:

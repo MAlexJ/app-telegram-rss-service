@@ -4,6 +4,7 @@ import com.malex.model.entity.RssTopicEntity;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
@@ -15,6 +16,12 @@ public interface RssTopicRepository extends MongoRepository<RssTopicEntity, Stri
   /** Fids firs active topic */
   Optional<RssTopicEntity> findFirstByIsActiveAndSubscriptionIdOrderByCreatedAsc(
       boolean isActive, String subscriptionId);
+
+  /** Fids firs active topics */
+  @Aggregation(pipeline = {"{ '$sort' : { 'customerId' : 1 } }", "{ '$limit' : ?2 }"})
+  @Query("{'isActive': ?0, 'subscriptionId': ?1}")
+  List<RssTopicEntity> findFirstTopicByActiveAndSubscriptionIdOrderByCreatedAsc(
+      boolean isActive, String subscriptionId, int limit);
 
   /** Update RSS topic and set topic inactivity */
   @Query("{'id': ?0}")

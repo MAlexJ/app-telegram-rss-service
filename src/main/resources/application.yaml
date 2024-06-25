@@ -1,13 +1,22 @@
 server:
   port: ${APP_SERVICE_PORT:8080}
 
+logging:
+  level:
+    root: ${APP_SERVICE_ROOT_LOG_LEVEL:INFO}
+    org.springframework: ${APP_SERVICE_SPRING_LOG_LEVEL:INFO}
+
 spring:
   config:
     import: optional:file:.env[.properties]
   application:
     name: ${APP_SERVICE_NAME:app-service}
   jpa:
+    # enable logging of SQL statements.
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
   data:
     mongodb:
