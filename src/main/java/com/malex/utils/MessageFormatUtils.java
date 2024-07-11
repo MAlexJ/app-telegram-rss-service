@@ -15,10 +15,10 @@ public class MessageFormatUtils {
     return String.format(ERROR_MESSAGE_TEMPLATE, parameter);
   }
 
-  public static String shortMessage(String text) {
+  public static String shortMessage(String text, int length) {
     return Optional.ofNullable(text)
-        .filter(message -> message.length() > 60)
-        .map(message -> String.format(SHORT_MASSAGE_FORMAT, message.substring(0, 50)))
+        .filter(message -> message.length() > length)
+        .map(message -> String.format(SHORT_MASSAGE_FORMAT, message.substring(0, length)))
         .orElse("");
   }
 }

@@ -3,7 +3,7 @@
 ##### Description:
 
 * Java 21
-* Springboot 3.3.0
+* Springboot 3.3.1
 * Gradle 8.8
 * Mongo atlas database
 * render.com webservice

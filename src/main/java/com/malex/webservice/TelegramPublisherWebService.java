@@ -69,6 +69,6 @@ public class TelegramPublisherWebService {
   }
 
   private void logMessage(Long chatId, String text) {
-    log.info("Publish RSS topic to chat_id - '{}', text - {}", chatId, shortMessage(text));
+    log.info("Publish RSS topic to chat_id - '{}', text - {}", chatId, shortMessage(text, 100));
   }
 }

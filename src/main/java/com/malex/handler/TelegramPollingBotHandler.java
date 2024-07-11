@@ -70,7 +70,7 @@ public class TelegramPollingBotHandler extends InitStatePollingHandler {
               msg ->
                   log.info(
                       "Super group message: '{}', to '{}' '{}' chat, from user: '{}'",
-                      MessageFormatUtils.shortMessage(text),
+                      MessageFormatUtils.shortMessage(text, 100),
                       chat.getType(),
                       chat.getTitle(),
                       user.getFirstName()));
