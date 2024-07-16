@@ -160,3 +160,45 @@ git add .
 git commit -m "Changing permission of gradlew"
 git push
 ```
+
+### Dockerfile
+
+build jar file contains layers.idx
+
+link: https://for-each.dev/lessons/b/-docker-layers-spring-boot
+
+video: https://www.youtube.com/watch?v=QrH4UFA8Rlw&t=79s
+
+```
+- "dependencies":
+  - "BOOT-INF/lib/"
+- "spring-boot-loader":
+  - "org/"
+- "snapshot-dependencies":
+- "application":
+  - "BOOT-INF/classes/"
+  - "BOOT-INF/classpath.idx"
+  - "BOOT-INF/layers.idx"
+  - "META-INF/"
+```
+
+#### gradle test
+
+To skip any task from the Gradle build, we can use the -x or –exclude-task option. In this case, we’ll use “-x test” to
+skip tests from the build.
+
+To see it in action, let’s run the build command with -x option:
+
+```
+gradle build -x test
+```
+
+link: https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html
+
+```
+  beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+```

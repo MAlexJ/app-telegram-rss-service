@@ -24,6 +24,7 @@ public class RssTopicService {
     rssWebService.readRssNews(subscription).stream()
         .filter(this::verifyMd5HashRssTopic)
         .filter(filteringService::applyFilteringCriteriaIncludedOrExcluded)
+            // topicFormater::apply
         .map(customisationService::applyRssTopicCustomization)
         .forEach(topicStorageService::saveRssTopic);
   }
