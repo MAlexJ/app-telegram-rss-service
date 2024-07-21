@@ -48,10 +48,10 @@ public class TelegramPublisherWebService {
   private Message postSimpleMessage(Long chatId, String text) throws TelegramApiException {
     return sender.execute(
         SendMessage.builder()
-            .protectContent(true)
             .chatId(chatId)
             .parseMode(ParseMode.HTML)
             .text(text)
+            .protectContent(true)
             .build());
   }
 

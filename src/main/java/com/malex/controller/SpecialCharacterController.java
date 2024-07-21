@@ -1,4 +1,4 @@
-package com.malex.configuration;
+package com.malex.controller;
 
 import com.malex.model.request.SpecialCharacterRequest;
 import com.malex.model.response.SpecialCharacterResponse;

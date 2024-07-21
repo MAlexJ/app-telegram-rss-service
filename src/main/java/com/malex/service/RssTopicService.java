@@ -25,6 +25,7 @@ public class RssTopicService {
         .filter(this::verifyMd5HashRssTopic)
         .filter(filteringService::applyFilteringCriteriaIncludedOrExcluded)
             // topicFormater::apply
+            // todo: SendPhoto query: [400] Bad Request: message caption is too long
         .map(customisationService::applyRssTopicCustomization)
         .forEach(topicStorageService::saveRssTopic);
   }
