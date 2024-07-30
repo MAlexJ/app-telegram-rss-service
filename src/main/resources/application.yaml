@@ -7,6 +7,9 @@ logging:
     org.springframework: ${APP_SERVICE_SPRING_LOG_LEVEL:INFO}
 
 spring:
+  threads:
+    virtual:
+      enabled: true
   config:
     import: optional:file:.env[.properties]
   application:
