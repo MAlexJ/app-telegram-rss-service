@@ -52,17 +52,6 @@ API documentation endpoint:  <br>
 
 * http://{URL}:{port}/api/documentation
 
-### Gradle Versions Plugin
-
-Displays a report of the project dependencies that are up-to-date, exceed the latest version found, have upgrades, or
-failed to be resolved, info: https://github.com/ben-manes/gradle-versions-plugin
-
-command:
-
-```
-gradle dependencyUpdates
-```
-
 ### Java code style
 
 Java code style refers to the conventions and guidelines that developers follow when writing Java code to ensure
@@ -182,7 +171,32 @@ video: https://www.youtube.com/watch?v=QrH4UFA8Rlw&t=79s
   - "META-INF/"
 ```
 
-#### gradle test
+### Gradle
+
+#### Gradle Versions Plugin
+
+Displays a report of the project dependencies that are up-to-date, exceed the latest version found, have upgrades, or
+failed to be resolved, info: https://github.com/ben-manes/gradle-versions-plugin
+
+command:
+
+```
+gradle dependencyUpdates
+```
+
+#### Gradle wrapper
+
+Gradle Wrapper Reference:
+https://docs.gradle.org/current/userguide/gradle_wrapper.html
+
+How to Upgrade Gradle Wrapper:
+https://dev.to/pfilaretov42/tiny-how-to-upgrade-gradle-wrapper-3obl
+
+```
+./gradlew wrapper --gradle-version latest
+```
+
+#### Gradle ignore test
 
 To skip any task from the Gradle build, we can use the -x or –exclude-task option. In this case, we’ll use “-x test” to
 skip tests from the build.
