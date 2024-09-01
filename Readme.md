@@ -3,9 +3,9 @@
 ##### Description:
 
 * Java 21
-* Springboot 3.3.1
-* Gradle 8.8
-* Mongo atlas database
+* Springboot 3.3.3
+* Gradle 8.10
+* Mongo database
 * render.com webservice
 * UptimeRobot webservice monitoring
 
@@ -78,7 +78,22 @@ link: https://github.com/google/google-java-format/blob/master/README.md#intelli
     2. Go to your group settings and pick “Add Members” option, then type @you_bot_name in search field. <br>
        link: https://telegram-bot.app/learning-centre/how-to-add-bot-to-my-group/
 
-### Spring Actuator
+### Spring
+
+#### Scheduler
+
+Cron schedule expressions: https://crontab.guru
+
+#### Cache
+
+@Cachable on methods without input
+parameters: https://stackoverflow.com/questions/48888760/cachable-on-methods-without-input-parameters
+
+```
+@Cacheable(value = CACHE, key = "#root.method.name")
+```
+
+#### Spring Actuator
 
 * [Spring Boot Actuator: Health check, Auditing, Metrics gathering and Monitoring](https://www.callicoder.com/spring-boot-actuator/#:~:text=You%20can%20enable%20or%20disable,the%20identifier%20for%20the%20endpoint)
 

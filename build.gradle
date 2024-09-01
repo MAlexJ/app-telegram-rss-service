@@ -50,4 +50,8 @@ tasks.named('test') {
     }
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
+
+    // link: https://stackoverflow.com/questions/77951485/getting-a-java-agent-has-been-loaded-warning-in-intellij-after-upgrading-jdk-17
+    jvmArgs("-noverify", "-XX:+EnableDynamicAgentLoading", "-Djdk.instrument.traceUsage")
+
 }
