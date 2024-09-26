@@ -1,4 +1,4 @@
-package com.malex.service;
+package com.malex.service.error;
 
 import com.malex.exception.telegram.TelegramPublisherException;
 import com.malex.exception.template.TemplateResolverException;
@@ -40,6 +40,8 @@ public class ErrorService {
          */
       }
 
+      // todo:Working with Date Parameters in Spring
+      //  link: https://www.baeldung.com/spring-date-parameters
       errorStorageService.saveError(errorMessage, jsonMapper.writeValueAsString(topic));
       return Optional.ofNullable(topic.getId());
     }

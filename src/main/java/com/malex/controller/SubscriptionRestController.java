@@ -4,7 +4,7 @@ import com.malex.exception.subscription.StatusCode;
 import com.malex.exception.subscription.SubscriptionException;
 import com.malex.model.request.SubscriptionRequest;
 import com.malex.model.response.SubscriptionResponse;
-import com.malex.service.cache.SubscriptionCacheService;
+import com.malex.service.subscription.SubscriptionCacheService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

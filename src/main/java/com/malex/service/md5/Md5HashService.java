@@ -1,4 +1,4 @@
-package com.malex.service;
+package com.malex.service.md5;
 
 import jakarta.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;

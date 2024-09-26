@@ -3,11 +3,11 @@ package com.malex.scheduler;
 import static com.malex.utils.RssTopicUtils.randomlyRearrangingIds;
 
 import com.malex.model.entity.RssTopicEntity;
-import com.malex.service.ErrorService;
-import com.malex.service.cache.SubscriptionCacheService;
+import com.malex.service.error.ErrorService;
+import com.malex.service.subscription.SubscriptionCacheService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.*;
-import com.malex.webservice.TelegramPublisherWebService;
+import com.malex.webservice.telegram.TelegramPublisherWebService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

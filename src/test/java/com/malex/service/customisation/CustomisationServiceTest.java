@@ -1,6 +1,6 @@
 package com.malex.service.customisation;
 
-import com.malex.mapper.RssTopicMapper;
+import com.malex.mapper.rss.RssTopicMapper;
 import com.malex.model.customization.Image;
 import com.malex.model.customization.Text;
 import com.malex.model.dto.RssItemDto;

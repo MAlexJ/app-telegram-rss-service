@@ -2,7 +2,7 @@ package com.malex.controller;
 
 import com.malex.model.dto.RssItemDto;
 import com.malex.model.request.RssRequest;
-import com.malex.webservice.RssReaderWebService;
+import com.malex.webservice.rss.RssReaderWebService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

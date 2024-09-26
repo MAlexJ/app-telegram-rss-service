@@ -20,6 +20,8 @@ public class JsonMapper {
    */
   public <T> String writeValueAsString(T obj) {
     try {
+      // todo:Working with Date Parameters in Spring
+      //  link: https://www.baeldung.com/spring-date-parameters
       return mapper.writeValueAsString(obj);
     } catch (JsonProcessingException e) {
       log.error(e.getMessage());

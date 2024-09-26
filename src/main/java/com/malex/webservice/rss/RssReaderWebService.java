@@ -1,7 +1,7 @@
-package com.malex.webservice;
+package com.malex.webservice.rss;
 
 import com.apptasticsoftware.rssreader.RssReader;
-import com.malex.mapper.RssItemMapper;
+import com.malex.mapper.rss.RssItemMapper;
 import com.malex.model.dto.RssItemDto;
 import com.malex.model.entity.SubscriptionEntity;
 import java.io.IOException;

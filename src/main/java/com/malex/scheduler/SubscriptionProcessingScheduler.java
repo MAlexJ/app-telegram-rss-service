@@ -1,7 +1,7 @@
 package com.malex.scheduler;
 
-import com.malex.service.RssTopicService;
-import com.malex.service.cache.SubscriptionCacheService;
+import com.malex.service.topic.RssTopicService;
+import com.malex.service.subscription.SubscriptionCacheService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

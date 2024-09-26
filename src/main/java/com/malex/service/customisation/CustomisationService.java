@@ -1,13 +1,12 @@
 package com.malex.service.customisation;
 
-import com.malex.mapper.RssTopicMapper;
+import com.malex.mapper.rss.RssTopicMapper;
 import com.malex.model.customization.Text;
 import com.malex.model.dto.RssItemDto;
 import com.malex.model.dto.RssTopicDto;
 import com.malex.model.entity.CustomizationEntity;
 import com.malex.model.request.CustomizationRequest;
 import com.malex.model.response.CustomizationResponse;
-import com.malex.service.storage.CustomizationStorageService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +16,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -25,14 +27,15 @@ import org.springframework.stereotype.Service;
 public class CustomisationService {
 
   private final RssTopicMapper topicMapper;
-  private final CustomizationStorageService storageService;
+  private final CustomisationCacheService customisationCacheService;
 
   public CustomizationResponse save(CustomizationRequest request) {
-    return storageService.save(request);
+    return customisationCacheService.saveAndEvictCache(request);
   }
 
-  public List<CustomizationResponse> findAll() {
-    return storageService.findAll();
+  public Page<CustomizationResponse> findAll(int page, int size) {
+    var pageable = PageRequest.of(page, size);
+    return customisationCacheService.findAllCacheable(pageable);
   }
 
   /** Apply Rss Topic customisation */
@@ -40,8 +43,8 @@ public class CustomisationService {
     return Optional.ofNullable(rssItem.customizationId())
         .flatMap(
             customizationId ->
-                storageService
-                    .findById(customizationId)
+                customisationCacheService
+                    .findByIdCacheable(customizationId)
                     .map(customization -> applyCustomization(customization, rssItem)))
         .orElseGet(() -> topicMapper.mapToDto(rssItem));
   }

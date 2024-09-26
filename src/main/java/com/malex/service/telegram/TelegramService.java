@@ -2,7 +2,7 @@ package com.malex.service.telegram;
 
 import com.malex.model.request.MessageRequest;
 import com.malex.model.response.MessageResponse;
-import com.malex.webservice.TelegramPublisherWebService;
+import com.malex.webservice.telegram.TelegramPublisherWebService;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

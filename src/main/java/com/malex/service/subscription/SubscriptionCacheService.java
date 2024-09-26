@@ -1,4 +1,4 @@
-package com.malex.service.cache;
+package com.malex.service.subscription;
 
 import static com.malex.configuration.CacheConfiguration.SUBSCRIPTION_CACHE_ACTIVE;
 import static com.malex.configuration.CacheConfiguration.SUBSCRIPTION_CACHE_IDS;
@@ -7,7 +7,7 @@ import static com.malex.configuration.CacheConfiguration.SUBSCRIPTION_CACHE_NAME
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.model.request.SubscriptionRequest;
 import com.malex.model.response.SubscriptionResponse;
-import com.malex.service.storage.SubscriptionStorageService;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

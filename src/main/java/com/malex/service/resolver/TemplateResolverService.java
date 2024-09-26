@@ -4,7 +4,7 @@ import com.github.mustachejava.MustacheFactory;
 import com.malex.exception.template.TemplateResolverException;
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.model.response.SpecialCharacterResponse;
-import com.malex.service.SpecialCharacterService;
+import com.malex.service.special.character.SpecialCharacterService;
 import com.malex.service.storage.TemplateStorageService;
 import java.io.IOException;
 import java.io.StringReader;

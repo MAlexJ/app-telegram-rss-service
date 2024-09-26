@@ -1,9 +1,9 @@
-package com.malex.mapper;
+package com.malex.mapper.rss;
 
 import com.apptasticsoftware.rssreader.Item;
 import com.malex.model.dto.RssItemDto;
 import com.malex.model.entity.SubscriptionEntity;
-import com.malex.service.Md5HashService;
+import com.malex.service.md5.Md5HashService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

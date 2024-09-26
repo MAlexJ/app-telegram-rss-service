@@ -1,11 +1,11 @@
-package com.malex.service;
+package com.malex.service.topic;
 
 import com.malex.model.dto.RssItemDto;
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.service.customisation.CustomisationService;
 import com.malex.service.filter.SubscriptionCriteriaFilteringService;
 import com.malex.service.storage.RssTopicStorageService;
-import com.malex.webservice.RssReaderWebService;
+import com.malex.webservice.rss.RssReaderWebService;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

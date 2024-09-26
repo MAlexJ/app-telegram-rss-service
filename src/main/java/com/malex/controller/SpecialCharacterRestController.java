@@ -2,7 +2,7 @@ package com.malex.controller;
 
 import com.malex.model.request.SpecialCharacterRequest;
 import com.malex.model.response.SpecialCharacterResponse;
-import com.malex.service.SpecialCharacterService;
+import com.malex.service.special.character.SpecialCharacterService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

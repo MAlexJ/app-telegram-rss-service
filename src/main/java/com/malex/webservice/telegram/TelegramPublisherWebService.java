@@ -1,4 +1,4 @@
-package com.malex.webservice;
+package com.malex.webservice.telegram;
 
 import static com.malex.utils.MessageFormatUtils.shortMessage;
 

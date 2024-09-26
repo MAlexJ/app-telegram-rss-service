@@ -1,4 +1,4 @@
-package com.malex.service.storage;
+package com.malex.service.subscription;
 
 import com.malex.exception.subscription.StatusCode;
 import com.malex.exception.subscription.SubscriptionException;
@@ -10,11 +10,9 @@ import com.malex.repository.RssSubscriptionRepository;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SubscriptionStorageService {
@@ -47,10 +45,11 @@ public class SubscriptionStorageService {
   public SubscriptionResponse subscribe(SubscriptionRequest request) {
     var transientEntity = mapper.dtoToEntity(request);
     var persistentEntity = subscriptionRepository.save(transientEntity);
+    // Detached entity
     return mapper.entityToDto(persistentEntity);
   }
 
-  /**
+  /*
    * Unsubscribed from an active subscription
    *
    * @param subscriptionId - subscription identifier
@@ -74,12 +73,16 @@ public class SubscriptionStorageService {
     return subscriptionRepository.findAll().stream().map(mapper::entityToDto).toList();
   }
 
-  /** Find all Active subscriptions */
+  /*
+   * Find all Active subscriptions
+   */
   public List<SubscriptionEntity> findAllActiveSubscriptions() {
     return subscriptionRepository.findAllByActive(true);
   }
 
-  /** Find all subscription ids for active user subscriptions */
+  /*
+   * Find all subscription ids for active user subscriptions
+   */
   public List<String> findAllActiveSubscriptionIds() {
     var allActiveSubscriptions = subscriptionRepository.findAllByActive(true);
     return allActiveSubscriptions.stream().map(SubscriptionEntity::getId).toList();

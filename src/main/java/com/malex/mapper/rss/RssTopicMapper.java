@@ -1,4 +1,4 @@
-package com.malex.mapper;
+package com.malex.mapper.rss;
 
 import com.malex.model.dto.RssItemDto;
 import com.malex.model.dto.RssTopicDto;
