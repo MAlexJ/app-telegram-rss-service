@@ -4,6 +4,7 @@ import static com.malex.utils.RssTopicUtils.randomlyRearrangingIds;
 
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.ErrorService;
+import com.malex.service.cache.SubscriptionCacheService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.*;
 import com.malex.webservice.TelegramPublisherWebService;
@@ -24,14 +25,14 @@ public class RssTopicPublisherScheduler {
   private final RssTopicStorageService rssTopicService;
   private final TelegramPublisherWebService publisherService;
   private final TemplateResolverService templateResolverService;
-  private final SubscriptionStorageService subscriptionStorageService;
+  private final SubscriptionCacheService subscriptionStorageService;
 
   @Async
   @Transactional
   @Scheduled(cron = "${scheduled.processing.publisher.cron}")
   public void processingRssTopics() {
     log.info("Start processing publish topics");
-    var subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIds();
+    var subscriptionIds = subscriptionStorageService.findAllActiveSubscriptionIdsCacheable();
     randomlyRearrangingIds(subscriptionIds)
         .forEach(
             subscriptionId ->

@@ -1,7 +1,7 @@
 package com.malex.scheduler;
 
 import com.malex.service.RssTopicService;
-import com.malex.service.storage.SubscriptionStorageService;
+import com.malex.service.cache.SubscriptionCacheService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubscriptionProcessingScheduler {
 
   private final RssTopicService topicService;
-  private final SubscriptionStorageService subscriptionService;
+  private final SubscriptionCacheService subscriptionService;
 
   /**
    * Find all active subscriptions, apply user filters and determine whether such a record in
@@ -28,7 +28,7 @@ public class SubscriptionProcessingScheduler {
   public void processingRssSubscriptions() {
     log.info("Start processing RSS subscriptions");
     subscriptionService
-        .findAllActiveSubscriptions()
+        .findAllActiveSubscriptionsCacheable()
         .forEach(topicService::processingRssSubscriptions);
   }
 }

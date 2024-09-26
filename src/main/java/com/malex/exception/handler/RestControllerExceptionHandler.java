@@ -6,11 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class RestControllerExceptionHandler {
 
-  @ExceptionHandler({TelegramApiException.class})
-  public ResponseEntity<Object> handleStudentNotFoundException(Exception exception) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-  }
 }

@@ -2,7 +2,7 @@ package com.malex.webservice;
 
 import static com.malex.utils.MessageFormatUtils.shortMessage;
 
-import com.malex.exception.TelegramPublisherException;
+import com.malex.exception.telegram.TelegramPublisherException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,13 @@ public class TelegramPublisherWebService {
 
   private final DefaultAbsSender sender;
 
-  /** Send simple message */
+  /* Send simple message
+   *
+   * @throws TelegramPublisherException exception
+   */
   public Integer sendMessage(Long chatId, String text) {
     try {
-      var message = postSimpleMessage(chatId, text);
+      var message = publishTextMessage(chatId, text);
       return message.getMessageId();
     } catch (TelegramApiException ex) {
       throw new TelegramPublisherException(ex);
@@ -33,10 +36,14 @@ public class TelegramPublisherWebService {
     }
   }
 
-  /** Send message with image and text */
+  /*
+   * Send message with image and text
+   *
+   * @throws TelegramPublisherException exception
+   */
   public Integer sendMessage(Long chatId, String image, String text) {
     try {
-      var message = postMediaMessage(chatId, image, text);
+      var message = publishMediaMessage(chatId, image, text);
       return message.getMessageId();
     } catch (TelegramApiException ex) {
       throw new TelegramPublisherException(ex);
@@ -45,7 +52,7 @@ public class TelegramPublisherWebService {
     }
   }
 
-  private Message postSimpleMessage(Long chatId, String text) throws TelegramApiException {
+  private Message publishTextMessage(Long chatId, String text) throws TelegramApiException {
     return sender.execute(
         SendMessage.builder()
             .chatId(chatId)
@@ -55,7 +62,7 @@ public class TelegramPublisherWebService {
             .build());
   }
 
-  private Message postMediaMessage(Long chatId, String image, String text)
+  private Message publishMediaMessage(Long chatId, String image, String text)
       throws TelegramApiException {
     return sender.execute(
         SendPhoto.builder()

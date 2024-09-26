@@ -1,7 +1,7 @@
 package com.malex.service;
 
-import com.malex.exception.TelegramPublisherException;
-import com.malex.exception.TemplateResolverException;
+import com.malex.exception.telegram.TelegramPublisherException;
+import com.malex.exception.template.TemplateResolverException;
 import com.malex.mapper.JsonMapper;
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.storage.ErrorStorageService;

@@ -6,6 +6,7 @@ import com.malex.service.customisation.CustomisationService;
 import com.malex.service.filter.SubscriptionCriteriaFilteringService;
 import com.malex.service.storage.RssTopicStorageService;
 import com.malex.webservice.RssReaderWebService;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,15 +23,22 @@ public class RssTopicService {
 
   public void processingRssSubscriptions(SubscriptionEntity subscription) {
     rssWebService.readRssNews(subscription).stream()
-        .filter(this::verifyMd5HashRssTopic)
-        .filter(filteringService::applyFilteringCriteriaIncludedOrExcluded)
-            // topicFormater::apply
-            // todo: SendPhoto query: [400] Bad Request: message caption is too long
+        .filter(excludeDuplicatesAndRepetitionsByMd5Hash())
+        .filter(excludeBasedOnExclusionOrInclusionFilteringCriteria())
+        // topicFormater::apply
+        // todo: SendPhoto query: [400] Bad Request: message caption is too long
         .map(customisationService::applyRssTopicCustomization)
         .forEach(topicStorageService::saveRssTopic);
   }
 
-  private boolean verifyMd5HashRssTopic(RssItemDto item) {
-    return topicStorageService.isNotExistTopicByMd5Hash(item.md5Hash());
+  private Predicate<RssItemDto> excludeDuplicatesAndRepetitionsByMd5Hash() {
+    return item -> {
+      var md5Hash = item.md5Hash();
+      return topicStorageService.isNotExistTopicByMd5Hash(md5Hash);
+    };
+  }
+
+  private Predicate<RssItemDto> excludeBasedOnExclusionOrInclusionFilteringCriteria() {
+    return filteringService::applyFilteringCriteriaIncludedOrExcluded;
   }
 }

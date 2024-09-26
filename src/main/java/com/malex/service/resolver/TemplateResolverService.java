@@ -1,7 +1,7 @@
 package com.malex.service.resolver;
 
 import com.github.mustachejava.MustacheFactory;
-import com.malex.exception.TemplateResolverException;
+import com.malex.exception.template.TemplateResolverException;
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.model.response.SpecialCharacterResponse;
 import com.malex.service.SpecialCharacterService;

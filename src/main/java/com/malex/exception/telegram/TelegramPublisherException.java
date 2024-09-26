@@ -1,4 +1,4 @@
-package com.malex.exception;
+package com.malex.exception.telegram;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
