@@ -1,5 +1,5 @@
 server:
-  port: ${APP_SERVICE_PORT:8080}
+  port: ${PORT:8080}
 
 logging:
   level:
@@ -20,6 +20,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 50
 
   data:
     mongodb:

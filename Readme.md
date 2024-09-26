@@ -3,7 +3,7 @@
 ##### Description:
 
 * Java 21
-* Springboot 3.3.3
+* Springboot 3.3.4
 * Gradle 8.10
 * Mongo database
 * render.com webservice
@@ -80,9 +80,12 @@ link: https://github.com/google/google-java-format/blob/master/README.md#intelli
 
 ### Spring
 
-#### Scheduler
+#### Cron Expressions
 
-Cron schedule expressions: https://crontab.guru
+All Spring cron expressions have to conform to the same format, whether you are using them in @Scheduled annotations,
+task:scheduled-tasks elements, or someplace else
+
+link: https://docs.spring.io/spring-framework/reference/integration/scheduling.html#scheduling-cron-expression
 
 #### Cache
 
