@@ -1,8 +1,11 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
     id "com.github.ben-manes.versions" version "${githubBenManesVersion}"
+    id "com.palantir.git-version" version "${gitVersion}"
 }
 
 group = 'com.malex'
@@ -16,6 +19,11 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+}
+
+// allow BuildProperties bean to be used to get project info: version, name, time and group
+springBoot {
+    buildInfo()
 }
 
 repositories {
@@ -45,13 +53,36 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-    beforeTest { descriptor ->
-        logger.lifecycle("Running test: " + descriptor)
+    beforeTest { descriptor -> logger.lifecycle("Running test: " + descriptor)
     }
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = 'full'
 
     // link: https://stackoverflow.com/questions/77951485/getting-a-java-agent-has-been-loaded-warning-in-intellij-after-upgrading-jdk-17
     jvmArgs("-noverify", "-XX:+EnableDynamicAgentLoading", "-Djdk.instrument.traceUsage")
+}
 
+processResources {
+    def gitFolder = new File('.git')
+    if (!gitFolder.exists()) {
+        return
+    }
+    filter(ReplaceTokens, tokens: [appVersion: gitVersion()])
+}
+
+tasks.register('showVersion') {
+    doLast {
+        def gitFolder = new File('.git')
+        if (!gitFolder.exists()) {
+            return
+        }
+        println "\nCurrent version: ${gitVersion()}\n"
+
+        def details = versionDetails()
+        println "last tag          : ${details.lastTag}"
+        println "commit distance   : ${details.commitDistance}"
+        println "hash              : ${details.gitHash}"
+        println "branch name       : ${details.branchName}"
+        println "is clean tag      : ${details.isCleanTag}"
+    }
 }

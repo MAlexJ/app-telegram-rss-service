@@ -17,9 +17,9 @@ public class TelegramConfiguration {
 
   private final LongPollingBot bot;
 
-  /**
-   * ContextRefreshedEvent.class - Event raised when an ApplicationContext gets initialized or
-   * refreshed.
+  /*
+   * EventListener for ContextRefreshedEvent.class:
+   * Event raised when an ApplicationContext gets initialized or refreshed.
    */
   @SneakyThrows
   @EventListener({ContextRefreshedEvent.class})

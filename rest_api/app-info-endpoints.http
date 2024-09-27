@@ -1,0 +1,2 @@
+### application info (git or build version)
+GET http://localhost:8080/v1/info

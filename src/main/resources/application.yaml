@@ -1,3 +1,6 @@
+application:
+  version: ${APP_SERVICE_Version:@appVersion@}
+
 server:
   port: ${PORT:8080}
 
