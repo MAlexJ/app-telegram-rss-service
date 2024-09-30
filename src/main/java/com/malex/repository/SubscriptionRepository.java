@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RssSubscriptionRepository extends MongoRepository<SubscriptionEntity, String> {
+public interface SubscriptionRepository extends MongoRepository<SubscriptionEntity, String> {
 
   @Query("{'id': ?0 }")
   @Update(update = "{ $set: { isActive : false }}")

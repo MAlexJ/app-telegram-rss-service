@@ -6,7 +6,7 @@ import com.malex.mapper.ObjectMapper;
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.model.request.SubscriptionRequest;
 import com.malex.model.response.SubscriptionResponse;
-import com.malex.repository.RssSubscriptionRepository;
+import com.malex.repository.SubscriptionRepository;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class SubscriptionStorageService {
 
   private final ObjectMapper mapper;
 
-  private final RssSubscriptionRepository subscriptionRepository;
+  private final SubscriptionRepository subscriptionRepository;
 
   /*
    * In Hibernate, after saving an entity using the save() or persist() methods,
