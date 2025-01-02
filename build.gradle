@@ -38,7 +38,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation "com.github.spullara.mustache.java:compiler:${mustacheVersion}"
     implementation "org.telegram:telegrambots-spring-boot-starter:${telegramBotsVersion}"
-    implementation "com.apptasticsoftware:rssreader:${rssreaderVersion}"
+    implementation "com.apptasticsoftware:rssreader:${rssReaderVersion}"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiWeb}"
     implementation "com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}"
     implementation "org.jsoup:jsoup:${jsoupHtmlParser}"

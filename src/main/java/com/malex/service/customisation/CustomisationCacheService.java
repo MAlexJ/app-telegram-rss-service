@@ -6,7 +6,6 @@ import static com.malex.configuration.CacheConfiguration.CUSTOMIZATION_CACHE_NAM
 import com.malex.model.entity.CustomizationEntity;
 import com.malex.model.request.CustomizationRequest;
 import com.malex.model.response.CustomizationResponse;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
