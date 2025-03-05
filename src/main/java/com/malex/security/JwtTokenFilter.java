@@ -11,10 +11,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-@Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
   @Value("${jwt.app.secret}")
