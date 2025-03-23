@@ -1,13 +1,20 @@
-# Spring project is prepared to run on https://render.com/ webservice
-#
-# Build stage
-FROM gradle:8.12-jdk23-alpine AS build
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-RUN gradle build -x test
+FROM eclipse-temurin:23.0.1_11-jdk-alpine AS builder
+WORKDIR /application
+COPY . .
+RUN --mount=type=cache,target=/root/.gradle  chmod +x gradlew && ./gradlew clean build -x test
 
-LABEL org.name="malex"
-# Package stage
-FROM eclipse-temurin:23-jdk-alpine
-COPY --from=build /home/gradle/src/build/libs/app-telegram-rss-service-1.0.5.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM eclipse-temurin:23.0.1_11-jdk-alpine AS layers
+WORKDIR /application
+COPY --from=builder /application/build/libs/*.jar app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+FROM eclipse-temurin:23.0.1_11-jdk-alpine
+VOLUME /tmp
+RUN adduser -S spring-user
+USER spring-user
+COPY --from=layers /application/dependencies/ ./
+COPY --from=layers /application/spring-boot-loader/ ./
+COPY --from=layers /application/snapshot-dependencies/ ./
+COPY --from=layers /application/application/ ./
+
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
