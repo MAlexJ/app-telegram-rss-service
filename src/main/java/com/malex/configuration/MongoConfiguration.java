@@ -1,8 +1,15 @@
 package com.malex.configuration;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ReadPreference;
+import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.connection.ConnectionPoolSettings;
+import com.mongodb.connection.SocketSettings;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
@@ -29,15 +36,45 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
   @Override
   protected String getDatabaseName() {
-    String database = Objects.requireNonNull(mongoProperties.getDatabase());
-    log.info("MongoDb configuration database properties: {}", database);
+    var databaseName =
+        Objects.requireNonNull(mongoProperties.getDatabase(), "Database name is required");
+    log.info("MongoDb configuration database properties: {}", databaseName);
     return mongoProperties.getDatabase();
   }
 
   @Override
   public MongoClient mongoClient() {
-    String uri = Objects.requireNonNull(mongoProperties.getUri());
+    var uri = Objects.requireNonNull(mongoProperties.getUri(), "Database URI is required");
     log.info("MongoDb configuration URI property: {}", uri);
-    return MongoClients.create(uri);
+    var connectionString = new ConnectionString(uri);
+    var settings =
+        MongoClientSettings.builder()
+            .applyConnectionString(connectionString)
+            .applyToConnectionPoolSettings(this::buildConnectionPoolSettings)
+            .applyToSocketSettings(this::buildMongoSocketSettings)
+            // Use Write Concern
+            .writeConcern(WriteConcern.MAJORITY)
+            // and Read Preference
+            .readPreference(ReadPreference.primary())
+            // Enable Snappy Compression to reduce network load
+            // note: disable  .compressorList(List.of(MongoCompressor.createSnappyCompressor()))
+            .build();
+    return MongoClients.create(settings);
+  }
+
+  private ConnectionPoolSettings.Builder buildConnectionPoolSettings(
+      ConnectionPoolSettings.Builder builder) {
+    return builder.minSize(10).maxSize(100);
+  }
+
+  private SocketSettings.Builder buildMongoSocketSettings(SocketSettings.Builder builder) {
+    return builder //
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS);
+  }
+
+  @Override
+  protected boolean autoIndexCreation() {
+    return true;
   }
 }

@@ -1,7 +1,7 @@
 package com.malex.scheduler;
 
-import com.malex.service.topic.RssTopicService;
 import com.malex.service.subscription.SubscriptionCacheService;
+import com.malex.service.topic.RssTopicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -22,7 +22,7 @@ public class SubscriptionProcessingScheduler {
    * database or not. <br>
    * If no record is found, then save rss topic to the database.
    */
-  @Async
+  @Async("virtualThreadExecutor")
   @Transactional
   @Scheduled(cron = "${scheduled.processing.rss.cron}")
   public void processingRssSubscriptions() {

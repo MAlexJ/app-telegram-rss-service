@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TimeZoneConfiguration {
 
+  public static final String UTC_TIME_ZONE = "UTC";
+
   @PostConstruct
   public void init() {
-    TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    TimeZone.setDefault(TimeZone.getTimeZone(UTC_TIME_ZONE));
   }
 }

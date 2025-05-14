@@ -18,7 +18,7 @@ public class HistoryCleanerScheduler {
 
   private final RssTopicStorageService service;
 
-  @Async
+  @Async("virtualThreadExecutor")
   @Scheduled(cron = "${scheduled.processing.cleaner.cron}")
   @Transactional
   public void processing() {

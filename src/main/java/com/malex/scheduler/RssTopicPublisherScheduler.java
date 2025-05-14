@@ -4,9 +4,9 @@ import static com.malex.utils.RssTopicUtils.randomlyRearrangingIds;
 
 import com.malex.model.entity.RssTopicEntity;
 import com.malex.service.error.ErrorService;
-import com.malex.service.subscription.SubscriptionCacheService;
 import com.malex.service.resolver.TemplateResolverService;
 import com.malex.service.storage.*;
+import com.malex.service.subscription.SubscriptionCacheService;
 import com.malex.webservice.telegram.TelegramPublisherWebService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class RssTopicPublisherScheduler {
   private final TemplateResolverService templateResolverService;
   private final SubscriptionCacheService subscriptionStorageService;
 
-  @Async
+  @Async("virtualThreadExecutor")
   @Transactional
   @Scheduled(cron = "${scheduled.processing.publisher.cron}")
   public void processingRssTopics() {
