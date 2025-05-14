@@ -15,7 +15,7 @@ create .env file with properties:
 
 ```
 APP_SERVICE_PORT=8080
-APP_SERVICE_NAME=monolith-app
+APP_SERVICE_NAME=app-telegram-rss-service
 APP_SERVICE_ENABLE_JWT_SECURITY=false
 
 APP_SERVICE_ROOT_LOG_LEVEL=INFO     or TRACE

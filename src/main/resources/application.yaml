@@ -13,7 +13,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
   application:
-    name: ${APP_SERVICE_NAME:app-service}
+    name: ${APP_SERVICE_NAME:app-telegram-rss-service}
   jpa:
     # enable logging of SQL statements.
     show-sql: true
