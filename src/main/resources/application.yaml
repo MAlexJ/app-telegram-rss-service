@@ -35,6 +35,10 @@ telegram:
   bot:
     username: ${APP_SERVICE_TELEGRAM_BOT_USERNAME:bot_name}
     token: ${APP_SERVICE_TELEGRAM_BOT_TOKEN:app_token}
+    url:
+      host: ${APP_SERVICE_TELEGRAM_BOT_URL:https://api.telegram.org/bot%s}
+      message: /sendMessage
+      image: /sendPhoto
 
 rss:
   publish:

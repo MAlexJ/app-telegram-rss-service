@@ -1,8 +1,8 @@
 package com.malex.service.subscription;
 
-import static com.malex.configuration.CacheConfiguration.SUBSCRIPTION_CACHE_ACTIVE;
-import static com.malex.configuration.CacheConfiguration.SUBSCRIPTION_CACHE_IDS;
-import static com.malex.configuration.CacheConfiguration.SUBSCRIPTION_CACHE_NAME;
+import static com.malex.configuration.InMemoryCacheConfiguration.SUBSCRIPTION_CACHE_ACTIVE;
+import static com.malex.configuration.InMemoryCacheConfiguration.SUBSCRIPTION_CACHE_IDS;
+import static com.malex.configuration.InMemoryCacheConfiguration.SUBSCRIPTION_CACHE_NAME;
 
 import com.malex.model.entity.SubscriptionEntity;
 import com.malex.model.request.SubscriptionRequest;

@@ -40,7 +40,7 @@ public class ErrorService {
          */
       }
 
-      // todo:Working with Date Parameters in Spring
+      // todo: Working with Date Parameters in Spring
       //  link: https://www.baeldung.com/spring-date-parameters
       errorStorageService.saveError(errorMessage, jsonMapper.writeValueAsString(topic));
       return Optional.ofNullable(topic.getId());

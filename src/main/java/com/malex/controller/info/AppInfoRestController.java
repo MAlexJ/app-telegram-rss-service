@@ -8,7 +8,6 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -25,12 +24,6 @@ public class AppInfoRestController {
    * - artifactId of the project
    */
   private final BuildProperties buildProperties;
-
-  @RequestMapping(method = RequestMethod.HEAD, value = "/health")
-  public ResponseEntity<AppProperties> health() {
-    var appProperties = new AppProperties(buildProperties, gitVersion);
-    return ResponseEntity.ok(appProperties);
-  }
 
   @GetMapping("/v1/info")
   public ResponseEntity<AppProperties> appInfo() {

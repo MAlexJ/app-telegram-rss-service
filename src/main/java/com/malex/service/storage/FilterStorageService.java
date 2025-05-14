@@ -1,6 +1,6 @@
 package com.malex.service.storage;
 
-import static com.malex.configuration.CacheConfiguration.*;
+import static com.malex.configuration.InMemoryCacheConfiguration.*;
 
 import com.malex.mapper.ObjectMapper;
 import com.malex.model.entity.FilterEntity;

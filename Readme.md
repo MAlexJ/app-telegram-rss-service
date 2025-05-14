@@ -2,9 +2,9 @@
 
 ##### Description:
 
-* Java 23
-* Springboot 3.4.4
-* Gradle 8.13
+* Java 24
+* Springboot 3.4.5
+* Gradle 8.14
 * Mongo database
 * render.com webservice
 * UptimeRobot webservice monitoring

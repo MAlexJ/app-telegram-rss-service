@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @EnableCaching
 @Configuration
-public class CacheConfiguration {
+public class InMemoryCacheConfiguration {
 
   public static final String SUBSCRIPTION_CACHE_NAME = "subscriptions";
   public static final String SUBSCRIPTION_CACHE_IDS = "'subscriptions_ids'";

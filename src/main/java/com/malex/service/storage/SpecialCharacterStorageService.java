@@ -1,6 +1,6 @@
 package com.malex.service.storage;
 
-import static com.malex.configuration.CacheConfiguration.SPECIAL_CHARACTER_CACHE_NAME;
+import static com.malex.configuration.InMemoryCacheConfiguration.SPECIAL_CHARACTER_CACHE_NAME;
 
 import com.malex.mapper.ObjectMapper;
 import com.malex.model.request.SpecialCharacterRequest;

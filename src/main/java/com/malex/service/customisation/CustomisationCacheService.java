@@ -1,7 +1,7 @@
 package com.malex.service.customisation;
 
-import static com.malex.configuration.CacheConfiguration.CUSTOMIZATION_CACHE_KEY_ID;
-import static com.malex.configuration.CacheConfiguration.CUSTOMIZATION_CACHE_NAME;
+import static com.malex.configuration.InMemoryCacheConfiguration.CUSTOMIZATION_CACHE_KEY_ID;
+import static com.malex.configuration.InMemoryCacheConfiguration.CUSTOMIZATION_CACHE_NAME;
 
 import com.malex.model.entity.CustomizationEntity;
 import com.malex.model.request.CustomizationRequest;
