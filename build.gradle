@@ -5,8 +5,8 @@ plugins {
     id "com.github.ben-manes.versions" version "${githubBenManesVersion}"
 }
 
-group = 'com.malex'
-version = '1.0.5'
+group = "${buildGroup}"
+version = "${buildVersion}"
 
 java {
     sourceCompatibility = "${javaVersion}"
@@ -30,9 +30,9 @@ dependencies {
     implementation "com.github.spullara.mustache.java:compiler:${mustacheVersion}"
     implementation "org.telegram:telegrambots-spring-boot-starter:${telegramBotsVersion}"
     implementation "com.apptasticsoftware:rssreader:${rssReaderVersion}"
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiWeb}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiWebVersion}"
     implementation "com.nimbusds:nimbus-jose-jwt:${nimbusJwtVersion}"
-    implementation "org.jsoup:jsoup:${jsoupHtmlParser}"
+    implementation "org.jsoup:jsoup:${jsoupHtmlParserVersion}"
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"

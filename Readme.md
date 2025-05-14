@@ -11,7 +11,7 @@
 
 ### Springboot project setup
 
-create .env file with properties:
+create **.env** file with properties:
 
 ```
 APP_SERVICE_PORT=8080
